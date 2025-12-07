@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth, supabase } from '@mycsuite/auth';
 import { useUITheme } from '@mycsuite/ui';
@@ -11,6 +11,41 @@ export default function SettingsScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const theme = useUITheme();
+  const [username, setUsername] = React.useState('');
+  const [fullName, setFullName] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (user) {
+      supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle()
+        .then(({ data, error }) => {
+          if (error) console.log('Error fetching profile:', error);
+          if (data) {
+            setUsername(data.username || '');
+            setFullName(data.full_name || '');
+          }
+        });
+    }
+  }, [user]);
+
+  const handleUpdateProfile = async () => {
+    if (!user) return;
+    setLoading(true);
+    const { error } = await supabase.from('profiles').upsert({
+      id: user.id,
+      username,
+      full_name: fullName,
+      updated_at: new Date().toISOString(),
+    });
+    setLoading(false);
+
+    if (error) Alert.alert('Error', error.message);
+    else Alert.alert('Success', 'Profile updated successfully!');
+  };
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -45,13 +80,7 @@ export default function SettingsScreen() {
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <IconSymbol name="chevron.left.forwardslash.chevron.right" size={24} color={theme.text} /> 
-          {/* Note: Using a generic icon for back if chevron.left isn't mapped, but usually expo-router handles back. 
-              Actually, let's use a simple Text or standard icon if available. 
-              Checking IconSymbol mapping: 'chevron.left.forwardslash.chevron.right' maps to 'code', 'chevron.right' maps to 'chevron-right'.
-              I'll just use a text "Back" or rely on native stack header if possible, but this is a custom screen.
-              Let's assume we want a custom header.
-          */}
+          <IconSymbol name="chevron.backward" size={24} color={theme.text} /> 
            <Text style={{color: theme.text, fontSize: 16, marginLeft: 4}}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Settings</Text>
@@ -66,10 +95,40 @@ export default function SettingsScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
-          <View style={styles.row}>
+          <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <Text style={styles.value}>{user?.email}</Text>
           </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Username</Text>
+            <TextInput
+              style={[styles.input, { color: theme.text, borderColor: theme.surface }]}
+              value={username}
+              onChangeText={setUsername}
+              placeholder="Username"
+              placeholderTextColor={theme.icon}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Full Name</Text>
+            <TextInput
+              style={[styles.input, { color: theme.text, borderColor: theme.surface }]}
+              value={fullName}
+              onChangeText={setFullName}
+              placeholder="Full Name"
+              placeholderTextColor={theme.icon}
+            />
+          </View>
+
+          <TouchableOpacity 
+            style={[styles.button, styles.saveButton]} 
+            onPress={handleUpdateProfile}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>{loading ? 'Saving...' : 'Save Changes'}</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
@@ -144,6 +203,22 @@ const makeStyles = (theme: any) => StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: theme.surface,
+  },
+  inputContainer: {
+    paddingVertical: 12,
+  },
+  input: {
+    padding: 12,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 8,
+    fontSize: 16,
+  },
+  saveButton: {
+    marginTop: 16,
+    borderBottomWidth: 0,
+    backgroundColor: theme.surface,
+    borderRadius: 8,
   },
   rowItem: {
     flexDirection: 'row',

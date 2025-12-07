@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TextInput, Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useAuth, supabase } from '@mycsuite/auth';
 import { SharedButton, useUITheme } from '@mycsuite/ui';
 import { ThemedView } from '../../components/themed-view';
@@ -11,7 +11,8 @@ export default function ProfileScreen() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
-
+  const theme = useUITheme();
+  
   useEffect(() => {
     if (user) {
       // Fetch existing profile data when the component mounts
@@ -30,28 +31,12 @@ export default function ProfileScreen() {
     }
   }, [user]);
 
-  const handleUpdateProfile = async () => {
-    if (!user) return;
-    const { error } = await supabase.from('profiles').upsert({
-      id: user.id,
-      username,
-      full_name: fullName,
-      updated_at: new Date().toISOString(),
-    });
-
-    if (error) Alert.alert('Error', error.message);
-    else Alert.alert('Success', 'Profile updated successfully!');
-  };
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     // The protected routing in _layout.tsx will handle the redirect
   };
   
-  const theme = useUITheme();
-  const bg = theme.background;
   const text = theme.text;
-  const border = theme.surface;
 
   return (
     <ThemedView style={styles.container}>
@@ -61,21 +46,18 @@ export default function ProfileScreen() {
           <IconSymbol name="gearshape.fill" size={24} color={text} />
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={[styles.input, { backgroundColor: bg, borderColor: border, color: text }]}
-        placeholder="Username"
-        placeholderTextColor={'#9CA3AF'}
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={[styles.input, { backgroundColor: bg, borderColor: border, color: text }]}
-        placeholder="Full Name"
-        placeholderTextColor={'#9CA3AF'}
-        value={fullName}
-        onChangeText={setFullName}
-      />
-      <SharedButton title="Update Profile" onPress={handleUpdateProfile} />
+      
+      <View style={styles.infoContainer}>
+        <View style={styles.infoRow}>
+            <Text style={[styles.label, { color: theme.icon }]}>Username</Text>
+            <Text style={[styles.value, { color: text }]}>{username || 'Not set'}</Text>
+        </View>
+        <View style={styles.infoRow}>
+            <Text style={[styles.label, { color: theme.icon }]}>Full Name</Text>
+            <Text style={[styles.value, { color: text }]}>{fullName || 'Not set'}</Text>
+        </View>
+      </View>
+
       <SharedButton title="Sign Out" onPress={handleSignOut} />
     </ThemedView>
   );
@@ -94,10 +76,18 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '700',
   },
-  input: {
-    padding: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderRadius: 8,
+  infoContainer: {
+    marginBottom: 24,
+  },
+  infoRow: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  value: {
+    fontSize: 18,
+    fontWeight: '500',
   },
 });

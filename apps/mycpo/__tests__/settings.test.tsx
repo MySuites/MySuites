@@ -42,12 +42,19 @@ jest.mock('../components/ui/icon-symbol', () => ({
 
 jest.mock('../components/ui/ThemeToggle', () => 'View');
 
+jest.mock('react-native-css-interop', () => ({
+  cssInterop: jest.fn(),
+  remapProps: jest.fn(),
+}));
+
 describe('SettingsScreen', () => {
   it('renders correctly', () => {
-    const { getByText } = render(<SettingsScreen />);
+    const { getByText, getByPlaceholderText } = render(<SettingsScreen />);
     expect(getByText('Settings')).toBeTruthy();
     expect(getByText('Account')).toBeTruthy();
     expect(getByText('test@example.com')).toBeTruthy();
+    expect(getByPlaceholderText('Username')).toBeTruthy();
+    expect(getByPlaceholderText('Full Name')).toBeTruthy();
     expect(getByText('Sign Out')).toBeTruthy();
   });
 
