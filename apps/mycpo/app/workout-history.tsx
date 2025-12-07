@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { useUITheme as useTheme } from '@mycsuite/ui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import { formatSeconds } from '../utils/formatting'; // Removed as duration is not yet in the log
 import { useWorkoutManager } from '../hooks/useWorkoutManager';
+import { WorkoutDetailsModal } from '../components/WorkoutDetailsModal';
 
 export default function WorkoutHistoryScreen() {
   const router = useRouter();
   const theme = useTheme();
   const styles = makeStyles(theme);
   const { workoutHistory } = useWorkoutManager();
+  const [selectedLogId, setSelectedLogId] = useState<string | null>(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,7 +30,11 @@ export default function WorkoutHistoryScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <View style={styles.historyItem}>
+          <TouchableOpacity 
+            style={styles.historyItem} 
+            onPress={() => setSelectedLogId(item.id)}
+            activeOpacity={0.7}
+          >
             <View style={styles.itemHeader}>
               <Text style={styles.itemName}>{item.workoutName || 'Untitled Workout'}</Text>
               <Text style={styles.itemDate}>
@@ -40,7 +46,10 @@ export default function WorkoutHistoryScreen() {
               <Text style={styles.detailText}>{new Date(item.workoutTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
               {item.notes && <Text style={styles.detailText} numberOfLines={1}>• {item.notes}</Text>}
             </View>
-          </View>
+            <View style={styles.tapHintContainer}>
+                <Text style={styles.tapHint}>Tap for details</Text>
+            </View>
+          </TouchableOpacity>
         )}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
@@ -49,6 +58,12 @@ export default function WorkoutHistoryScreen() {
             </Text>
           </View>
         }
+      />
+
+      <WorkoutDetailsModal 
+        visible={!!selectedLogId} 
+        onClose={() => setSelectedLogId(null)} 
+        workoutLogId={selectedLogId} 
       />
     </SafeAreaView>
   );
@@ -120,6 +135,14 @@ const makeStyles = (theme: any) =>
       fontSize: 14,
       color: theme.icon,
       marginRight: 8,
+    },
+    tapHintContainer: {
+        marginTop: 8,
+        alignItems: 'flex-end',
+    },
+    tapHint: {
+        fontSize: 12,
+        color: theme.primary,
     },
     emptyContainer: {
       padding: 32,

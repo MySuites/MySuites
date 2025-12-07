@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { supabase, useAuth } from "@mycsuite/auth";
 
@@ -459,6 +459,62 @@ export function useWorkoutManager() {
         ]);
     }
 
+    const fetchWorkoutLogDetails = useCallback(async (logId: string) => {
+        if (!user) return { data: [], error: "User not logged in" };
+        const { data: setLogs, error } = await supabase
+            .from("set_logs")
+            .select(`
+                set_log_id,
+                details,
+                notes,
+                exercise_sets (
+                    set_number,
+                    workout_exercises (
+                        position,
+                        exercises (
+                            exercise_name
+                        )
+                    )
+                )
+            `)
+            .eq("workout_log_id", logId)
+            .order("created_at", { ascending: true }); // Simple ordering
+
+        if (error) return { data: [], error };
+
+        // Group by exercise
+        // Structure: { [exerciseName]: { name: string, sets: [] } }
+        const grouped: Record<string, any> = {};
+
+        setLogs?.forEach((log: any) => {
+            const exName = log.exercise_sets?.workout_exercises?.exercises
+                ?.exercise_name || "Unknown Exercise";
+            const position = log.exercise_sets?.workout_exercises?.position ||
+                999;
+
+            if (!grouped[exName]) {
+                grouped[exName] = {
+                    name: exName,
+                    position: position,
+                    sets: [],
+                };
+            }
+
+            grouped[exName].sets.push({
+                setNumber: log.exercise_sets?.set_number,
+                details: log.details, // e.g. { reps: 10 }
+                notes: log.notes,
+            });
+        });
+
+        // Convert to array and sort by position
+        const result = Object.values(grouped).sort((a: any, b: any) =>
+            a.position - b.position
+        );
+
+        return { data: result, error: null };
+    }, [user]);
+
     return {
         savedWorkouts,
         routines,
@@ -468,5 +524,6 @@ export function useWorkoutManager() {
         saveRoutineDraft,
         deleteRoutine,
         workoutHistory,
+        fetchWorkoutLogDetails,
     };
 }
