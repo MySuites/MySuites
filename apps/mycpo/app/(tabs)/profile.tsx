@@ -1,14 +1,14 @@
-// apps/mycpo/app/(tabs)/profile.tsx
 import { useState, useEffect } from 'react';
-import { TextInput, Alert, StyleSheet } from 'react-native';
+import { TextInput, Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useAuth, supabase } from '@mycsuite/auth';
-import { SharedButton } from '@mycsuite/ui';
-import ThemeToggle from '@/components/ui/ThemeToggle';
-import { ThemedView } from '@/components/themed-view';
-import { useUITheme } from '@mycsuite/ui';
+import { SharedButton, useUITheme } from '@mycsuite/ui';
+import { ThemedView } from '../../components/themed-view';
+import { useRouter } from 'expo-router';
+import { IconSymbol } from '../../components/ui/icon-symbol';
 
 export default function ProfileScreen() {
   const { user } = useAuth();
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
 
@@ -55,7 +55,12 @@ export default function ProfileScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemeToggle />
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: text }]}>Profile</Text>
+        <TouchableOpacity onPress={() => router.push('/settings')}>
+          <IconSymbol name="gearshape.fill" size={24} color={text} />
+        </TouchableOpacity>
+      </View>
       <TextInput
         style={[styles.input, { backgroundColor: bg, borderColor: border, color: text }]}
         placeholder="Username"
@@ -77,7 +82,18 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 16 },
+  container: { flex: 1, padding: 16 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+    marginTop: 40, // Adjust for safe area if needed, or use SafeAreaView
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+  },
   input: {
     padding: 12,
     marginBottom: 12,
