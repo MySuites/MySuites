@@ -9,7 +9,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { useUITheme } from '@mycsuite/ui';
-import { useRouter } from 'expo-router';
+import { useRouter, usePathname } from 'expo-router';
 import { IconSymbol } from './icon-symbol';
 import * as Haptics from 'expo-haptics';
 
@@ -26,17 +26,44 @@ type MenuItemType = {
   label: string;
   route: string;
   angle: number; // in degrees, 0 is up, -90 left, 90 right
+  matchPaths: string[]; // Paths that match this item
 };
 
 const MENU_ITEMS: MenuItemType[] = [
-  { id: 'profile', icon: 'person.fill', label: 'Profile', route: '/(tabs)/profile', angle: -45 },
-  { id: 'home', icon: 'house.fill', label: 'Home', route: '/(tabs)', angle: 0 },
-  { id: 'workout', icon: 'dumbbell.fill', label: 'Workout', route: '/(tabs)/workout', angle: 45 },
+  { 
+      id: 'profile', 
+      icon: 'person.fill', 
+      label: 'Profile', 
+      route: '/(tabs)/profile', 
+      angle: -45, 
+      matchPaths: ['/profile', '/(tabs)/profile'] 
+  },
+  { 
+      id: 'home', 
+      icon: 'house.fill', 
+      label: 'Home', 
+      route: '/(tabs)', 
+      angle: 0,
+      matchPaths: ['/', '/index', '/(tabs)', '/(tabs)/index']
+  },
+  { 
+      id: 'workout', 
+      icon: 'dumbbell.fill', 
+      label: 'Workout', 
+      route: '/(tabs)/workout', 
+      angle: 45,
+      matchPaths: ['/workout', '/(tabs)/workout'] 
+  },
 ];
 
 export function FastActionButton() {
   const theme = useUITheme();
   const router = useRouter();
+  const pathname = usePathname();
+
+  // Determine active icon
+  const activeItem = MENU_ITEMS.find(item => item.matchPaths.some(p => pathname === p || pathname.startsWith(p + '/'))) || MENU_ITEMS[1];
+  const activeIcon = activeItem.icon;
 
   // Animation values
   const isOpen = useSharedValue(0); // 0: closed, 1: open
@@ -214,7 +241,7 @@ export function FastActionButton() {
 
       <GestureDetector gesture={composedGesture}>
         <Animated.View testID="fast-action-button" style={[styles.fab, buttonStyle]}>
-          <IconSymbol name="bolt.fill" size={30} color="#fff" />
+          <IconSymbol name={activeIcon as any} size={30} color="#fff" />
         </Animated.View>
       </GestureDetector>
     </View>
