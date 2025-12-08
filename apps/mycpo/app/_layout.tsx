@@ -3,8 +3,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthProvider, useAuth } from '@mycsuite/auth';
 import AppThemeProvider from './providers/AppThemeProvider';
+import { NavigationSettingsProvider } from './providers/NavigationSettingsProvider';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
@@ -58,13 +60,17 @@ export default function RootLayout() {
   }
   
   return (
-    <AuthProvider>
-      <AppThemeProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <RootLayoutNav />
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </AppThemeProvider>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <NavigationSettingsProvider>
+          <AppThemeProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <RootLayoutNav />
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </AppThemeProvider>
+        </NavigationSettingsProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

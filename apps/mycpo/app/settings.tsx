@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView, TextInput, Switch } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth, supabase } from '@mycsuite/auth';
 import { useUITheme } from '@mycsuite/ui';
 import { ThemedView } from '../components/ui/ThemedView';
 import { IconSymbol } from '../components/ui/icon-symbol';
 import ThemeToggle from '../components/ui/ThemeToggle';
+import { useNavigationSettings } from './providers/NavigationSettingsProvider';
 
 export default function SettingsScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const theme = useUITheme();
+  const { isFabEnabled, toggleFab } = useNavigationSettings();
   const [username, setUsername] = React.useState('');
   const [fullName, setFullName] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -91,6 +93,15 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Appearance</Text>
           <ThemeToggle />
+          <View style={styles.row}>
+             <Text style={styles.rowText}>Fast Action Button</Text>
+             <Switch
+                value={isFabEnabled}
+                onValueChange={toggleFab}
+                trackColor={{ false: theme.surface, true: theme.primary }}
+                thumbColor={'#fff'}
+             />
+          </View>
         </View>
 
         <View style={styles.section}>
