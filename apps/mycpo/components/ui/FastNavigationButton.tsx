@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
 import { useUITheme } from '@mycsuite/ui';
 import { useRouter, usePathname } from 'expo-router';
 import { RadialMenu, RadialMenuItem } from './RadialMenu';
+import { useFloatingButton } from './FloatingButtonContext';
 
 // Configuration
 const BUTTON_SIZE = 60;
@@ -18,6 +20,7 @@ export function FastNavigationButton() {
   const theme = useUITheme();
   const router = useRouter();
   const pathname = usePathname();
+  const { activeButtonId, setActiveButtonId } = useFloatingButton();
 
   // Determine active icon based on current path
   const activeIcon = useMemo(() => {
@@ -36,16 +39,38 @@ export function FastNavigationButton() {
     { id: 'workout', icon: 'dumbbell.fill', label: 'Workout', onPress: () => navigateTo('/(tabs)/workout'), angle: 45 },
   ], [navigateTo]);
 
+  // Handle visibility animation
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+      // If the OTHER button (action) is active, slide out to the LEFT
+      const shouldHide = activeButtonId === 'action';
+      return {
+          transform: [
+              { translateX: withSpring(shouldHide ? -150 : 0) } 
+          ],
+          opacity: withTiming(shouldHide ? 0 : 1)
+      };
+  });
+
+  const handleMenuStateChange = (isOpen: boolean) => {
+      console.log('NavButton: Menu State Changed:', isOpen);
+      if (isOpen) {
+          setActiveButtonId('nav');
+      } else if (activeButtonId === 'nav') { // Only clear if we were the owner
+          setActiveButtonId(null);
+      }
+  };
+
   return (
-    <View style={styles.container} pointerEvents="box-none">
+    <Animated.View style={[styles.container, containerAnimatedStyle]} pointerEvents="box-none">
        <RadialMenu 
          items={menuItems} 
          icon={activeIcon} 
          menuRadius={100}
          style={{ backgroundColor: theme.primary }} 
          buttonSize={BUTTON_SIZE}
+         onMenuStateChange={handleMenuStateChange}
        />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -54,8 +79,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0,
-    height: 150, // Height for hit testing?
+    right: 0, // Note: This stretches the container, so translateX affects the whole bar implicitly? 
+    // Wait, RadialMenu is centered in this container (alignItems: center).
+    // If we translate THIS container, the whole bottom bar moves?
+    // Let's refine style to wrap just the button area if needed, but for now this moves the button.
+    height: 150, 
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingBottom: 40,

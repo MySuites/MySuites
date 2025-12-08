@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
 import { useUITheme } from '@mycsuite/ui';
 import { useRouter, usePathname } from 'expo-router';
 import { RadialMenu, RadialMenuItem } from './RadialMenu';
+import { useFloatingButton } from './FloatingButtonContext';
 
 // Configuration
 const BUTTON_SIZE = 60; 
@@ -36,6 +38,7 @@ export function FastActionButton() {
   const theme = useUITheme();
   const router = useRouter();
   const pathname = usePathname();
+  const { activeButtonId, setActiveButtonId } = useFloatingButton();
 
   // Determine current context and actions
   const currentActions = useMemo(() => {
@@ -63,10 +66,29 @@ export function FastActionButton() {
     }));
   }, [currentActions, handleAction]);
 
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+      // If the OTHER button (nav) is active, slide out to the RIGHT
+      const shouldHide = activeButtonId === 'nav';
+      return {
+          transform: [
+              { translateX: withSpring(shouldHide ? 150 : 0) } 
+          ],
+          opacity: withTiming(shouldHide ? 0 : 1)
+      };
+  });
+
+  const handleMenuStateChange = (isOpen: boolean) => {
+      if (isOpen) {
+          setActiveButtonId('action');
+      } else if (activeButtonId === 'action') {
+          setActiveButtonId(null);
+      }
+  };
+
   if (!currentActions || currentActions.length === 0) return null;
 
   return (
-    <View style={styles.container} pointerEvents="box-none">
+    <Animated.View style={[styles.container, containerAnimatedStyle]} pointerEvents="box-none">
        <RadialMenu 
          items={menuItems} 
          icon="ellipsis" // Always ellipsis as requested
@@ -75,8 +97,9 @@ export function FastActionButton() {
          endAngle={-85}
          style={{ backgroundColor: theme.surface }}
          buttonSize={BUTTON_SIZE}
+         onMenuStateChange={handleMenuStateChange}
        />
-    </View>
+    </Animated.View>
   );
 }
 

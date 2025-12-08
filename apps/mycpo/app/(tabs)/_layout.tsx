@@ -9,12 +9,14 @@ import { Colors } from '../../constants/theme';
 import { useColorScheme } from '../../hooks/use-color-scheme';
 import { FastActionButton } from '../../components/ui/FastActionButton';
 
+import { FloatingButtonProvider } from '../../components/ui/FloatingButtonContext';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { isFabEnabled } = useNavigationSettings();
 
   return (
-    <>
+    <FloatingButtonProvider>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].primary,
@@ -47,6 +49,6 @@ export default function TabLayout() {
       </Tabs>
       {isFabEnabled && <FastNavigationButton />}
       {isFabEnabled && <FastActionButton />}
-    </>
+    </FloatingButtonProvider>
   );
 }

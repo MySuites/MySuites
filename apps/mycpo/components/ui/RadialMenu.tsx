@@ -32,6 +32,7 @@ type RadialMenuProps = {
   menuRadius?: number;
   style?: StyleProp<ViewStyle>;
   buttonSize?: number;
+  onMenuStateChange?: (isOpen: boolean) => void;
 };
 
 // Reverted to pure Reanimated for Native stability
@@ -43,6 +44,7 @@ export function RadialMenu({
   menuRadius = 100,
   style,
   buttonSize = BUTTON_SIZE,
+  onMenuStateChange,
 }: RadialMenuProps) {
   const theme = useUITheme();
 
@@ -78,6 +80,12 @@ export function RadialMenu({
   // Pre-calculate angles to safely access them in the UI thread worklet
   const itemAngles = React.useMemo(() => items.map((_, i) => getItemAngle(i)), [items, getItemAngle]);
 
+  const handleMenuStateChangeWrapper = (isOpen: boolean) => {
+      if (onMenuStateChange) {
+          onMenuStateChange(isOpen);
+      }
+  };
+
   // Gesture Logic
   const gesture = Gesture.Pan()
     .activateAfterLongPress(ACTIVATION_DELAY) 
@@ -85,6 +93,7 @@ export function RadialMenu({
       isOpen.value = withSpring(1);
       scale.value = withSpring(1.1);
       runOnJS(triggerHaptic)(Haptics.ImpactFeedbackStyle.Medium);
+      runOnJS(handleMenuStateChangeWrapper)(true);
     })
     .onUpdate((e) => {
       const x = e.translationX;
@@ -121,12 +130,14 @@ export function RadialMenu({
       if (selectedItemIndex.value !== -1) {
         runOnJS(handleSelection)(selectedItemIndex.value);
       }
+      runOnJS(handleMenuStateChangeWrapper)(false);
       selectedItemIndex.value = -1;
     });
 
   const tapGesture = Gesture.Tap().onEnd(() => {
       if (isOpen.value > 0.5) {
           isOpen.value = withSpring(0);
+          runOnJS(handleMenuStateChangeWrapper)(false);
       } else {
           runOnJS(triggerHaptic)(Haptics.ImpactFeedbackStyle.Light);
       }
