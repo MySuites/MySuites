@@ -38,11 +38,11 @@ export function FastUtilityButton() {
   const router = useRouter();
   const pathname = usePathname();
   const { activeButtonId, setActiveButtonId } = useFloatingButton();
-  const { isRunning, startWorkout, pauseWorkout, finishWorkout, resetWorkout, cancelWorkout, isExpanded, hasActiveSession } = useActiveWorkout();
+  const { isRunning, startWorkout, pauseWorkout, finishWorkout, resetWorkout, cancelWorkout, isExpanded } = useActiveWorkout();
 
   // Determine current context and actions
   const currentActions = useMemo(() => {
-     if (hasActiveSession || isExpanded || pathname.includes('active-workout')) {
+     if (isExpanded || pathname.includes('active-workout')) {
          return [
             { id: 'finish_workout', icon: 'flag.checkered', label: 'Finish', action: 'finish_workout' },
             { id: 'cancel_workout', icon: 'xmark', label: 'Cancel', action: 'cancel_workout' },
@@ -66,7 +66,7 @@ export function FastUtilityButton() {
      }
      if (pathname.includes('profile')) return CONTEXT_ACTIONS['profile'];
      return CONTEXT_ACTIONS['home'] || [];
-  }, [pathname, isRunning, isExpanded, hasActiveSession]);
+  }, [pathname, isRunning, isExpanded]);
 
   const handleAction = React.useCallback((item: ActionItemType) => {
       if (item.action === 'toggle_workout') {
