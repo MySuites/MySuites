@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { Alert } from 'react-native';
-import { Exercise } from '../hooks/useWorkoutManager'; 
+import { Exercise, useWorkoutManager } from '../hooks/useWorkoutManager'; 
 import { createExercise } from '../app/(tabs)/workout.logic';
 
 // Define the shape of our context
@@ -217,8 +217,13 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
 
     const toggleExpanded = () => setIsExpanded(prev => !prev);
 
+    const { saveCompletedWorkout } = useWorkoutManager();
+
     const handleFinishWorkout = useCallback(() => {
-        // Here we actually stop everything
+        // Save the workout
+        saveCompletedWorkout(workoutName, exercises, workoutSeconds);
+
+        // Reset state
 		setRunning(false);
 		setWorkoutSeconds(0);
 		setRestSeconds(0);
@@ -227,7 +232,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
         
         setHasActiveSession(false);
         setIsExpanded(false);
-    }, []);
+    }, [workoutName, exercises, workoutSeconds, saveCompletedWorkout]);
 
     const handleCancelWorkout = useCallback(() => {
         // Cancel is effectively the same as finish for now (discard/reset)

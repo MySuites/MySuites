@@ -6,11 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUITheme as useTheme } from '@mycsuite/ui';
 import { useActiveWorkout } from '../providers/ActiveWorkoutProvider';
 import Animated, { SlideInUp, SlideOutUp } from 'react-native-reanimated';
+import { useRouter } from 'expo-router';
 import { ExerciseCard } from './ui/ExerciseCard';
-import { AddExerciseModal } from './AddExerciseModal';
 
 export function ActiveWorkoutOverlay() {
     const theme = useTheme();
+    const router = useRouter();
     const insets = useSafeAreaInsets();
     
     const {
@@ -22,7 +23,7 @@ export function ActiveWorkoutOverlay() {
         isExpanded,
         setExpanded,
         toggleExpanded,
-        addExercise,
+
     } = useActiveWorkout();
 
     const styles = makeStyles(theme);
@@ -41,7 +42,7 @@ export function ActiveWorkoutOverlay() {
     }, [isExpanded, setExpanded]);
 
 
-    const [isAddModalOpen, setAddModalOpen] = React.useState(false);
+
 
     // If not expanded, return null or handle animation visibility
     if (!isExpanded) return null;
@@ -103,7 +104,7 @@ export function ActiveWorkoutOverlay() {
                             ))}
                             <TouchableOpacity 
                                 style={styles.addExerciseButton}
-                                onPress={() => setAddModalOpen(true)}
+                                onPress={() => router.push('/exercises')}
                             >
                                 <Text style={styles.addExerciseText}>+ Add Exercise</Text>
                             </TouchableOpacity>
@@ -112,13 +113,6 @@ export function ActiveWorkoutOverlay() {
                 </ScrollView>
             </View>
 
-            <AddExerciseModal 
-                visible={isAddModalOpen}
-                onClose={() => setAddModalOpen(false)}
-                onAdd={(name: string, sets: string, reps: string) => {
-                    addExercise(name, sets, reps);
-                }}
-            />
         </Animated.View>
     );
 }

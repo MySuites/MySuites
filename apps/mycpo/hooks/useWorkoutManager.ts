@@ -100,17 +100,79 @@ async function fetchWorkoutHistory(user: any) {
 
     if (error) return { data: [], error };
 
-    const formatted = logs?.map((log: any) => ({
-        id: log.workout_log_id,
-        workoutId: log.workout_id,
-        userId: log.user_id,
-        workoutTime: log.workout_time,
-        notes: log.notes,
-        workoutName: log.workouts?.workout_name || "Untitled Workout",
-        createdAt: log.created_at,
-    })) || [];
+    const formatted = logs?.map((log: any) => {
+        let fallbackName = undefined;
+        try {
+            if (log.notes) {
+                const parsed = JSON.parse(log.notes);
+                if (parsed.name) fallbackName = parsed.name;
+            }
+        } catch {}
+
+        return {
+            id: log.workout_log_id,
+            workoutId: log.workout_id,
+            userId: log.user_id,
+            workoutTime: log.workout_time,
+            notes: log.notes,
+            workoutName: log.workouts?.workout_name || fallbackName ||
+                "Untitled Workout",
+            createdAt: log.created_at,
+        };
+    }) || [];
 
     return { data: formatted, error: null };
+}
+
+export async function fetchExercises(user: any) {
+    if (!user) return { data: [], error: null };
+
+    // Fetch user specific exercises
+    // Note: If you have a 'global' exercises table or rows with user_id is null, handle that here.
+    // For now assuming we just want user's exercises or RLS handles it.
+    const { data, error } = await supabase
+        .from("exercises")
+        .select("exercise_id, exercise_name, exercise_type")
+        .order("exercise_name", { ascending: true });
+
+    if (error) return { data: [], error };
+
+    const mapped = data.map((e: any) => ({
+        id: e.exercise_id,
+        name: e.exercise_name,
+        category: e.exercise_type || "General", // map type to category
+    }));
+
+    return { data: mapped, error: null };
+}
+
+async function persistCompletedWorkoutToSupabase(
+    user: any,
+    name: string,
+    exercises: Exercise[],
+    duration: number,
+    workoutId?: string,
+) {
+    if (!user) return { error: "User not logged in" };
+
+    const notesObj = {
+        name,
+        duration,
+        exercises, // Store full exercise log in notes for now
+    };
+
+    const { data, error } = await supabase
+        .from("workout_logs")
+        .insert([{
+            user_id: user.id,
+            workout_id: workoutId || null,
+            workout_time: new Date().toISOString(),
+            notes: JSON.stringify(notesObj),
+        }])
+        .select()
+        .single();
+
+    return { data, error };
 }
 
 async function persistWorkoutToSupabase(
@@ -372,6 +434,44 @@ export function useWorkoutManager() {
         Alert.alert("Saved", `Workout '${payload.name}' saved locally.`);
     }
 
+    async function saveCompletedWorkout(
+        name: string,
+        exercises: Exercise[],
+        duration: number,
+        onSuccess?: () => void,
+    ) {
+        if (user) {
+            setIsSaving(true);
+            try {
+                const { error } = await persistCompletedWorkoutToSupabase(
+                    user,
+                    name,
+                    exercises,
+                    duration,
+                );
+
+                if (error) {
+                    Alert.alert("Error", "Failed to save workout log.");
+                } else {
+                    // Refresh history
+                    const { data: hData } = await fetchWorkoutHistory(user);
+                    if (hData) setWorkoutHistory(hData);
+                    onSuccess?.();
+                }
+            } finally {
+                setIsSaving(false);
+            }
+        } else {
+            // Local storage logic for history could go here, but for now just alert
+            // TODO: Local history
+            Alert.alert(
+                "Completed",
+                "Workout finished! (Not saved - login to save history)",
+            );
+            onSuccess?.();
+        }
+    }
+
     function deleteSavedWorkout(id: string) {
         Alert.alert("Delete workout", "Are you sure?", [
             { text: "Cancel", style: "cancel" },
@@ -538,5 +638,6 @@ export function useWorkoutManager() {
         deleteRoutine,
         workoutHistory,
         fetchWorkoutLogDetails,
+        saveCompletedWorkout,
     };
 }
