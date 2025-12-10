@@ -11,6 +11,7 @@ import {
  	TextInput,
  	Alert,
  	ActivityIndicator,
+    ScrollView
 } from "react-native";
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -182,7 +183,11 @@ export default function Workout() {
 
 			{/* Dashboard: Routines & Saved Workouts (Visible when inactive) */}
 			{!hasActiveSession && (
-				<View style={styles.dashboardContainer}>
+				<ScrollView 
+                    style={styles.dashboardContainer} 
+                    contentContainerStyle={{paddingBottom: 40, flexGrow: 1}}
+                    showsVerticalScrollIndicator={false}
+                >
 					
                     {/* Active Routine Section */}
                     {activeRoutineObj && (
@@ -326,9 +331,7 @@ export default function Workout() {
                     ) : (
                         <FlatList
                             data={routines}
-                            horizontal
-                            showsHorizontalScrollIndicator={false} // Clean look
-                            contentContainerStyle={{paddingRight: 16}}
+                            scrollEnabled={false}
                             keyExtractor={(i) => i.id}
                             renderItem={({item}) => (
                                 <RoutineCard 
@@ -369,7 +372,7 @@ export default function Workout() {
                         />
                     )}
                     
-				</View>
+				</ScrollView>
 			)}
 
 			{/* Saved Workouts modal */}
