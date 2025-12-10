@@ -17,7 +17,7 @@ const PATH_CONFIG = [
     { match: ['/workout', '/(tabs)/workout'], icon: 'dumbbell.fill' },
 ];
 
-export function FastNavigationButton() {
+export function QuickNavigationButton() {
   const theme = useUITheme();
   const router = useRouter();
   

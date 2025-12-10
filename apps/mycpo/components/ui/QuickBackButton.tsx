@@ -11,7 +11,7 @@ import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 
 const BUTTON_SIZE = 60;
 
-export function FastBackButton() {
+export function QuickBackButton() {
   const theme = useUITheme();
   const router = useRouter();
   const { activeButtonId } = useFloatingButton();

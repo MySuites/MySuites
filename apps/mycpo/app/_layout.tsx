@@ -13,9 +13,9 @@ import { useEffect } from 'react';
 import { ActiveWorkoutProvider } from '../providers/ActiveWorkoutProvider'; // Fixed import path
 import { WorkoutStickyHeader } from '../components/ui/WorkoutStickyHeader';
 import { ActiveWorkoutOverlay } from '../components/ActiveWorkoutOverlay'; 
-import { FastNavigationButton } from '../components/ui/FastNavigationButton';
-import { FastUtilityButton } from '../components/ui/FastUilityButton';
-import { FastBackButton } from '../components/ui/FastBackButton';
+import { QuickNavigationButton } from '../components/ui/QuickNavigationMenu';
+import { QuickUtilityButton } from '../components/ui/QuickUilityMenu';
+import { QuickBackButton } from '../components/ui/QuickBackButton';
 import { FloatingButtonProvider } from '../components/ui/FloatingButtonContext';
 import { GlobalOverlay } from '../components/ui/GlobalOverlay';
 
@@ -80,9 +80,9 @@ export default function RootLayout() {
                   <WorkoutStickyHeader />
                   <ActiveWorkoutOverlay />
                   <GlobalOverlay>
-                    <FastNavigationButton />
-                    <FastUtilityButton />
-                    <FastBackButton />
+                    <QuickNavigationButton />
+                    <QuickUtilityButton />
+                    <QuickBackButton />
                   </GlobalOverlay>
                 </FloatingButtonProvider>
                 <StatusBar style="auto" />

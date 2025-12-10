@@ -33,7 +33,7 @@ const CONTEXT_ACTIONS: Record<string, ActionItemType[]> = {
   ],
 };
 
-export function FastUtilityButton() {
+export function QuickUtilityButton() {
   const theme = useUITheme();
   const router = useRouter();
   const pathname = usePathname();
