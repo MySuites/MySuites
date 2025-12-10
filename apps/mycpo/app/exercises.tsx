@@ -40,7 +40,9 @@ export default function ExercisesScreen() {
            <ThemedText type="link">Close</ThemedText>
         </TouchableOpacity>
         <ThemedText type="subtitle">Exercises</ThemedText>
-        <View style={{width: 50}} /> 
+        <TouchableOpacity onPress={() => router.push('/create-exercise')} style={{padding: 8}}>
+            <ThemedText type="link">Create</ThemedText>
+        </TouchableOpacity> 
       </ThemedView>
       
       {loading ? (

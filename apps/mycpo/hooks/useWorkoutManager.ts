@@ -146,6 +146,26 @@ export async function fetchExercises(user: any) {
     return { data: mapped, error: null };
 }
 
+async function createCustomExerciseInSupabase(
+    user: any,
+    name: string,
+    type: string = "bodyweight_reps",
+) {
+    if (!user) return { error: "User not logged in" };
+
+    const { data, error } = await supabase
+        .from("exercises")
+        .insert([{
+            exercise_name: name.trim(),
+            exercise_type: type,
+            user_id: user.id,
+        }])
+        .select()
+        .single();
+
+    return { data, error };
+}
+
 async function persistCompletedWorkoutToSupabase(
     user: any,
     name: string,
@@ -712,5 +732,8 @@ export function useWorkoutManager() {
         workoutHistory,
         fetchWorkoutLogDetails,
         saveCompletedWorkout,
+        createCustomExercise: async (name: string, type: string) => {
+            return createCustomExerciseInSupabase(user, name, type);
+        },
     };
 }
