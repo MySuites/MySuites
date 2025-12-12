@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 1000, // Above everything
-        paddingBottom: 12,
+        paddingBottom: 24,
         paddingHorizontal: 16,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
