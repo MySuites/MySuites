@@ -21,8 +21,8 @@ export function QuickNavigationButton() {
   const router = useRouter();
   
   const pathname = usePathname();
-  const { activeButtonId, setActiveButtonId } = useFloatingButton();
-
+  const { activeButtonId, setActiveButtonId, isHidden } = useFloatingButton();
+  
   // Determine active icon based on current path
   const activeIcon = useMemo(() => {
      const found = PATH_CONFIG.find(c => c.match.some(m => pathname === m || pathname.startsWith(m + '/')));
@@ -48,8 +48,8 @@ export function QuickNavigationButton() {
 
   // Handle visibility animation
   const containerAnimatedStyle = useAnimatedStyle(() => {
-      // If the OTHER button (action) is active, slide out to the LEFT
-      const shouldHide = activeButtonId === 'action';
+      // If the OTHER button (action) is active OR hidden, slide out to the LEFT
+      const shouldHide = activeButtonId === 'action' || isHidden;
       return {
           transform: [
               { translateX: withSpring(shouldHide ? -150 : 0) } 

@@ -29,12 +29,15 @@ import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { RoutineCard } from '../../components/workouts/RoutineCard';
 import { ActiveRoutineCard } from '../../components/workouts/ActiveRoutineCard';
 
+import { useFloatingButton } from '../../providers/FloatingButtonContext';
+
 // --- Component ---
 
 export default function Workout() {
 
 	const theme = useTheme();
 	const router = useRouter();
+    const { setIsHidden } = useFloatingButton();
     
 	// consume shared state
     const {
@@ -113,6 +116,11 @@ export default function Workout() {
         deleteRoutine,
         updateSavedWorkout,
     } = useWorkoutManager();
+
+    // Toggle floating buttons visibility when modals are open
+    React.useEffect(() => {
+        setIsHidden(isWorkoutsListOpen || isCreateRoutineOpen || isEditWorkoutModalOpen);
+    }, [isWorkoutsListOpen, isCreateRoutineOpen, isEditWorkoutModalOpen, setIsHidden]);
 
 
 	function loadWorkout(id: string) {

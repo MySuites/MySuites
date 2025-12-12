@@ -12,7 +12,7 @@ import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 export function QuickBackButton() {
   const theme = useUITheme();
   const router = useRouter();
-  const { activeButtonId } = useFloatingButton();
+  const { activeButtonId, isHidden } = useFloatingButton();
   
   // Import useActiveWorkout hook at the top
   const { isExpanded, setExpanded } = useActiveWorkout();
@@ -35,8 +35,8 @@ export function QuickBackButton() {
   };
 
   const containerAnimatedStyle = useAnimatedStyle(() => {
-      // If ANY other menu is active, slide out to the LEFT
-      const shouldHide = activeButtonId !== null;
+      // If ANY other menu is active OR global hidden state is true, slide out/hide
+      const shouldHide = activeButtonId !== null || isHidden;
       return {
           transform: [
               { translateX: withSpring(shouldHide ? -150 : 0) } 

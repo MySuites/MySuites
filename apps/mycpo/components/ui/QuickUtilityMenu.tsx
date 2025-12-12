@@ -36,7 +36,7 @@ export function QuickUtilityButton() {
   const theme = useUITheme();
   const router = useRouter();
   const pathname = usePathname();
-  const { activeButtonId, setActiveButtonId } = useFloatingButton();
+  const { activeButtonId, setActiveButtonId, isHidden } = useFloatingButton();
   const { isRunning, startWorkout, pauseWorkout, finishWorkout, resetWorkout, cancelWorkout, isExpanded } = useActiveWorkout();
 
   // Determine current context and actions
@@ -111,8 +111,8 @@ export function QuickUtilityButton() {
   }, [currentActions, handleAction]);
 
   const containerAnimatedStyle = useAnimatedStyle(() => {
-      // If the OTHER button (nav) is active, slide out to the RIGHT
-      const shouldHide = activeButtonId === 'nav';
+      // If the OTHER button (nav) is active OR hidden, slide out to the RIGHT
+      const shouldHide = activeButtonId === 'nav' || isHidden;
       return {
           transform: [
               { translateX: withSpring(shouldHide ? 150 : 0) } 

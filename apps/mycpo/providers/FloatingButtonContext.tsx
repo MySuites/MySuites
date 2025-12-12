@@ -6,12 +6,15 @@ type ButtonId = 'nav' | 'action' | null;
 interface FloatingButtonContextType {
   activeButtonId: ButtonId;
   setActiveButtonId: (id: ButtonId) => void;
+  isHidden: boolean;
+  setIsHidden: (hidden: boolean) => void;
 }
 
 const FloatingButtonContext = createContext<FloatingButtonContextType | undefined>(undefined);
 
 export function FloatingButtonProvider({ children }: { children: ReactNode }) {
   const [activeButtonId, setActiveButtonIdState] = useState<ButtonId>(null);
+  const [isHidden, setIsHidden] = useState(false);
 
   const setActiveButtonId = useCallback((id: ButtonId) => {
       console.log('FloatingButtonContext: SET ACTIVE ID:', id);
@@ -19,7 +22,7 @@ export function FloatingButtonProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <FloatingButtonContext.Provider value={{ activeButtonId, setActiveButtonId }}>
+    <FloatingButtonContext.Provider value={{ activeButtonId, setActiveButtonId, isHidden, setIsHidden }}>
       {children}
     </FloatingButtonContext.Provider>
   );
