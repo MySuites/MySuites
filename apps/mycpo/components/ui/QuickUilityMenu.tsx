@@ -58,7 +58,7 @@ export function QuickUtilityButton() {
      if (pathname.includes('workout') || pathname === '/') {
         // General workout tab logic (or home if '/' maps there)
          return [
-            { id: 'create_routine', icon: 'list.bullet.clipboard', label: 'New Routine', action: 'create_routine' },
+            { id: 'routines', icon: 'list.bullet.clipboard', label: 'Routines', route: '/routines' },
             { id: 'saved_workouts', icon: 'folder', label: 'Workouts', route: '/saved-workouts' },
             { id: 'exercises', icon: 'dumbbell.fill', label: 'Exercises', route: '/exercises' },
          ];

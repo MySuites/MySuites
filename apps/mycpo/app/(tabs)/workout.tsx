@@ -45,7 +45,7 @@ export default function Workout() {
     } = useActiveWorkout();
 
 
-	const [isLoadModalOpen, setLoadModalOpen] = useState(false);
+
 	const [isCreateRoutineOpen, setCreateRoutineOpen] = useState(false);
 	const [routineDraftName, setRoutineDraftName] = useState("");
 	const [routineSequence, setRoutineSequence] = useState<any[]>([]);
@@ -57,13 +57,11 @@ export default function Workout() {
         isSaving, 
         
         activeRoutine,
-        startActiveRoutine,
         markRoutineDayComplete,
         clearActiveRoutine,
  
         deleteSavedWorkout, 
         saveRoutineDraft: saveRoutineDraftManager, 
-        deleteRoutine 
     } = useWorkoutManager();
 
 
@@ -87,24 +85,7 @@ export default function Workout() {
 		Alert.alert('Loaded', `Workout '${w.name}' loaded.`);
 	}
 
-	function handleSetRoutine(id: string) {
-        if (hasActiveSession) {
-            Alert.alert("Active Session", "Please finish or cancel your current workout before setting a new routine.");
-            return;
-        }
-        
-        const r = routines.find((x) => x.id === id);
-        if (!r) return;
 
-        startActiveRoutine(id);
-        // Load day 1
-        if (r.sequence && r.sequence.length > 0) {
-            const first = r.sequence[0];
-            if (first.type === 'workout' && first.workout) {
-                setExercises(first.workout.exercises || []);
-            }
-        }
-	}
     
     // Derived state for current routine
     const activeRoutineObj = routines.find(r => r.id === activeRoutine?.id);
@@ -201,7 +182,7 @@ export default function Workout() {
                                     <Text style={{ color: theme.icon, textAlign: 'center', marginBottom: 16 }}>
                                         Select a routine below to start tracking your progress.
                                     </Text>
-                                    <TouchableOpacity onPress={() => setLoadModalOpen(true)} style={styles.controlButtonPrimary}>
+                                    <TouchableOpacity onPress={() => router.push('/routines' as any)} style={styles.controlButtonPrimary}>
                                         <Text style={styles.controlTextPrimary}>Choose Routine</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -261,9 +242,9 @@ export default function Workout() {
                             renderItem={({item}) => (
                                 <RoutineCard 
                                     routine={item} 
-                                    onPress={() => handleSetRoutine(item.id)}
-                                    onLongPress={() => deleteRoutine(item.id)}
-                                    onDelete={() => deleteRoutine(item.id)}
+                                    onPress={() => router.push('/routines' as any)}
+                                    // onLongPress={() => deleteRoutine(item.id)} // Moved to routines screen
+                                    // onDelete={() => deleteRoutine(item.id)} // Moved to routines screen
                                 />
                             )}
                         />
@@ -374,43 +355,7 @@ export default function Workout() {
 
 
 
-			{/* Load routine modal */}
-			<Modal visible={isLoadModalOpen} animationType="slide" transparent={true}>
-				<View style={styles.modalBackdrop}>
-					<View style={[styles.modalCard, {maxHeight: '80%'}]}>
-						<Text style={styles.modalTitle}>Saved Routines</Text>
-						{routines.length === 0 ? (
-							<Text style={{color: theme.icon}}>No saved routines</Text>
-						) : (
-							<FlatList
-								data={routines}
-								keyExtractor={(i) => i.id}
-								renderItem={({item}) => (
-									<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 8}}>
-										<View>
-											<Text style={{color: theme.text, fontWeight: '600'}}>{item.name}</Text>
-											<Text style={{color: theme.icon, fontSize: 12}}>{new Date(item.createdAt).toLocaleString()}</Text>
-										</View>
-										<View style={{flexDirection: 'row'}}>
-											<TouchableOpacity onPress={() => handleSetRoutine(item.id)} style={[styles.controlButton, {marginRight: 8}]}>
-												<Text style={styles.controlText}>Load</Text>
-											</TouchableOpacity>
-											<TouchableOpacity onPress={() => deleteRoutine(item.id)} style={styles.controlButton}>
-												<Text style={styles.controlText}>Delete</Text>
-											</TouchableOpacity>
-										</View>
-									</View>
-								)}
-							/>
-						)}
-						<View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 12}}>
-							<TouchableOpacity onPress={() => setLoadModalOpen(false)} style={styles.controlButton}>
-								<Text style={styles.controlText}>Close</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				</View>
-			</Modal>
+
 		</SafeAreaView>
 
 	);
