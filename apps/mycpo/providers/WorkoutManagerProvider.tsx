@@ -342,7 +342,7 @@ interface WorkoutManagerContextType {
     deleteSavedWorkout: (id: string) => void;
     saveRoutineDraft: (name: string, sequence: any[], onSuccess: () => void) => Promise<void>;
     updateRoutine: (id: string, name: string, sequence: any[], onSuccess: () => void) => Promise<void>;
-    deleteRoutine: (id: string) => void;
+    deleteRoutine: (id: string, onSuccess?: () => void) => void;
     workoutHistory: WorkoutLog[];
     fetchWorkoutLogDetails: (logId: string) => Promise<{ data: any[], error: any }>;
     saveCompletedWorkout: (name: string, exercises: Exercise[], duration: number, onSuccess?: () => void) => Promise<void>;
@@ -719,14 +719,26 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         }
     }
 
-    function deleteRoutine(id: string) {
-        Alert.alert("Delete routine", "Are you sure?", [
+    function deleteRoutine(id: string, onSuccess?: () => void) {
+        Alert.alert("Delete routine", "Are you sure? This cannot be undone.", [
             { text: "Cancel", style: "cancel" },
             {
                 text: "Delete",
                 style: "destructive",
-                onPress: () =>
-                    setRoutines((rs) => rs.filter((x) => x.id !== id)),
+                onPress: async () => {
+                    if (user) {
+                        try {
+                             await supabase.from("routines").delete().eq("routine_id", id);
+                        } catch (e) {
+                             console.warn("Failed to delete routine on server", e);
+                        }
+                    }
+                    setRoutines((rs) => rs.filter((x) => x.id !== id));
+                    if (activeRoutine?.id === id) {
+                        clearActiveRoutine();
+                    }
+                    onSuccess?.();
+                },
             },
         ]);
     }

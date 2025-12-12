@@ -38,7 +38,6 @@ export default function Workout() {
 	// consume shared state
     const {
         setExercises,
-        isRunning,
         startWorkout,
         finishWorkout,
         cancelWorkout,
@@ -95,7 +94,8 @@ export default function Workout() {
  
         deleteSavedWorkout, 
         saveRoutineDraft: saveRoutineDraftManager,
-        updateRoutine, 
+        updateRoutine,
+        deleteRoutine,
     } = useWorkoutManager();
 
 
@@ -385,13 +385,31 @@ export default function Workout() {
 							/>
 						)}
 
-						<View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 12}}>
-							<TouchableOpacity onPress={handleCloseRoutineModal} style={[styles.controlButton, {marginRight: 8}]}> 
-								<Text>Cancel</Text>
-							</TouchableOpacity>
-							<TouchableOpacity disabled={isSaving} onPress={saveRoutineDraft} style={[styles.controlButtonPrimary, isSaving ? styles.controlButtonDisabled : null]}>
-								{isSaving ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.controlTextPrimary}>{editingRoutineId ? 'Save Changes' : 'Create Routine'}</Text>}
-							</TouchableOpacity>
+						<View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12}}>
+                            {editingRoutineId ? (
+                                <TouchableOpacity 
+                                    onPress={() => {
+                                        // Close modal after delete
+                                        deleteRoutine(editingRoutineId, () => {
+                                             handleCloseRoutineModal();
+                                        });
+                                    }} 
+                                    style={[styles.controlButton, {borderColor: theme.options?.destructiveColor || '#ff4444'}]}
+                                >
+                                    <Text style={{color: theme.options?.destructiveColor || '#ff4444'}}>Delete</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <View />
+                            )}
+
+                             <View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={handleCloseRoutineModal} style={[styles.controlButton, {marginRight: 8}]}> 
+                                    <Text>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity disabled={isSaving} onPress={saveRoutineDraft} style={[styles.controlButtonPrimary, isSaving ? styles.controlButtonDisabled : null]}>
+                                    {isSaving ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.controlTextPrimary}>{editingRoutineId ? 'Save Changes' : 'Create Routine'}</Text>}
+                                </TouchableOpacity>
+                            </View>
 						</View>
 					</View>
 				</View>
