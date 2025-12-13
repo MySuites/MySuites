@@ -1,4 +1,3 @@
-// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -40,7 +39,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // 1. Create Routine Row
     const { data: routineData, error: routineError } = await supabase.from(
       "routines",
     ).insert({
@@ -58,7 +56,6 @@ Deno.serve(async (req) => {
     const routineId = routineData.routine_id;
     let finalSequence = [];
 
-    // 2. Process Sequence and Deep Copy Workouts
     if (Array.isArray(exercises)) {
       finalSequence = await Promise.all(exercises.map(async (item) => {
         // Check if item is a workout and needs copying
@@ -91,7 +88,7 @@ Deno.serve(async (req) => {
               // Re-construct the object shape for creation
               // Sort exercises by position
               const sortedExercises = (sourceData.workout_exercises || []).sort(
-                (a: any, b: any) => a.position - b.position
+                (a: any, b: any) => a.position - b.position,
               );
 
               workoutToCopyDetails = {
@@ -110,11 +107,6 @@ Deno.serve(async (req) => {
               };
             }
           }
-
-          // Call create-workout logic (INTERNAL FUNCTION CALL or REPEAT LOGIC?)
-          // Since we are in the same deploy bundle, we can't easily "invoke" another edge function locally via URL
-          // without full URL. Easier to inline the logic or use a shared lib (not set up here).
-          // We will perform the insert manually here.
 
           // Insert New Private Workout
           const { data: newWorkout } = await supabase
@@ -195,7 +187,6 @@ Deno.serve(async (req) => {
       }));
     }
 
-    // 3. Update Routine Description with Final Sequence
     const { data: finalRoutine, error: updateError } = await supabase
       .from("routines")
       .update({ description: JSON.stringify(finalSequence) })

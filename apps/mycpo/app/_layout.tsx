@@ -27,24 +27,17 @@ export const unstable_settings = {
 };
 
 function RootLayoutNav() {
-  const { session } = useAuth(); // <-- Get the session
+  const { session } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // Defer navigation until after the root layout mounts. Calling
-    // `router.replace` synchronously during the first render can cause
-    // "Attempted to navigate before mounting the Root Layout component".
-    // Using `setTimeout` yields to the event loop and ensures the Slot
-    // / navigator has been mounted.
     if (!router) return;
     if (session) {
-      // If the user is logged in, send them to the main app
       setTimeout(() => (router as any).replace('/(tabs)'), 0);
     } else {
-      // If the user is logged out, send them to the auth screen
       setTimeout(() => (router as any).replace('/auth'), 0);
     }
-  }, [session, router]); // <-- Re-run this effect when the session or router changes
+  }, [session, router]);
 
   return (
     <Stack>

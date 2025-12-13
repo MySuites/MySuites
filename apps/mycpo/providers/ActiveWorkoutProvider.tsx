@@ -60,32 +60,9 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
 		}
 	}, [exercises]);
 
-    // Load from local storage (initial load handled by useState initializer usually, but strict mode might need checking. 
-    // The original code passed an initializer that just returned the default. 
-    // Let's match the original behavior or improve. 
-    // Original: useState<Exercise[]>(() => [defaults]). 
-    // It didn't seem to load from localStorage on mount in the original code shown? 
-    // Wait, let me check the original code again in the view_file output.
-    // Line 36: useState(() => [...defaults])
-    // Line 77: useEffect to save.
-    // It seems the original code actually DIDN'T load from local storage? Or maybe I missed it.
-    // Checking the `hooks/useWorkoutManager.ts`... that loads saved workouts (templates), not the active one.
-    // The `useEffect` on line 77 saves to `mycpo_workout_exercises`.
-    // I don't see a `useEffect` that BUILDS the state from `mycpo_workout_exercises`.
-    // Ah, if I look closely at the original `useState` for exercises...
-    // Line 36: `useState<Exercise[]>(() => [ ... ])`.
-    // It doesn't seem to read from localStorage. That might be a bug or intended to be ephemeral.
-    // However, I see `useWorkoutManager` loading `mycpo_saved_workouts`.
-    // Wait, if I want to persist the ACTIVE workout state, I should probably try to load it.
-    // But to be safe and match "refactor" rules (preserve behavior), I will stick to what was there, 
-    // UNLESS I see it reading it. I don't see it reading it.
-    // BUT, the useEffect writes to it. Maybe I should implement the read to be helpful?
-    // Let's stick to the current behavior: Default list. 
-    // Actually, looking at the code, it writes but doesn't read. That's weird.
-    // I will add the read to be nice, or just leave it. 
-    // Let's stick to the extracted logic.
 
-    // Timer Logic
+
+
     useEffect(() => {
 		if (isRunning) {
 			workoutTimerRef.current = setInterval(() => {
@@ -101,7 +78,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
 		};
 	}, [isRunning]);
 
-    // Rest Timer Logic
+
 	useEffect(() => {
 		if (restSeconds > 0) {
 			restTimerRef.current = setInterval(() => {
@@ -150,9 +127,9 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
 		setExercises((exs) => exs.map((x) => ({...x, completedSets: 0, logs: []})));
 	}, []);
 
-    // completeSet removed as we use handleCompleteSet below
 
-    // Re-implementing functions to use current state
+
+
     const addExercise = (name: string, sets: string, reps: string) => {
         const ex = createExercise(name, sets, reps);
         // Ensure type compatibility by setting completedSets and logs explicitly if missing
@@ -212,7 +189,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
 
 
 
-    // Overlay expansion state
+
     const [isExpanded, setIsExpanded] = useState(false);
 
     const toggleExpanded = () => setIsExpanded(prev => !prev);

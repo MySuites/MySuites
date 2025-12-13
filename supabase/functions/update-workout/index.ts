@@ -1,4 +1,3 @@
-// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -46,7 +45,6 @@ Deno.serve(async (req) => {
             );
         }
 
-        // 1. Update Workout Header
         const { data: workoutData, error: workoutError } = await supabase
             .from("workouts")
             .update({
@@ -54,7 +52,7 @@ Deno.serve(async (req) => {
                 notes: exercises ? JSON.stringify(exercises) : undefined, // Keep JSON fallback
             })
             .eq("workout_id", workout_id)
-            .eq("user_id", user_id) // Security check
+            .eq("user_id", user_id)
             .select()
             .single();
 
@@ -64,8 +62,6 @@ Deno.serve(async (req) => {
             );
         }
 
-        // 2. Refresh Exercises (Delete Old -> Insert New)
-        // Only if exercises array is provided
         if (Array.isArray(exercises)) {
             // Delete existing workout_exercises
             const { error: delErr } = await supabase

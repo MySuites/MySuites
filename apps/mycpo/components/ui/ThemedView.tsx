@@ -8,7 +8,6 @@ export type ThemedViewProps = ViewProps & {
 
 export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
   const theme = useUITheme();
-  // If no specific colors provided, use background theme via standard style or className fallback
   const backgroundColor = lightColor ?? darkColor ?? theme.background;
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;

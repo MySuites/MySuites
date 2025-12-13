@@ -18,8 +18,6 @@ export default function TabLayout() {
         backBehavior="history"
         tabBar={(props) => {
             if (isFabEnabled) {
-                // If FAB is enabled, we hide the standard tab bar.
-                // The FABs are now rendered in the Root Layout.
                 return null;
             }
             return <BottomTabBar {...props} />;
@@ -27,8 +25,7 @@ export default function TabLayout() {
         screenOptions={{
             tabBarActiveTintColor: Colors[colorScheme ?? 'light'].primary,
             headerShown: false,
-            tabBarButton: HapticTab, // Always use HapticTab when BottomTabBar is rendered
-            // We don't need to hide tabBarStyle manually anymore since we replace the bar entirely when enabled
+            tabBarButton: HapticTab,
         }}
     >
         <Tabs.Screen

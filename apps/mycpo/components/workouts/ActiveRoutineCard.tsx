@@ -29,7 +29,6 @@ export function ActiveRoutineCard({
   const theme = useUITheme();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // In collapsed state, we only show the first day (Today)
   const daysToShow = isCollapsed ? timelineDays.slice(0, 1) : timelineDays;
 
   return (
@@ -69,15 +68,14 @@ export function ActiveRoutineCard({
         ) : (
           <View className="py-2">
             {daysToShow.map((item: any, index: number) => {
-              // Note: timelineDays[0] is always "Today" relative to the current view
               const isToday = index === 0; 
               
-              // Visual fix: if collapsed, we shouldn't show the connecting line at the bottom
+              
               const isLastInView = index === daysToShow.length - 1;
               const globalDayNum = dayIndex + index + 1;
               const isCompletedToday = isToday && isDayCompleted;
 
-              // Colors
+
               const dotColor = isCompletedToday
                 ? '#4CAF50' // Success Green
                 : isToday
@@ -86,7 +84,6 @@ export function ActiveRoutineCard({
 
               return (
                 <View key={index} className="flex-row">
-                  {/* Timeline Column */}
                   <View className="w-[30px] items-center">
                     <View
                       style={{
@@ -102,14 +99,14 @@ export function ActiveRoutineCard({
                       className="z-[2] mt-1"
                     />
                    
-                   {/* Vertical Line */}
+
                     {!isLastInView && (
                          <View
                          className="w-[2px] flex-1 bg-surface dark:bg-surface_dark -my-0.5 z-[1]"
                          />
                     )}
                     
-                    {/* End Indicator if this is the last day of routine and we are showing it */}
+
                     {isLastInView && !isCollapsed &&
                       globalDayNum === activeRoutineObj.sequence.length && (
                         <View
@@ -119,7 +116,7 @@ export function ActiveRoutineCard({
                       )}
                   </View>
 
-                  {/* Content Column */}
+
                   <View className={`flex-1 pl-2 ${isLastInView ? '' : 'pb-6'}`}>
                     <View className="flex-row justify-between items-center">
                       <Text
@@ -150,7 +147,7 @@ export function ActiveRoutineCard({
                       )}
                     </View>
 
-                    {/* Actions for Today */}
+
                     {isToday && !isCompletedToday && (
                       <View className="flex-row gap-3 mt-2">
                         <TouchableOpacity

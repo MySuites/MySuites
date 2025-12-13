@@ -15,7 +15,7 @@ export default function ProfileScreen() {
   
   useEffect(() => {
     if (user) {
-      // Fetch existing profile data when the component mounts
+
       supabase
         .from('profiles')
         .select('*')
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    // The protected routing in _layout.tsx will handle the redirect
+
   };
   
   return (

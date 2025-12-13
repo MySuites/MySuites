@@ -1,4 +1,3 @@
-// apps/mycpo/app/auth.tsx
 import { useState } from 'react';
 import { View, TextInput, Text } from 'react-native';
 import { supabase } from '@mycsuite/auth';
@@ -14,13 +13,6 @@ export default function AuthScreen() {
 
   const handleSignUp = async () => {
     setStatus({ type: 'signing-in', message: 'Creating account...' });
-    // Use the returned `data` to determine whether Supabase created a
-    // session immediately (auto-login) or sent a confirmation email
-    // (no session). If no session is returned we will show a message
-    // asking the user to check their email and avoid redirecting.
-    // Build a redirect URL for confirmation emails. Use the public site
-    // URL from env so it works across environments. If not provided,
-    // default to `http://localhost:8081` (web dev server).
     const redirectTo = `${process.env.EXPO_PUBLIC_SITE_URL ?? 'http://localhost:8081'}/auth`;
 
     const { data, error } = await supabase.auth.signUp({

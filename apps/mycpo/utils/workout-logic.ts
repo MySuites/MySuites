@@ -28,7 +28,7 @@ export function createSequenceItem(item: any) {
     if (item === "rest") {
         return { id, type: "rest", name: "Rest" };
     }
-    // assume workout
+
     return { id, type: "workout", workout: item, name: item.name };
 }
 
@@ -59,7 +59,7 @@ export function calculateNextWorkoutState(
     cur.completedSets = (cur.completedSets || 0) + 1;
 
     let nextIndex = currentIndex;
-    // if completed all sets, advance to next exercise
+
     if (cur.completedSets >= cur.sets) {
         nextIndex = Math.min(copy.length - 1, currentIndex + 1);
     }
@@ -67,7 +67,7 @@ export function calculateNextWorkoutState(
     return {
         updatedExercises: copy,
         nextIndex,
-        shouldRest: true, // Always rest after a set? Logic implies yes.
+        shouldRest: true,
     };
 }
 

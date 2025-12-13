@@ -26,7 +26,7 @@ export function ActiveWorkoutOverlay() {
     } = useActiveWorkout();
 
 
-    // handle back button
+
     useEffect(() => {
         if (!isExpanded) return;
 
@@ -42,7 +42,7 @@ export function ActiveWorkoutOverlay() {
 
 
 
-    // If not expanded, return null or handle animation visibility
+
     if (!isExpanded) return null;
 
     return (
@@ -74,7 +74,6 @@ export function ActiveWorkoutOverlay() {
                                     restSeconds={restSeconds}
                                     theme={theme}
                                     onCompleteSet={(input) => {
-                                        // ExerciseCard might return strings from TextInput, need to parse
                                         const parsedInput = {
                                             weight: input?.weight ? parseFloat(input.weight) : undefined,
                                             reps: input?.reps ? parseFloat(input.reps) : undefined,
@@ -84,12 +83,10 @@ export function ActiveWorkoutOverlay() {
                                     }}
                                     onAddSet={() => updateExercise(index, { sets: exercise.sets + 1 })}
                                     onDeleteSet={(setIndex) => {
-                                        // Logic for deleting a set
                                         const currentLogs = exercise.logs || [];
                                         const currentTarget = exercise.sets;
                                         
                                         if (setIndex < currentLogs.length) {
-                                            // Deleting a completed set (log)
                                             const newLogs = [...currentLogs];
                                             newLogs.splice(setIndex, 1);
                                             updateExercise(index, { 
@@ -98,7 +95,6 @@ export function ActiveWorkoutOverlay() {
                                                 sets: currentTarget > 0 ? currentTarget - 1 : 0
                                             });
                                         } else {
-                                            // Deleting a pending set (reduce target)
                                             updateExercise(index, { sets: Math.max(0, currentTarget - 1) });
                                         }
                                     }}

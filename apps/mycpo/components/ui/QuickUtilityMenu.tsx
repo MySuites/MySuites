@@ -6,9 +6,7 @@ import { RadialMenu, RadialMenuItem } from './RadialMenu';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 
-// ... (imports remain)
 
-// Configuration
 const BUTTON_SIZE = 60; 
 
 type ActionItemType = {
@@ -19,13 +17,13 @@ type ActionItemType = {
   action?: string; 
 };
 
-// Define actions per route context
+
 const CONTEXT_ACTIONS: Record<string, ActionItemType[]> = {
   'home': [
     { id: 'add_widget', icon: 'plus', label: 'Add Widget', action: 'add_widget' },
     { id: 'quick_note', icon: 'pencil', label: 'Quick Note', action: 'quick_note' },
   ],
-  // 'workout' actions will be generated dynamically now
+
   'profile': [
     { id: 'edit_profile', icon: 'pencil', label: 'Edit', route: '/settings/account' },
     { id: 'settings', icon: 'gear', label: 'Settings', route: '/settings' },
@@ -39,7 +37,7 @@ export function QuickUtilityButton() {
   const { activeButtonId, setActiveButtonId, isHidden } = useFloatingButton();
   const { isRunning, startWorkout, pauseWorkout, finishWorkout, resetWorkout, cancelWorkout, isExpanded } = useActiveWorkout();
 
-  // Determine current context and actions
+
   const currentActions = useMemo(() => {
      if (isExpanded || pathname.includes('active-workout')) {
          return [
@@ -55,7 +53,7 @@ export function QuickUtilityButton() {
          ];
      }
      if (pathname.includes('workout') || pathname === '/') {
-        // General workout tab logic (or home if '/' maps there)
+
          return [
             { id: 'routines', icon: 'list.bullet.clipboard', label: 'Routines', route: '/routines' },
             { id: 'saved_workouts', icon: 'folder', label: 'Workouts', route: '/saved-workouts' },
@@ -99,8 +97,7 @@ export function QuickUtilityButton() {
       }
   }, [router, isRunning, startWorkout, pauseWorkout, finishWorkout, resetWorkout, cancelWorkout]);
 
-  // Map to RadialMenuItems
-  // We use distributed angles, so we don't set angle explicitly
+
   const menuItems: RadialMenuItem[] = useMemo(() => {
     return currentActions.map(action => ({
         id: action.id,
@@ -111,7 +108,7 @@ export function QuickUtilityButton() {
   }, [currentActions, handleAction]);
 
   const containerAnimatedStyle = useAnimatedStyle(() => {
-      // If the OTHER button (nav) is active OR hidden, slide out to the RIGHT
+
       const shouldHide = activeButtonId === 'nav' || isHidden;
       return {
           transform: [

@@ -14,7 +14,8 @@ export type Exercise = {
     name: string;
     sets: number; // Target sets
     reps: number; // Target reps
-
+    completedSets: number;
+    logs?: SetLog[];
     type?: "reps" | "duration" | "bodyweight";
 };
 
@@ -319,6 +320,9 @@ interface WorkoutManagerContextType {
     updateRoutine: (id: string, name: string, sequence: any[], onSuccess: () => void) => Promise<void>;
     deleteRoutine: (id: string, onSuccess?: () => void) => void;
     createCustomExercise: (name: string, type: string) => Promise<{ data?: any, error?: any }>;
+    workoutHistory: WorkoutLog[];
+    fetchWorkoutLogDetails: (logId: string) => Promise<{ data: any[], error: any }>;
+    saveCompletedWorkout: (name: string, exercises: Exercise[], duration: number, onSuccess?: () => void) => Promise<void>;
 }
 
 const WorkoutManagerContext = createContext<WorkoutManagerContextType | undefined>(undefined);

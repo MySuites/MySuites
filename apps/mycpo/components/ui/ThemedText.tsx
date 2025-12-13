@@ -17,7 +17,7 @@ export function ThemedText({
   const theme = useUITheme();
   const color = lightColor ?? darkColor ?? theme.text;
 
-  // Map types to tailwind classes
+
   let typeClasses = '';
   switch (type) {
     case 'default':
@@ -27,7 +27,7 @@ export function ThemedText({
       typeClasses = 'text-base leading-6 font-semibold';
       break;
     case 'title':
-      typeClasses = 'text-3xl font-bold leading-8'; // 32px ~ text-3xl
+      typeClasses = 'text-3xl font-bold leading-8';
       break;
     case 'subtitle':
       typeClasses = 'text-xl font-bold';
@@ -39,7 +39,7 @@ export function ThemedText({
 
   return (
     <Text
-      style={[{ color }, style]} // Keep color as inline style if dynamic, or could use tailwind if fixed colors
+      style={[{ color }, style]}
       className={typeClasses}
       {...rest}
     />

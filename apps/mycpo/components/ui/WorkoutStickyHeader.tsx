@@ -11,20 +11,18 @@ export function WorkoutStickyHeader() {
     const theme = useUITheme();
     const insets = useSafeAreaInsets();
     
-    // Get workout state
+
     const { isRunning, workoutSeconds, workoutName, isExpanded, toggleExpanded, hasActiveSession } = useActiveWorkout();
     
-    // Logic for visibility:
-    // Must have an active session
+
     const hasActiveWorkout = hasActiveSession;
     
     
     if (!hasActiveWorkout) {
-        return null; // Don't show if no workout at all
+        return null;
     }
 
-    // Config based on screen state
-    // User requested title to ALWAYS be the workout name
+
     const title = workoutName || "Current Workout";
     const rightIcon = isExpanded ? "chevron.down" : "chevron.up";
     
@@ -34,7 +32,7 @@ export function WorkoutStickyHeader() {
 
     return (
         <Animated.View 
-            layout={Layout.springify()} // Animate layout changes if any (e.g. height)
+            layout={Layout.springify()}
             entering={FadeIn.duration(300)}
             exiting={FadeOut.duration(300)}
             style={{ paddingTop: insets.top + 8 }}

@@ -25,14 +25,12 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onAddSet, onD
 
     const handleComplete = () => {
         onCompleteSet({ weight, reps });
-        // Clear inputs for next set? Or keep current weights?
-        // Usually good to keep weights if same, or clear. Let's keep for now or clear?
-        // User might do same weight.
+
     };
 
     return (
         <View className={`bg-surface dark:bg-surface_dark rounded-2xl p-4 mb-3 w-full ${isCurrent ? 'border-2 border-primary dark:border-primary_dark' : ''}`}>
-            {/* Header */}
+
             <View className="flex-row justify-between items-center mb-4">
                 <View>
                     <Text className="text-lg font-bold text-apptext dark:text-apptext_dark mb-1">{exercise.name}</Text>
@@ -72,7 +70,7 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onAddSet, onD
                                 </View>
                             </View>
 
-                            {/* Previous (Placeholder for now, could be history) */}
+
                             <Text className="flex-1 text-center text-xs text-gray-500">-</Text>
 
                             {/* Inputs / Values */}

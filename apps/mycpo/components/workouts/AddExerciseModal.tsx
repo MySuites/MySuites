@@ -17,7 +17,6 @@ export function AddExerciseModal({ visible, onClose, onAdd }: AddExerciseModalPr
 
     const handleAdd = () => {
         onAdd(name, sets, reps);
-        // Reset fields
         setName("");
         setSets("3");
         setReps("10");

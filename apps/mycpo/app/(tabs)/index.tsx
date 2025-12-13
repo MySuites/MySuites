@@ -1,4 +1,3 @@
-// apps/mycpo/app/(tabs)/index.tsx
 import { ThemedText } from '../../components/ui/ThemedText';
 import { ThemedView } from '../../components/ui/ThemedView';
 import { SharedButton } from '@mycsuite/ui';
