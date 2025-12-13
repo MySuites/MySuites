@@ -199,6 +199,7 @@ async function persistWorkoutToSupabase(
     user: any,
     workoutName: string,
     exercises: Exercise[],
+    routineId?: string
 ) {
     if (!user) return { error: "User not logged in" };
 
@@ -212,6 +213,7 @@ async function persistWorkoutToSupabase(
             user_id: user.id,
             workout_name: workoutName.trim(),
             notes: JSON.stringify(exercises),
+            routine_id: routineId || null
         }])
         .select()
         .single();
@@ -751,10 +753,18 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
             return;
         }
 
-        // If user is signed in, attempt to save to Supabase
         if (user) {
             setIsSaving(true);
             try {
+                // 1. Create the routine row first (to get ID)
+                // We initially pass empty sequence or just the simple draft
+                // Actually, create-routine might be expecting sequence.
+                // But we need the routine_id to link workouts.
+                // Strategy: 
+                // A. Create routine with current sequence (referencing templates).
+                // B. Then iterate sequence, COPY workouts, link to routine.
+                // C. Update routine sequence with new workout IDs.
+                
                 const { data, error } = await persistRoutineToSupabase(
                     user,
                     routineDraftName,
@@ -768,7 +778,62 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
                         "Failed to save routine to server. Saving locally instead.",
                     );
                 } else {
-                    // Add to local list using server id
+                    const routineId = data.routine_id;
+                    let updatedSequence = [...routineSequence];
+                    let hasChanges = false;
+
+                    // Iterate and copy workouts
+                    for (let i = 0; i < updatedSequence.length; i++) {
+                        const item = updatedSequence[i];
+                        if (item.type === 'workout' && item.workout) {
+                            // This is a template or drafted workout. Create a COPY.
+                            const { data: newWorkoutData, error: copyErr } = await persistWorkoutToSupabase(
+                                user,
+                                item.workout.name || item.name,
+                                item.workout.exercises || [],
+                                routineId // Link to this routine!
+                            );
+                            
+                            if (newWorkoutData && !copyErr) {
+                                // Update sequence item to point to the new COPY
+                                updatedSequence[i] = {
+                                    ...item,
+                                    workout: {
+                                        ...item.workout,
+                                        id: newWorkoutData.workout_id, // Use new ID
+                                        // We might want to store other metadata if needed
+                                    }
+                                };
+                                hasChanges = true;
+                            }
+                        }
+                    }
+
+                    // If we made copies, update the routine sequence in DB
+                    if (hasChanges) {
+                         const { data: updatedRoutine } = await persistUpdateRoutineToSupabase(
+                            user,
+                            routineId,
+                            routineDraftName,
+                            updatedSequence
+                        );
+                        
+                        if (updatedRoutine) {
+                            // Use the final updated routine data
+                             const payload = {
+                                id: updatedRoutine.routine_id,
+                                name: updatedRoutine.routine_name,
+                                sequence: updatedSequence, // Use our updated sequence
+                                createdAt: updatedRoutine.created_at,
+                            };
+                            setRoutines((rs) => [payload, ...rs]);
+                            onSuccess();
+                            Alert.alert("Saved", `Routine '${payload.name}' saved.`);
+                            return;
+                        }
+                    }
+
+                    // Fallback if no changes or update failed (shouldn't happen often)
                     const payload = {
                         id: data.routine_id,
                         name: data.routine_name,
@@ -816,11 +881,72 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         if (user) {
             setIsSaving(true);
             try {
-                const { data, error } = await persistUpdateRoutineToSupabase(user, id, name, sequence);
+                // Similar logic to saveRoutineDraft:
+                // Check for new workouts that need copying?
+                // For simplicity, we can assume ALL workouts in the sequence 
+                // need to be verified. 
+                // Optimization: Check if workout.id matches an existing workout in the database 
+                // that is ALREADY linked to this routine?
+                // Actually, "Templates" used from "Saved Workouts" will have an ID.
+                // We need to distinguish between "ID of Template" and "ID of Routine Instance".
+                // One way is: if the workout ID in sequence doesn't exist in `workouts` table with routine_id=thisRoutine,
+                // then it's external (template) and needs copying.
+                
+                // BUT, to keep it simple and robust for this task:
+                // We will implement a check: try to copy everything that looks like a template.
+                // How to detect template?
+                // Maybe we just blindly copy if it's being added?
+                // The provided sequence comes from UI state.
+                
+                // Let's implement the logic:
+                // 1. Iterate sequence.
+                // 2. If item is workout:
+                //    - If it's a NEW addition (how do we know? maybe no ID or ID matches a Saved Workout?)
+                //    - We need to know if the ID belongs to a Saved Workout (Template) or this Routine.
+                //      - We can check if `savedWorkouts.find(w => w.id === item.workout.id)` exists. 
+                //      - If YES, it's a template -> We MUST COPY IT.
+                //      - If NO, it's likely already a routine-copy (or a raw created one).
+                
+                let updatedSequence = [...sequence];
+
+                for (let i = 0; i < updatedSequence.length; i++) {
+                    const item = updatedSequence[i];
+                    if (item.type === 'workout' && item.workout) {
+                        const isTemplate = savedWorkouts.some(sw => sw.id === item.workout.id);
+                        
+                        // If it is a template, OR if it has no ID (newly drafted?), copy it.
+                        // Also protection: duplications.
+                        if (isTemplate || !item.workout.id) {
+                             const { data: newWorkoutData, error: copyErr } = await persistWorkoutToSupabase(
+                                user,
+                                item.workout.name || item.name,
+                                item.workout.exercises || [],
+                                id // Link to this routine
+                            );
+                             if (newWorkoutData && !copyErr) {
+                                updatedSequence[i] = {
+                                    ...item,
+                                    workout: {
+                                        ...item.workout,
+                                        id: newWorkoutData.workout_id, // Update to new COPY ID
+                                    }
+                                }; 
+                            }
+                        }
+                    }
+                }
+
+                const { data, error } = await persistUpdateRoutineToSupabase(
+                    user, 
+                    id, 
+                    name, 
+                    updatedSequence // Use updated sequence
+                );
+                
                 if (error || !data) {
                     Alert.alert("Error", "Failed to update routine on server.");
                 } else {
-                    setRoutines(prev => prev.map(r => r.id === id ? { ...r, name: data.routine_name, sequence } : r));
+                    setRoutines(prev => prev.map(r => r.id === id ? { ...r, name: data.routine_name, sequence: updatedSequence } : r));
                     onSuccess();
                     Alert.alert("Updated", `Routine '${name}' updated.`);
                 }
