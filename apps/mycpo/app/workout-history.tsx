@@ -12,7 +12,7 @@ export default function WorkoutHistoryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background dark:bg-background_dark">
-      <Stack.Screen options={{ title: 'History', headerBackTitle: 'Back' }} />
+      <Stack.Screen options={{ headerShown: false }} />
       
       <View className="flex-row justify-between items-center px-4 py-3 border-b border-surface dark:border-white/10">
         <Text className="text-2xl font-bold text-apptext dark:text-apptext_dark">Workout History</Text>
