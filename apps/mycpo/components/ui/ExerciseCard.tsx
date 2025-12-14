@@ -8,13 +8,14 @@ interface ExerciseCardProps {
     exercise: Exercise;
     isCurrent: boolean;
     onCompleteSet: (input: { weight?: string, reps?: string, duration?: string }) => void;
+    onUncompleteSet?: (index: number) => void;
     onAddSet: () => void;
     onDeleteSet: (index: number) => void;
     restSeconds: number;
     theme: any;
 }
 
-export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onAddSet, onDeleteSet, restSeconds, theme }: ExerciseCardProps) {
+export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteSet, onAddSet, onDeleteSet, restSeconds, theme }: ExerciseCardProps) {
     // Current input state
     const [weight, setWeight] = useState('');
     const [reps, setReps] = useState('');
@@ -89,9 +90,12 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onAddSet, onD
                                 <>
                                     <Text className="w-[60px] text-center text-sm font-bold text-apptext dark:text-apptext_dark mx-1">{log.weight}</Text>
                                     <Text className="w-[60px] text-center text-sm font-bold text-apptext dark:text-apptext_dark mx-1">{log.reps}</Text>
-                                    <View className="w-[40px] items-center">
+                                    <TouchableOpacity 
+                                        className="w-[40px] items-center justify-center"
+                                        onPress={() => onUncompleteSet?.(i)}
+                                    >
                                          <IconSymbol name="checkmark" size={16} color={theme.primary} />
-                                    </View>
+                                    </TouchableOpacity>
                                 </>
                             ) : isCurrentSet ? (
                                 <>

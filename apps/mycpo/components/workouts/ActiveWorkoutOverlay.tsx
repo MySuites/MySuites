@@ -81,6 +81,17 @@ export function ActiveWorkoutOverlay() {
                                         };
                                         completeSet(index, parsedInput);
                                     }}
+                                    onUncompleteSet={(setIndex) => {
+                                        const currentLogs = exercise.logs || [];
+                                        if (setIndex < currentLogs.length) {
+                                            const newLogs = [...currentLogs];
+                                            newLogs.splice(setIndex, 1);
+                                            updateExercise(index, { 
+                                                logs: newLogs, 
+                                                completedSets: (exercise.completedSets || 1) - 1,
+                                            });
+                                        }
+                                    }}
                                     onAddSet={() => updateExercise(index, { sets: exercise.sets + 1 })}
                                     onDeleteSet={(setIndex) => {
                                         const currentLogs = exercise.logs || [];
