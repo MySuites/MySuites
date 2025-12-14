@@ -24,8 +24,19 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onAddSet, onD
     const isFinished = completedSets >= exercise.sets;
 
     const handleComplete = () => {
-        onCompleteSet({ weight, reps });
+        const currentSetIndex = exercise.logs?.length || 0;
+        const targetWeight = exercise.setTargets?.[currentSetIndex]?.weight?.toString();
+        // Use set-specific rep target, or fallback to the general exercise rep target
+        const targetReps = exercise.setTargets?.[currentSetIndex]?.reps?.toString() || exercise.reps.toString();
 
+        onCompleteSet({ 
+            weight: weight || targetWeight, 
+            reps: reps || targetReps 
+        });
+        
+        // Reset inputs for next set
+        setWeight('');
+        setReps('');
     };
 
     return (
