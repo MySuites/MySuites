@@ -255,7 +255,7 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteS
 
                 {/* Add Set Button */}
                 <TouchableOpacity 
-                    className="flex-row items-center justify-center py-3 gap-2 border-b border-black/5 dark:border-white/10" 
+                    className="flex-row items-center justify-center pt-3 pb-5 gap-2 border-b border-black/5 dark:border-white/10" 
                     onPress={onAddSet}
                 >
                      <IconSymbol name="plus.circle.fill" size={20} color={theme.primary} />
