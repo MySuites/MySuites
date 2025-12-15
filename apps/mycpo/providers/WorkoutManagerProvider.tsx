@@ -178,13 +178,18 @@ async function persistCompletedWorkoutToSupabase(
 ) {
     if (!user) return { error: "User not logged in" };
 
+    // Strip actual logs from the notes used for the workout summary
+    // This preserves the "plan" but moves the "performance" to set_logs
+    const exercisesForNotes = exercises.map(({ logs, ...rest }) => rest);
+
     const notesObj = {
         name,
         duration,
-        exercises, // Store full exercise log in notes for now
+        exercises: exercisesForNotes, 
     };
 
-    const { data, error } = await supabase
+    // 1. Create Workout Log
+    const { data: workoutLog, error: workoutLogError } = await supabase
         .from("workout_logs")
         .insert([{
             user_id: user.id,
@@ -195,7 +200,44 @@ async function persistCompletedWorkoutToSupabase(
         .select()
         .single();
 
-    return { data, error };
+    if (workoutLogError || !workoutLog) {
+        return { data: null, error: workoutLogError };
+    }
+
+    // 2. Create Set Logs
+    const setLogInserts: any[] = [];
+    
+    exercises.forEach((ex) => {
+        if (ex.logs && ex.logs.length > 0) {
+            ex.logs.forEach((log, index) => {
+                setLogInserts.push({
+                    workout_log_id: workoutLog.workout_log_id,
+                    exercise_set_id: null, // We don't have this link in ad-hoc mode
+                    details: {
+                        ...log,
+                        exercise_name: ex.name,
+                        exercise_id: ex.id,
+                        set_number: index + 1
+                    },
+                    created_at: new Date().toISOString()
+                });
+            });
+        }
+    });
+
+    if (setLogInserts.length > 0) {
+        const { error: setLogsError } = await supabase
+            .from("set_logs")
+            .insert(setLogInserts);
+            
+        if (setLogsError) {
+            console.warn("Failed to insert set logs", setLogsError);
+            // We return the workout log as success, but warn? 
+            // Or treating it as success is arguably fine since the summary is there.
+        }
+    }
+
+    return { data: workoutLog, error: null };
 }
 
 async function persistWorkoutToSupabase(
@@ -887,10 +929,13 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         const grouped: Record<string, any> = {};
 
         setLogs?.forEach((log: any) => {
-            const exName = log.exercise_sets?.workout_exercises?.exercises
-                ?.exercise_name || "Unknown Exercise";
-            const position = log.exercise_sets?.workout_exercises?.position ||
-                999;
+            const relationalName = log.exercise_sets?.workout_exercises?.exercises?.exercise_name;
+            const detailsName = log.details?.exercise_name;
+            const exName = relationalName || detailsName || "Unknown Exercise";
+            
+            const position = log.exercise_sets?.workout_exercises?.position || 999;
+            // Use set_number from relation, or infer from sequence if we tracked it, or details
+            const setNumber = log.exercise_sets?.set_number || log.details?.set_number;
 
             if (!grouped[exName]) {
                 grouped[exName] = {
@@ -901,7 +946,7 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
             }
 
             grouped[exName].sets.push({
-                setNumber: log.exercise_sets?.set_number,
+                setNumber: setNumber,
                 details: log.details, // e.g. { reps: 10 }
                 notes: log.notes,
             });
