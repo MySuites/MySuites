@@ -35,7 +35,6 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteS
             <View className="flex-row justify-between items-center mb-4">
                 <View>
                     <Text className="text-lg font-bold text-black dark:text-white mb-1">{exercise.name}</Text>
-                    <Text className="text-sm text-black dark:text-white">Target: {exercise.sets} sets • {exercise.reps} reps</Text>
                 </View>
                 {isFinished && <IconSymbol name="checkmark.circle.fill" size={24} color={theme.primary} />}
             </View>
