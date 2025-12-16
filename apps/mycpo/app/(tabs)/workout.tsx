@@ -431,10 +431,12 @@ export default function Workout() {
                 }}
                 containerStyle={{ overflow: 'visible' }}
             >
-                <View 
-                    className="bg-surface dark:bg-surface_dark rounded-xl mb-3 border border-black/5 dark:border-white/10 shadow-sm overflow-hidden"
+                <TouchableOpacity 
+                    onPress={onPress}
+                    activeOpacity={0.9}
+                    className="bg-surface dark:bg-surface_dark rounded-xl border border-black/5 dark:border-white/10 shadow-sm overflow-hidden"
                 >
-                    <View className={`flex-row justify-between items-center p-4 ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
+                    <View className={`flex-row justify-between items-center p-3 ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
                         <TouchableOpacity 
                             className="flex-1 mr-2"
                             onPress={onPress}
@@ -467,7 +469,7 @@ export default function Workout() {
                             )}
                         </View>
                     )}
-                </View>
+                </TouchableOpacity>
             </Swipeable>
         );
     };
