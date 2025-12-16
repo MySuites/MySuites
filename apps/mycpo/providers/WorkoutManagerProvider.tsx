@@ -390,7 +390,7 @@ interface WorkoutManagerContextType {
     clearActiveRoutine: () => void;
     isSaving: boolean;
     saveWorkout: (name: string, exercises: Exercise[], onSuccess: () => void) => Promise<void>;
-    deleteSavedWorkout: (id: string, onSuccess?: () => void) => void;
+    deleteSavedWorkout: (id: string, options?: { onSuccess?: () => void; skipConfirmation?: boolean }) => void;
     updateSavedWorkout: (id: string, name: string, exercises: Exercise[], onSuccess: () => void) => Promise<void>;
     saveRoutineDraft: (name: string, sequence: any[], onSuccess: () => void) => Promise<void>;
     updateRoutine: (id: string, name: string, sequence: any[], onSuccess: () => void) => Promise<void>;
@@ -647,26 +647,32 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         }
     }
 
-    function deleteSavedWorkout(id: string, onSuccess?: () => void) {
-        Alert.alert("Delete workout", "Are you sure?", [
-            { text: "Cancel", style: "cancel" },
-            {
-                text: "Delete",
-                style: "destructive",
-                onPress: async () => {
-                    // If user is signed in, attempt server delete first
-                    if (user) {
-                        try {
-                            await deleteWorkoutFromSupabase(user, id);
-                        } catch {
-                            // ignore server delete errors and continue to remove locally
-                        }
-                    }
-                    setSavedWorkouts((s) => s.filter((x) => x.id !== id));
-                    onSuccess?.();
+    function deleteSavedWorkout(id: string, options?: { onSuccess?: () => void; skipConfirmation?: boolean }) {
+        const performDelete = async () => {
+            // If user is signed in, attempt server delete first
+            if (user) {
+                try {
+                    await deleteWorkoutFromSupabase(user, id);
+                } catch {
+                    // ignore server delete errors and continue to remove locally
+                }
+            }
+            setSavedWorkouts((s) => s.filter((x) => x.id !== id));
+            options?.onSuccess?.();
+        };
+
+        if (options?.skipConfirmation) {
+            performDelete();
+        } else {
+            Alert.alert("Delete workout", "Are you sure?", [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: performDelete,
                 },
-            },
-        ]);
+            ]);
+        }
     }
 
     async function updateSavedWorkout(

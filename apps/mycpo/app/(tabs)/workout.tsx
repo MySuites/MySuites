@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import {
  	View,
  	Text,
  	FlatList,
  	TouchableOpacity,
  	Alert,
-    ScrollView
+    ScrollView,
+    useWindowDimensions
 } from "react-native";
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,6 +21,19 @@ import { RoutineCard } from '../../components/workouts/RoutineCard';
 import { ActiveRoutineCard } from '../../components/workouts/ActiveRoutineCard';
 
 // import { useFloatingButton } from '../../providers/FloatingButtonContext'; // Unused now
+
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Animated, { 
+    useAnimatedStyle, 
+    useAnimatedReaction, 
+    runOnJS, 
+    interpolate, 
+    Extrapolation, 
+    SharedValue,
+    useSharedValue
+} from 'react-native-reanimated';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import * as Haptics from 'expo-haptics';
 
 
 
@@ -83,6 +97,7 @@ export default function Workout() {
         startActiveRoutine,
         markRoutineDayComplete,
         clearActiveRoutine,
+        deleteSavedWorkout,
     } = useWorkoutManager();
 
 
@@ -153,6 +168,310 @@ export default function Workout() {
         router.push({ pathname: '/create-workout', params: { id: workout.id } });
     }
 
+    // Actions component that monitors drag distance
+    const RightAction = ({ 
+        dragX, 
+        progress, 
+        onDelete,
+        onEdit,
+        onSetReadyToDelete
+    }: { 
+        dragX: SharedValue<number>; 
+        progress: SharedValue<number>;
+        onDelete: () => void;
+        onEdit: () => void;
+        onSetReadyToDelete: (ready: boolean) => void;
+    }) => {
+        const { width } = useWindowDimensions();
+        const hasTriggered = useSharedValue(false);
+        // Trigger when card is swiped past 45% of screen width (less strict than 50%)
+        // dragX is negative when swiping left
+        const TRIGGER_THRESHOLD = -width * 0.45;
+        
+        const BUTTON_HEIGHT = 40; 
+        const GAP = 10; // Between buttons
+        const MARGIN = 20; // Right edge margin
+        const CARD_GAP = 10; // Padding from the card
+        
+        // Layout width for TWO buttons + all spacing
+        const LAYOUT_WIDTH = (BUTTON_HEIGHT * 2) + GAP + MARGIN + CARD_GAP;
+
+        // Monitor drag value to trigger haptic feedback on long swipe
+        useAnimatedReaction(
+            () => dragX.value,
+            (currentDrag) => {
+                if (currentDrag < TRIGGER_THRESHOLD && !hasTriggered.value) {
+                    hasTriggered.value = true;
+                    runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+                    // Mark parent as ready to delete
+                    runOnJS(onSetReadyToDelete)(true);
+                } else if (currentDrag > TRIGGER_THRESHOLD + 40 && hasTriggered.value) {
+                    hasTriggered.value = false;
+                    // Unmark if user swipes back
+                    runOnJS(onSetReadyToDelete)(false);
+                }
+            }
+        );
+
+        // Delete Button (Red Blob) Animation
+        const deleteStyle = useAnimatedStyle(() => {
+            const drag = dragX.value;
+            const absDrag = Math.abs(drag);
+            
+            let w = BUTTON_HEIGHT;
+            let borderRadius = BUTTON_HEIGHT / 2;
+            
+            // Only expand if we are dragging PAST the trigger threshold (deep swipe)
+            // or at least past the layout width significantly.
+            // We want the red blob to stay 50px wide while the user sees both buttons.
+            
+            // If drag is deeper than the layout width + a buffer, start expanding
+            const EXPANSION_START = LAYOUT_WIDTH + 10;
+            
+            if (absDrag > EXPANSION_START) {
+                // We are pulling past the buttons
+                // But we mainly want to fill the space if we are deleting.
+                
+                // Let's make it expand only when we get close to the trigger
+                // TRIGGER_THRESHOLD is negative (e.g. -160).
+                // drag is negative.
+                
+                if (drag < TRIGGER_THRESHOLD + 20) {
+                     w = Math.max(absDrag - MARGIN, BUTTON_HEIGHT);
+                }
+            }
+
+            const scale = interpolate(
+                drag,
+                [-50, 0], // Quick pop in
+                [1, 0], 
+                Extrapolation.CLAMP
+            );
+
+            // Fade in
+            const opacity = interpolate(
+                drag,
+                [-50, -10],
+                [1, 0],
+                Extrapolation.CLAMP
+            );
+            
+            // Ensure Edit button stays visible/clickable unless we are definitely deleting
+            const isDeleting = drag < TRIGGER_THRESHOLD;
+
+            return {
+                width: w, 
+                height: BUTTON_HEIGHT,
+                borderRadius: borderRadius, 
+                transform: [{ scale }],
+                opacity,
+                zIndex: isDeleting ? 10 : 0, 
+            };
+        });
+
+        // Edit Button Animation
+        const editStyle = useAnimatedStyle(() => {
+            const drag = dragX.value;
+            // Staggered animation: Edit appears AFTER delete is mostly visible
+            // Delete appears 0 -> -50.
+            // Edit should appear -50 -> -110 approx.
+            
+             const scale = interpolate(
+                drag,
+                [-110, -50], 
+                [1, 0], 
+                Extrapolation.CLAMP
+            );
+            const opacity = interpolate(
+                drag,
+                [-110, -60],
+                [1, 0],
+                Extrapolation.CLAMP
+            );
+            
+            const isDeleting = drag < TRIGGER_THRESHOLD;
+
+            return {
+                transform: [{ scale }],
+                opacity: isDeleting ? 0 : opacity,
+            };
+        });
+        
+        const deleteIconStyle = useAnimatedStyle(() => {
+             const scale = interpolate(
+                dragX.value,
+                [-50, 0],
+                [1, 0.5],
+                Extrapolation.CLAMP
+            );
+            return { transform: [{ scale }] };
+        });
+
+        const deleteTextStyle = useAnimatedStyle(() => {
+             const scale = interpolate(
+                dragX.value,
+                [-50, 0],
+                [1, 0], 
+                Extrapolation.CLAMP
+            );
+            const opacity = interpolate(
+                dragX.value,
+                [-50, -20],
+                [1, 0],
+                Extrapolation.CLAMP
+            );
+            return {
+                opacity,
+                transform: [{ scale }]
+            };
+        });
+
+        return (
+            <View style={{ width: LAYOUT_WIDTH, height: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 12 }}>
+                 
+                 {/* Gap from Card */}
+                 <View style={{ width: CARD_GAP }} />
+
+                 {/* Edit Button Wrapper */}
+                 <View style={{ marginRight: GAP, alignItems: 'center', justifyContent: 'center' }}>
+                    <Animated.View style={[editStyle]} className="justify-center items-center">
+                        <TouchableOpacity 
+                            onPress={onEdit} 
+                            activeOpacity={0.8}
+                            style={{ 
+                                width: BUTTON_HEIGHT, 
+                                height: BUTTON_HEIGHT, 
+                                borderRadius: BUTTON_HEIGHT/2, 
+                                backgroundColor: '#2563eb', // blue-600 (Primary)
+                                justifyContent: 'center', 
+                                alignItems: 'center',
+                            }}
+                            className="bg-primary dark:bg-primary_dark"
+                        >
+                            <IconSymbol name="pencil" size={18} color="white" />
+                        </TouchableOpacity>
+                        <Animated.Text className="text-gray-500 dark:text-gray-400 text-[10px] font-semibold mt-1">
+                            Edit
+                        </Animated.Text>
+                    </Animated.View>
+                 </View>
+
+                 {/* Delete Button Wrapper */}
+                <View style={{ marginRight: MARGIN, alignItems: 'center' }}>
+                    <Animated.View 
+                        className="bg-red-500 justify-center items-center" 
+                        style={[deleteStyle, { position: 'absolute', right: 0 }]} 
+                    >
+                         <View style={{ width: BUTTON_HEIGHT, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={onDelete} activeOpacity={0.8}>
+                                <Animated.View style={[deleteIconStyle]}>
+                                    <IconSymbol name="trash.fill" size={16} color="white" />
+                                </Animated.View>
+                            </TouchableOpacity>
+                        </View>
+                    </Animated.View>
+                    
+                    {/* Placeholder for layout */}
+                     <View style={{ width: BUTTON_HEIGHT, height: BUTTON_HEIGHT }} pointerEvents="none" />
+                     
+                    <Animated.Text 
+                        className="text-gray-500 dark:text-gray-400 text-[10px] font-semibold mt-1"
+                        style={[deleteTextStyle]} 
+                    >
+                        Trash
+                    </Animated.Text>
+                </View>
+            </View>
+        );
+    };
+
+    const SavedWorkoutItem = ({ 
+        item, 
+        isExpanded, 
+        onPress, 
+        onEdit, 
+        onStart,
+        onDelete 
+    }: { 
+        item: any, 
+        isExpanded: boolean, 
+        onPress: () => void, 
+        onEdit: () => void, 
+        onStart: () => void,
+        onDelete: () => void
+    }) => {
+        // Track if we are deep enough to delete
+        const shouldDelete = useRef(false);
+
+        // Callback to update the ref from the shared value listener
+        const setReadyToDelete = (ready: boolean) => {
+            shouldDelete.current = ready;
+        };
+
+        return (
+            <Swipeable
+                renderRightActions={(progress, dragX) => (
+                    <RightAction 
+                        dragX={dragX} 
+                        progress={progress} 
+                        onDelete={onDelete} 
+                        onEdit={onEdit}
+                        onSetReadyToDelete={setReadyToDelete}
+                    />
+                )}
+                overshootRight={true} // Allow overshooting to swipe fully
+                friction={2}
+                rightThreshold={40} // Easy to open (Reveal threshold)
+                onSwipeableWillOpen={() => {
+                    // Trigger delete ONLY if we dragged past the deep threshold
+                    if (shouldDelete.current) {
+                        onDelete();
+                    }
+                    // If not deep enough, it just opens (revealing the button)
+                }}
+                containerStyle={{ overflow: 'visible' }}
+            >
+                <View 
+                    className="bg-surface dark:bg-surface_dark rounded-xl mb-3 border border-black/5 dark:border-white/10 shadow-sm overflow-hidden"
+                >
+                    <View className={`flex-row justify-between items-center p-4 ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
+                        <TouchableOpacity 
+                            className="flex-1 mr-2"
+                            onPress={onPress}
+                        >
+                            <Text className="font-semibold text-apptext dark:text-apptext_dark text-lg mb-1" numberOfLines={1}>{item.name}</Text>
+                            <Text className="text-gray-500 dark:text-gray-400 text-sm">{item.exercises?.length || 0} Exercises</Text>
+                        </TouchableOpacity>
+                        
+                        <View className="flex-row items-center gap-2">
+                            <TouchableOpacity 
+                                onPress={onStart}
+                                className="bg-primary dark:bg-primary_dark px-4 py-2 rounded-lg"
+                            >
+                                <Text className="text-white font-semibold">Start</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    
+                    {isExpanded && (
+                        <View className="bg-background/50 dark:bg-background_dark/50 px-4 py-2">
+                            {item.exercises && item.exercises.length > 0 ? (
+                                item.exercises.map((ex: any, idx: number) => (
+                                    <View key={idx} className="py-2 flex-row justify-between border-b border-black/5 dark:border-white/5 last:border-0">
+                                        <Text className="text-apptext dark:text-apptext_dark font-medium">{ex.name}</Text>
+                                        <Text className="text-gray-500 dark:text-gray-400 text-sm">{ex.sets} x {ex.reps}</Text>
+                                    </View>
+                                ))
+                            ) : (
+                                <Text className="text-gray-500 dark:text-gray-400 py-2 italic text-center">No exercises</Text>
+                            )}
+                        </View>
+                    )}
+                </View>
+            </Swipeable>
+        );
+    };
+
 	return (
 		<SafeAreaView className="flex-1 bg-background dark:bg-background_dark" edges={['top', 'left', 'right']}>
 			<View className="flex-1 px-4 pt-4">
@@ -203,53 +522,16 @@ export default function Workout() {
 							renderItem={({item}) => {
                                 const isExpanded = expandedWorkoutId === item.id;
                                 return (
-								<View 
-									className="bg-surface dark:bg-surface_dark rounded-xl mb-3 border border-black/5 dark:border-white/10 shadow-sm overflow-hidden"
-								>
-                                    <View className={`flex-row justify-between items-center p-4 ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
-                                        <TouchableOpacity 
-                                            className="flex-1 mr-2"
-                                            onPress={() => setExpandedWorkoutId(isExpanded ? null : item.id)}
-                                        >
-                                            <Text className="font-semibold text-apptext dark:text-apptext_dark text-lg mb-1" numberOfLines={1}>{item.name}</Text>
-                                            <Text className="text-gray-500 dark:text-gray-400 text-sm">{item.exercises?.length || 0} Exercises</Text>
-                                        </TouchableOpacity>
-                                        
-                                        <View className="flex-row items-center gap-2">
-                                            <TouchableOpacity 
-                                                onPress={() => {
-                                                    handleEditSavedWorkout(item);
-                                                }}
-                                                className="bg-primary/10 dark:bg-primary/20 px-4 py-2 rounded-lg"
-                                            >
-                                                <Text className="text-primary dark:text-primary_dark font-semibold">Edit</Text>
-                                            </TouchableOpacity>
-
-                                            <TouchableOpacity 
-                                                onPress={() => handleStartSavedWorkout(item)}
-                                                className="bg-primary dark:bg-primary_dark px-4 py-2 rounded-lg"
-                                            >
-                                                <Text className="text-white font-semibold">Start</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                    
-                                    {isExpanded && (
-                                        <View className="bg-background/50 dark:bg-background_dark/50 px-4 py-2">
-                                            {item.exercises && item.exercises.length > 0 ? (
-                                                item.exercises.map((ex: any, idx: number) => (
-                                                    <View key={idx} className="py-2 flex-row justify-between border-b border-black/5 dark:border-white/5 last:border-0">
-                                                        <Text className="text-apptext dark:text-apptext_dark font-medium">{ex.name}</Text>
-                                                        <Text className="text-gray-500 dark:text-gray-400 text-sm">{ex.sets} x {ex.reps}</Text>
-                                                    </View>
-                                                ))
-                                            ) : (
-                                                <Text className="text-gray-500 dark:text-gray-400 py-2 italic text-center">No exercises</Text>
-                                            )}
-                                        </View>
-                                    )}
-								</View>
-							)}}
+                                    <SavedWorkoutItem
+                                        item={item}
+                                        isExpanded={isExpanded}
+                                        onPress={() => setExpandedWorkoutId(isExpanded ? null : item.id)}
+                                        onEdit={() => handleEditSavedWorkout(item)}
+                                        onStart={() => handleStartSavedWorkout(item)}
+                                        onDelete={() => deleteSavedWorkout(item.id, { skipConfirmation: true })}
+                                    />
+                                );
+                            }}
 						/>
                     )}
 
