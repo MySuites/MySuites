@@ -34,6 +34,7 @@ import { IconSymbol } from '../../components/ui/icon-symbol';
 import * as Haptics from 'expo-haptics';
 
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
+import { Card } from '../../components/ui/Card';
 
 export default function Workout() {
 
@@ -417,10 +418,10 @@ export default function Workout() {
                 }}
                 containerStyle={{ overflow: 'visible' }}
             >
-                <TouchableOpacity 
+                <Card 
                     onPress={onPress}
                     activeOpacity={0.9}
-                    className="bg-surface dark:bg-surface_dark rounded-xl border border-black/5 dark:border-white/10 shadow-sm overflow-hidden"
+                    className="overflow-hidden p-0 mb-0 border border-black/5 dark:border-white/10"
                 >
                     <View className={`flex-row justify-between items-center p-3 ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
                         <TouchableOpacity 
@@ -455,7 +456,7 @@ export default function Workout() {
                             )}
                         </View>
                     )}
-                </TouchableOpacity>
+                </Card>
             </Swipeable>
         );
     };

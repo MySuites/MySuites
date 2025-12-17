@@ -14,6 +14,7 @@ import * as Haptics from 'expo-haptics';
 import { IconSymbol } from './icon-symbol';
 import { formatSeconds } from '../../utils/formatting';
 import { Exercise } from '../../hooks/useWorkoutManager';
+import { Card } from './Card';
 
 interface ExerciseCardProps {
     exercise: Exercise;
@@ -202,6 +203,8 @@ const SetRow = ({ index, exercise, onCompleteSet, onUncompleteSet, onUpdateSetTa
     );
 };
 
+
+
 export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteSet, onUpdateSetTarget, onUpdateLog, onAddSet, onDeleteSet, restSeconds, theme }: ExerciseCardProps) {
     // Derived state
     const completedSets = exercise.completedSets || 0;
@@ -210,9 +213,9 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteS
 
 
     return (
-        <View className={`rounded-2xl p-2 mb-3 w-full`}>
+        <Card>
 
-            <View className="flex-row justify-between items-center mb-4">
+            <View className="flex-row justify-between items-center mb-0">
                 <View>
                     <Text className="text-lg font-bold text-black dark:text-white mb-1">{exercise.name}</Text>
                 </View>
@@ -262,6 +265,6 @@ export function ExerciseCard({ exercise, isCurrent, onCompleteSet, onUncompleteS
                      <Text className="text-sm font-semibold text-primary dark:text-primary_dark">Add Set</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </Card>
     );
 }
