@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "mycpo",
-    "slug": "mycpo",
+    "name": "myhealth",
+    "slug": "myhealth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mycpo",
+    "scheme": "myhealth",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.mycpo"
+      "bundleIdentifier": "com.anonymous.myhealth"
     },
     "android": {
       "adaptiveIcon": {

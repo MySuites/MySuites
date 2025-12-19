@@ -486,7 +486,7 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
                 } else {
                     if (typeof window !== "undefined" && window.localStorage) {
                         const rawW = window.localStorage.getItem(
-                            "mycpo_saved_workouts",
+                            "myhealth_saved_workouts",
                         );
                         if (rawW) {
                             const parsed = JSON.parse(rawW);
@@ -500,11 +500,11 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
                             setSavedWorkouts(filtered);
                         }
                         const rawR = window.localStorage.getItem(
-                            "mycpo_workout_routines",
+                            "myhealth_workout_routines",
                         );
                         if (rawR) setRoutines(JSON.parse(rawR));
                         const rawActive = window.localStorage.getItem(
-                            "mycpo_active_routine",
+                            "myhealth_active_routine",
                         );
                         if (rawActive) setActiveRoutine(JSON.parse(rawActive));
                     }
@@ -521,20 +521,20 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         try {
             if (typeof window !== "undefined" && window.localStorage) {
                 window.localStorage.setItem(
-                    "mycpo_saved_workouts",
+                    "myhealth_saved_workouts",
                     JSON.stringify(savedWorkouts),
                 );
                 window.localStorage.setItem(
-                    "mycpo_workout_routines",
+                    "myhealth_workout_routines",
                     JSON.stringify(routines),
                 );
                 if (activeRoutine) {
                     window.localStorage.setItem(
-                        "mycpo_active_routine",
+                        "myhealth_active_routine",
                         JSON.stringify(activeRoutine),
                     );
                 } else {
-                    window.localStorage.removeItem("mycpo_active_routine");
+                    window.localStorage.removeItem("myhealth_active_routine");
                 }
             }
         } catch {

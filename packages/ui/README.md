@@ -13,7 +13,7 @@ Usage
 1. App provides its palette (recommended):
 
 ```tsx
-// apps/mycpo/app/providers/AppThemeProvider.tsx
+// apps/myhealth/app/providers/AppThemeProvider.tsx
 import { UIThemeProvider } from '@mycsuite/ui';
 import { Colors } from '@/constants/theme';
 

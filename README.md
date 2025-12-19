@@ -1,6 +1,6 @@
 # MyCSuite
 
-A pnpm monorepo that contains an Expo/React Native app (`apps/mycpo`), shared packages (`packages/*`), and Supabase migrations & seeds (`supabase/`).
+A pnpm monorepo that contains an Expo/React Native app (`apps/myhealth`), shared packages (`packages/*`), and Supabase migrations & seeds (`supabase/`).
 
 Table of contents
 - Overview
@@ -22,8 +22,8 @@ MyCSuite is an Expo + React Native application with shared UI and auth packages.
 ## Quick start
 
 1. Install dependencies: `pnpm install` at the repo root.
-2. Create a `.env` in `apps/mycpo` with your Supabase keys (see Environment).
-3. Start the app: `cd apps/mycpo && pnpm run start` and open with Expo.
+2. Create a `.env` in `apps/myhealth` with your Supabase keys (see Environment).
+3. Start the app: `cd apps/myhealth && pnpm run start` and open with Expo.
 
 ## Installation
 
@@ -44,13 +44,13 @@ pnpm install
 If you only want to work inside the app folder:
 
 ```bash
-cd apps/mycpo
+cd apps/myhealth
 pnpm install
 ```
 
 ## Environment
 
-Create a `.env` file in `apps/mycpo` (or export env vars in your shell) with these values:
+Create a `.env` file in `apps/myhealth` (or export env vars in your shell) with these values:
 
 ```env
 SUPABASE_URL="https://your-project.supabase.co"
@@ -61,14 +61,14 @@ SERVICE_ROLE_KEY="your_service_role_key"
 Notes
 
 - Keep `SERVICE_ROLE_KEY` secret. Do not commit it.
-- Consider adding a `.env.example` in `apps/mycpo` (I can add this for you).
+- Consider adding a `.env.example` in `apps/myhealth` (I can add this for you).
 
 ## Running (development)
 
 Start the Expo dev server from the app folder:
 
 ```bash
-cd apps/mycpo
+cd apps/myhealth
 pnpm run start
 # or
 expo start
@@ -79,7 +79,7 @@ Open the project in Expo Go (physical device) or run in a simulator/emulator.
 Native iOS (macOS only)
 
 ```bash
-cd apps/mycpo/ios
+cd apps/myhealth/ios
 pod install
 cd ../..
 pnpm run ios
@@ -125,12 +125,12 @@ You can run the SQL in `supabase/seeds/` against your Supabase instance using th
 ## Troubleshooting
 
 - Clear Metro/Expo cache: `pnpm run start -- --clear` or `expo start -c`.
-- If an iOS build fails, run `pod install` in `apps/mycpo/ios` on macOS and re-run.
+- If an iOS build fails, run `pod install` in `apps/myhealth/ios` on macOS and re-run.
 - Ensure env var names match: `SUPABASE_URL`, `ANON_KEY`, `SERVICE_ROLE_KEY`.
 
 ## Useful locations
 
-- App: `apps/mycpo`
+- App: `apps/myhealth`
 - Shared packages: `packages/ui`, `packages/auth`
 - Supabase migrations/seeds: `supabase/migrations`, `supabase/seeds`
 - Helper scripts: `scripts/`
@@ -140,13 +140,13 @@ You can run the SQL in `supabase/seeds/` against your Supabase instance using th
 If you plan to contribute:
 
 - Follow the coding conventions used in the repo.
-- Run `pnpm install` at the repo root and `pnpm run start` in `apps/mycpo` to test changes locally.
-- If adding native iOS code, make sure to run `pod install` in `apps/mycpo/ios` on macOS.
+- Run `pnpm install` at the repo root and `pnpm run start` in `apps/myhealth` to test changes locally.
+- If adding native iOS code, make sure to run `pod install` in `apps/myhealth/ios` on macOS.
 
 ---
 
 If you'd like, I can also:
 
-- Add a `apps/mycpo/.env.example` file.
+- Add a `apps/myhealth/.env.example` file.
 - Create `docs/windows.md` with step-by-step Windows/WSL instructions.
 - Open a branch and create a PR for these README updates.

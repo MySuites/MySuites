@@ -59,7 +59,7 @@ export default function Workout() {
 	useEffect(() => {
 		try {
 			if (typeof window !== "undefined" && window.localStorage) {
-				window.localStorage.setItem("mycpo_workout_exercises", JSON.stringify(exercises));
+				window.localStorage.setItem("myhealth_workout_exercises", JSON.stringify(exercises));
 			}
 		} catch {
 			// ignore
