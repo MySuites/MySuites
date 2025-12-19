@@ -43,7 +43,7 @@ const CardSwipeAction = ({
     
     const BUTTON_HEIGHT = 40; 
     const GAP = 10; // Between buttons
-    const MARGIN = 20; // Right edge margin (Card has no margin now)
+    const MARGIN = 0; // Right edge margin (Card has no margin now)
     const CARD_GAP = 10; // Padding from the card
     
     // Layout width for buttons + all spacing
@@ -137,6 +137,45 @@ const CardSwipeAction = ({
         };
     });
 
+    const deleteIconStyle = useAnimatedStyle(() => {
+         const scale = interpolate(
+            dragX.value,
+            [-50, 0],
+            [1, 0.5],
+            Extrapolation.CLAMP
+        );
+        return { transform: [{ scale }] };
+    });
+
+    const deleteLabelStyle = useAnimatedStyle(() => {
+        const drag = dragX.value;
+        const absDrag = Math.abs(drag);
+        
+        let linearTranslateX = 0;
+        let snappedTranslateX = 0;
+        
+        // 1. Linear Centering
+        if (absDrag > LAYOUT_WIDTH) {
+             // The blob grows leftwards from the right edge (+20).
+             // Center of blob = +20 - width/2
+             // We want label at Center of blob.
+             // Width = 40 + (absDrag - LAYOUT_WIDTH)
+             // Target = 20 - (40 + absDrag - LAYOUT_WIDTH)/2 = -(absDrag - LAYOUT_WIDTH)/2
+             linearTranslateX = -(absDrag - LAYOUT_WIDTH) / 2;
+        }
+        
+        // 2. Snapped Centering
+        // Snapped width = width - 35
+        // Target = 20 - (width - 35)/2
+        snappedTranslateX = 20 - (width - 35) / 2;
+
+        const translateX = interpolate(snapProgress.value, [0, 1], [linearTranslateX, snappedTranslateX]);
+
+        return {
+            transform: [{ translateX }],
+        };
+    });
+
     // Edit Button Animation
     const editStyle = useAnimatedStyle(() => {
         if (!hasEdit) return { opacity: 0 };
@@ -158,13 +197,13 @@ const CardSwipeAction = ({
         
          const scale = interpolate(
             drag,
-            [-110, -50], 
+            [-LAYOUT_WIDTH, -50], 
             [1, 0], 
             Extrapolation.CLAMP
         );
         const opacity = interpolate(
             drag,
-            [-110, -60],
+            [-LAYOUT_WIDTH, -60],
             [1, 0],
             Extrapolation.CLAMP
         );
@@ -177,47 +216,7 @@ const CardSwipeAction = ({
         };
     });
     
-    const deleteIconStyle = useAnimatedStyle(() => {
-         const scale = interpolate(
-            dragX.value,
-            [-50, 0],
-            [1, 0.5],
-            Extrapolation.CLAMP
-        );
-        return { transform: [{ scale }] };
-    });
 
-
-
-    const deleteLabelStyle = useAnimatedStyle(() => {
-        const drag = dragX.value;
-        const absDrag = Math.abs(drag);
-        
-        let linearTranslateX = 0;
-        let snappedTranslateX = 0;
-        
-        // 1. Linear Centering (Moving linearly with drag)
-        if (absDrag > LAYOUT_WIDTH) {
-             // Center distance from right: linearW / 2
-             // linearW = BUTTON_HEIGHT + (absDrag - LAYOUT_WIDTH)
-             // simplified from previous step: -( (absDrag/2) - 30 )
-             linearTranslateX = -( (absDrag / 2) - 30 );
-        }
-        
-        // 2. Snapped Centering (Full Screen)
-        // Center relative to right edge (margin): (width - 35)/2.
-        // Text container center relative to right edge: 40.
-        // Shift needed: Target - Current = ((width - 35)/2) - 40
-        // Move Left (negative): -(((width - 35)/2) - 40)
-        snappedTranslateX = -( (width - 35) / 2 - 40 );
-
-        // 3. Interpolate
-        const translateX = interpolate(snapProgress.value, [0, 1], [linearTranslateX, snappedTranslateX]);
-
-        return {
-            transform: [{ translateX }],
-        };
-    });
     return (
         <View style={{ width: LAYOUT_WIDTH, height: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
              
