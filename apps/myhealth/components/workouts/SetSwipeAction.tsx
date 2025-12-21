@@ -1,0 +1,78 @@
+import React from 'react';
+import { View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import Animated, { 
+    useAnimatedStyle, 
+    useAnimatedReaction, 
+    runOnJS, 
+    interpolate, 
+    Extrapolation, 
+    SharedValue,
+    useSharedValue
+} from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
+import { IconSymbol } from '../ui/icon-symbol';
+
+// Actions component that monitors drag distance (Adapted for Set Rows)
+export const SetSwipeAction = ({ 
+    dragX, 
+    onDelete,
+    onSetReadyToDelete
+}: { 
+    dragX: SharedValue<number>; 
+    onDelete: () => void;
+    onSetReadyToDelete: (ready: boolean) => void;
+}) => {
+    const { width } = useWindowDimensions();
+    const hasTriggered = useSharedValue(false);
+    const TRIGGER_THRESHOLD = -width * 0.3; // 30% swipe to delete
+    
+    // Monitor drag value to trigger haptic feedback
+    useAnimatedReaction(
+        () => dragX.value,
+        (currentDrag) => {
+            if (currentDrag < TRIGGER_THRESHOLD && !hasTriggered.value) {
+                hasTriggered.value = true;
+                runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+                runOnJS(onSetReadyToDelete)(true);
+            } else if (currentDrag > TRIGGER_THRESHOLD + 20 && hasTriggered.value) {
+                hasTriggered.value = false;
+                runOnJS(onSetReadyToDelete)(false);
+            }
+        }
+    );
+
+    const iconStyle = useAnimatedStyle(() => {
+        const scale = interpolate(dragX.value, [-60, -20], [1, 0.5], Extrapolation.CLAMP);
+        return {
+            transform: [{ scale }]
+        };
+    });
+
+    return (
+        <View className="justify-center items-end mb-2 h-11" style={{ width: 80 }}>
+             <Animated.View 
+                style={[
+                    { 
+                        backgroundColor: '#ef4444', 
+                        position: 'absolute', 
+                        right: 0, 
+                        height: '100%', 
+                        borderRadius: 8, // Rounded corners for the delete action
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }, 
+                    useAnimatedStyle(() => ({
+                         width: -dragX.value,
+                         opacity: interpolate(dragX.value, [-20, 0], [1, 0])
+                    }))
+                ]} 
+            >
+                <TouchableOpacity onPress={onDelete} className="flex-1 justify-center items-center w-full">
+                     <Animated.View style={iconStyle}>
+                          <IconSymbol name="trash.fill" size={20} color="white" />
+                     </Animated.View>
+                </TouchableOpacity>
+            </Animated.View>
+        </View>
+    );
+};

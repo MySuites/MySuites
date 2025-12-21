@@ -1,0 +1,207 @@
+import React, { useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { IconSymbol } from '../ui/icon-symbol';
+import { SetSwipeAction } from './SetSwipeAction';
+
+export const getExerciseFields = (properties?: string[]) => {
+    const props = properties || [];
+    const lowerProps = props.map(p => p.toLowerCase());
+    return { 
+        showBodyweight: lowerProps.includes('bodyweight'),
+        showWeight: lowerProps.includes('weighted'),
+        showReps: lowerProps.includes('reps'),
+        showDuration: lowerProps.includes('duration'),
+        showDistance: lowerProps.includes('distance')
+    };
+};
+
+interface SetRowProps {
+    index: number;
+    exercise: any;
+    onCompleteSet: (input: { weight?: string, reps?: string, duration?: string, distance?: string }) => void;
+    onUncompleteSet?: (index: number) => void;
+    onUpdateSetTarget?: (index: number, key: 'weight' | 'reps' | 'duration' | 'distance', value: string) => void;
+    onUpdateLog?: (index: number, key: 'weight' | 'reps' | 'duration' | 'distance', value: string) => void;
+    onDeleteSet: (index: number) => void;
+    theme: any;
+}
+
+export const SetRow = ({ index, exercise, onCompleteSet, onUncompleteSet, onUpdateSetTarget, onUpdateLog, onDeleteSet, theme }: SetRowProps) => {
+    const shouldDelete = useRef(false);
+    const swipeableRef = useRef<any>(null);
+    const log = exercise.logs?.[index];
+    const isCompleted = !!log;
+    const isEvenSet = (index + 1) % 2 === 0;
+
+    const { showBodyweight, showWeight, showReps, showDuration, showDistance } = getExerciseFields(exercise.properties);
+
+    const getValue = (field: 'weight' | 'reps' | 'duration' | 'distance') => {
+        const target = exercise.setTargets?.[index]?.[field];
+        if (target === undefined || target === null) return '';
+        return target.toString();
+    };
+
+    const getLogValue = (field: 'weight' | 'reps' | 'duration' | 'distance') => {
+        const val = log?.[field];
+        if (val === undefined || val === null) return '';
+        return val.toString();
+    };
+
+    return (
+        <Swipeable
+            ref={swipeableRef}
+            renderRightActions={(_, dragX) => (
+                <SetSwipeAction 
+                    dragX={dragX} 
+                    onDelete={() => {
+                        swipeableRef.current?.close();
+                        onDeleteSet(index);
+                    }}
+                    onSetReadyToDelete={(ready) => shouldDelete.current = ready}
+                />
+            )}
+            onSwipeableWillOpen={() => {
+                if (shouldDelete.current) {
+                    swipeableRef.current?.close();
+                    onDeleteSet(index); 
+                }
+            }}
+            rightThreshold={40}
+            overshootRight={true}
+            friction={2}
+            containerStyle={{ overflow: 'visible' }}
+        >
+             <View className={`flex-row items-center mb-2 h-11 px-1 ${isEvenSet ? 'bg-black/5 dark:bg-white/5 rounded-lg' : ''}`}>
+                 {/* Set Number */}
+                 <View className="w-[30px] items-center justify-center">
+                     <Text className="text-xs font-bold text-black dark:text-white">{index + 1}</Text>
+                 </View>
+
+                 <Text className="flex-1 text-center text-xs text-black dark:text-white">-</Text>
+
+                 {isCompleted ? (
+                      <>
+                        {showBodyweight && (
+                            <View className="w-[60px] items-center justify-center mx-1">
+                                <Text className="text-sm font-bold text-black/50 dark:text-white/50">BW</Text>
+                            </View>
+                        )}
+                        {showWeight && (
+                             <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getLogValue('weight')}
+                                onChangeText={(t) => onUpdateLog?.(index, 'weight', t)}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        {showReps && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getLogValue('reps')}
+                                onChangeText={(t) => onUpdateLog?.(index, 'reps', t)}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        {showDuration && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getLogValue('duration')}
+                                onChangeText={(t) => onUpdateLog?.(index, 'duration', t)}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                         {showDistance && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getLogValue('distance')}
+                                onChangeText={(t) => onUpdateLog?.(index, 'distance', t)}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        <TouchableOpacity 
+                            className="w-7 h-7 rounded-lg bg-primary dark:bg-primary_dark items-center justify-center ml-1"
+                            onPress={() => onUncompleteSet?.(index)}
+                        >
+                             <IconSymbol name="checkmark" size={16} color="#fff" />
+                        </TouchableOpacity>
+                      </>
+                 ) : (
+                      <>
+                        {showBodyweight && (
+                            <View className="w-[60px] items-center justify-center mx-1">
+                                <Text className="text-sm font-bold text-black/50 dark:text-white/50">BW</Text>
+                            </View>
+                        )}
+                        {showWeight && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getValue('weight')}
+                                onChangeText={(t) => onUpdateSetTarget?.(index, 'weight', t)}
+                                placeholder={getValue('weight') || "-"} 
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        {showReps && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getValue('reps')} 
+                                onChangeText={(t) => onUpdateSetTarget?.(index, 'reps', t)}
+                                placeholder={getValue('reps') || exercise.reps.toString()}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        {showDuration && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getValue('duration')} 
+                                onChangeText={(t) => onUpdateSetTarget?.(index, 'duration', t)}
+                                placeholder={getValue('duration') || "-"}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        {showDistance && (
+                            <TextInput 
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                value={getValue('distance')} 
+                                onChangeText={(t) => onUpdateSetTarget?.(index, 'distance', t)}
+                                placeholder={getValue('distance') || "-"}
+                                keyboardType="numeric" 
+                                placeholderTextColor={theme.text || '#000000'}
+                                textAlignVertical="center"
+                            />
+                        )}
+                        <TouchableOpacity 
+                            className={`w-7 h-7 rounded-lg items-center justify-center ml-1 border-2 border-primary dark:border-primary_dark`}
+                            onPress={() => onCompleteSet({ 
+                                weight: showWeight ? getValue('weight') : undefined,
+                                reps: showReps ? (getValue('reps') || exercise.reps.toString()) : undefined,
+                                duration: showDuration ? getValue('duration') : undefined,
+                                distance: showDistance ? getValue('distance') : undefined,
+                            })}
+                        >
+                            <IconSymbol name="checkmark" size={16} color={theme.primary} />
+                        </TouchableOpacity>
+                      </>
+                 )}
+                 
+                 {/* Padding to balance the right side since delete button is gone */}
+                 <View className="w-[30px]" /> 
+             </View>
+        </Swipeable>
+    );
+};
