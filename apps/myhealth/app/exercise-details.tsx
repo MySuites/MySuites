@@ -272,7 +272,7 @@ export default function ExerciseDetailsScreen() {
                     backgroundColor: cardBackground,
                     borderRadius: 16, 
                     padding: 16, 
-                    marginBottom: 40 
+                    marginBottom: 120 
                 }}>
                     <ThemedText type="defaultSemiBold" style={{ marginBottom: 12, color: currentColors.text }}>Instructions</ThemedText>
                     <ThemedText style={{ color: currentColors.text, opacity: 0.6, lineHeight: 24 }}>
