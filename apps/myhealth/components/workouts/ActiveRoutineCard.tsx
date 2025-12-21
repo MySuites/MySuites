@@ -16,6 +16,7 @@ interface ActiveRoutineCardProps {
   onStartWorkout: (exercises: any[], name?: string) => void;
   onMarkComplete: () => void;
   onJumpToDay: (index: number) => void;
+  onWorkoutPress: (workout: any) => void;
 }
 
 export function ActiveRoutineCard({
@@ -27,6 +28,7 @@ export function ActiveRoutineCard({
   onStartWorkout,
   onMarkComplete,
   onJumpToDay,
+  onWorkoutPress,
 }: ActiveRoutineCardProps) {
   const theme = useUITheme();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -133,18 +135,29 @@ export function ActiveRoutineCard({
 
                   <View className={`flex-1 pl-2 ${isLastInView ? '' : 'pb-6'}`}>
                     <View className="flex-row justify-between items-center">
-                      <Text
-                        style={{
-                            fontWeight: isToday ? '700' : '500',
-                            fontSize: isToday ? 18 : 16,
-                            textDecorationLine: isCompletedToday ? 'line-through' : 'none',
+                      <TouchableOpacity 
+                        className="flex-1 mr-2"
+                        onPress={() => {
+                            if (item.workout) {
+                                onWorkoutPress(item.workout);
+                            } else if (item.type === 'rest') {
+                                // Maybe show rest details?
+                            }
                         }}
-                        className={`flex-1 mr-2 ${isCompletedToday ? 'text-gray-500' : isToday ? 'text-apptext dark:text-apptext_dark' : 'text-gray-500'}`}
                       >
-                        {item.type === 'rest'
-                          ? 'Rest Day'
-                          : item.name || 'Unknown Workout'}
-                      </Text>
+                        <Text
+                            style={{
+                                fontWeight: isToday ? '700' : '500',
+                                fontSize: isToday ? 18 : 16,
+                                textDecorationLine: isCompletedToday ? 'line-through' : 'none',
+                            }}
+                            className={`${isCompletedToday ? 'text-gray-500' : isToday ? 'text-apptext dark:text-apptext_dark' : 'text-gray-500'}`}
+                        >
+                            {item.type === 'rest'
+                            ? 'Rest Day'
+                            : item.name || 'Unknown Workout'}
+                        </Text>
+                      </TouchableOpacity>
                       
                        <View className="flex-row items-center">
                            {!isToday && (
