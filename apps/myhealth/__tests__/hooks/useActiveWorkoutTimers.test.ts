@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-native";
-import { useActiveWorkoutTimers } from "../../hooks/useActiveWorkoutTimers";
+import { useActiveWorkoutTimers } from "../../hooks/workouts/useActiveWorkoutTimers";
 
 describe("useActiveWorkoutTimers", () => {
     beforeEach(() => {

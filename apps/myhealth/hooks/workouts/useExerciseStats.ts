@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchExerciseStats } from "../hooks/useWorkoutManager";
+import { fetchExerciseStats } from "./useWorkoutManager";
 
 export const useExerciseStats = (user: any, exercise: any) => {
     const [chartData, setChartData] = useState<any[]>([]);

@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '../../components/ui/ThemedText';
 import { ThemedView } from '../../components/ui/ThemedView';
 import { useUITheme } from '@mycsuite/ui';
-import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 

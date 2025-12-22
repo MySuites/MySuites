@@ -10,14 +10,14 @@ import {
 
 import { ThemedView } from '../../components/ui/ThemedView';
 import { useRouter } from 'expo-router';
-import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { RoutineCard } from '../../components/routines/RoutineCard';
 import { ActiveRoutineCard } from '../../components/routines/ActiveRoutineCard';
 import { SavedWorkoutItem } from '../../components/workouts/SavedWorkoutItem';
 import { WorkoutPreviewModal } from '../../components/workouts/WorkoutPreviewModal';
-import { useRoutineTimeline } from '../../hooks/useRoutineTimeline';
+import { useRoutineTimeline } from '../../hooks/routines/useRoutineTimeline';
 
 import { SavedWorkout, Routine } from '../../types';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';

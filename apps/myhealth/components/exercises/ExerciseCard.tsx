@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 import { formatSeconds } from '../../utils/formatting';
-import { Exercise } from '../../hooks/useWorkoutManager';
+import { Exercise } from '../../hooks/workouts/useWorkoutManager';
 import { Card } from '../ui/Card';
 import { SetRow, getExerciseFields } from '../workouts/SetRow';
 

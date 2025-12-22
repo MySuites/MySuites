@@ -6,7 +6,7 @@ import { ThemedText } from '../../components/ui/ThemedText';
 import { ThemedView } from '../../components/ui/ThemedView';
 import { useUITheme } from '@mycsuite/ui';
 import { useAuth } from '@mycsuite/auth';
-import { fetchExercises } from '../../hooks/useWorkoutManager';
+import { fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 

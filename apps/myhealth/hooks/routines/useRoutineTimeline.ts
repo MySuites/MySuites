@@ -1,5 +1,5 @@
 import React from "react";
-import { Routine } from "../types";
+import { Routine } from "../../types";
 
 export const useRoutineTimeline = (
     activeRoutineObj: Routine | undefined,

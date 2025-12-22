@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { ThemedView } from '../../components/ui/ThemedView';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
-import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 
 export default function EndWorkoutScreen() {
     const router = useRouter();

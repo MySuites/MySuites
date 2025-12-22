@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { WorkoutDetailsModal } from '../../components/workouts/WorkoutDetailsModal';
 import { Card } from '../../components/ui/Card';
 

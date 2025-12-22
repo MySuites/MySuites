@@ -6,7 +6,7 @@ import { ThemedText } from '../../components/ui/ThemedText';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
 import { useUITheme } from '@mycsuite/ui';
-import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/workouts/useWorkoutManager';
 
 const EXERCISE_PROPERTIES = [
     { label: 'Weighted', value: 'Weighted' },

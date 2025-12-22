@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { Exercise, useWorkoutManager } from '../hooks/useWorkoutManager'; 
+import { Exercise, useWorkoutManager } from '../hooks/workouts/useWorkoutManager'; 
 import { createExercise } from '../utils/workout-logic';
-import { useActiveWorkoutTimers } from '../hooks/useActiveWorkoutTimers';
-import { useActiveWorkoutPersistence } from '../hooks/useActiveWorkoutPersistence';
+import { useActiveWorkoutTimers } from '../hooks/workouts/useActiveWorkoutTimers';
+import { useActiveWorkoutPersistence } from '../hooks/workouts/useActiveWorkoutPersistence';
 import uuid from 'react-native-uuid';
 
 // Define the shape of our context

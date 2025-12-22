@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createSequenceItem } from "../utils/workout-logic";
+import { createSequenceItem } from "../../utils/workout-logic";
 
 export const useRoutineDraft = (initialSequence: any[] = []) => {
     const [routineSequence, setRoutineSequence] = useState<any[]>(

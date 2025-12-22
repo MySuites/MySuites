@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { ExerciseCard } from '../../components/exercises/ExerciseCard';
-import { Exercise } from '../../hooks/useWorkoutManager';
+import { Exercise } from '../../hooks/workouts/useWorkoutManager';
 
 // Mock Card
 jest.mock('../../components/ui/Card');

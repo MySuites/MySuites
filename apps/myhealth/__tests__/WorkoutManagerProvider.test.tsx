@@ -55,7 +55,7 @@ jest.mock('@mycsuite/auth', () => ({
 
 // Mock useRoutineManager
 const mockSetRoutineState = jest.fn();
-jest.mock('../hooks/useRoutineManager', () => ({
+jest.mock('../hooks/routines/useRoutineManager', () => ({
     useRoutineManager: jest.fn(() => ({
         activeRoutine: null,
         startActiveRoutine: jest.fn(),

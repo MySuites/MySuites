@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-native";
-import { useActiveWorkoutPersistence } from "../../hooks/useActiveWorkoutPersistence";
+import { useActiveWorkoutPersistence } from "../../hooks/workouts/useActiveWorkoutPersistence";
 
 // Mock localStorage
 const localStorageMock = (function () {
@@ -42,6 +42,8 @@ describe("useActiveWorkoutPersistence", () => {
         setRoutineId: jest.fn(),
         setRunning: jest.fn(),
         setHasActiveSession: jest.fn(),
+        sourceWorkoutId: null,
+        setSourceWorkoutId: jest.fn(),
     };
 
     it("should save state to localStorage on update", () => {

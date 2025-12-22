@@ -3,11 +3,11 @@ import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } fro
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useUITheme as useTheme } from '@mycsuite/ui';
-import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { ThemedView } from '../../components/ui/ThemedView';
 import { ThemedText } from '../../components/ui/ThemedText';
-import { useRoutineDraft } from '../../hooks/useRoutineDraft';
+import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
 import { RoutineDraftItem } from '../../components/routines/RoutineDraftItem';
 import { AddDayModal } from '../../components/routines/AddDayModal';
 

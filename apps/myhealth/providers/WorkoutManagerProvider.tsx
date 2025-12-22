@@ -19,7 +19,7 @@ import {
     deleteWorkoutLogFromSupabase,
     createCustomExerciseInSupabase
 } from "../utils/workout-api";
-import { useRoutineManager } from "../hooks/useRoutineManager";
+import { useRoutineManager } from "../hooks/routines/useRoutineManager";
 
 // Re-export types for compatibility
 export type { Exercise, SetLog, WorkoutLog };

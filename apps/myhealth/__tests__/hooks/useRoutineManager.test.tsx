@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-native';
-import { useRoutineManager } from '../../hooks/useRoutineManager';
+import { useRoutineManager } from '../../hooks/routines/useRoutineManager';
 
 const mockRoutines = [
   {
