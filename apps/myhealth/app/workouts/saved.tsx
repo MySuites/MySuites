@@ -1,12 +1,12 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../components/ui/ThemedText';
-import { ThemedView } from '../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { ThemedView } from '../../components/ui/ThemedView';
 import { useUITheme } from '@mycsuite/ui';
-import { useWorkoutManager } from '../hooks/useWorkoutManager';
-import { useActiveWorkout } from '../providers/ActiveWorkoutProvider';
-import { useFloatingButton } from '../providers/FloatingButtonContext';
+import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
+import { useFloatingButton } from '../../providers/FloatingButtonContext';
 
 export default function SavedWorkoutsScreen() {
   const router = useRouter();
@@ -54,7 +54,7 @@ export default function SavedWorkoutsScreen() {
            <ThemedText type="link">Close</ThemedText>
         </TouchableOpacity>
         <ThemedText type="subtitle">Saved Workouts</ThemedText>
-        <TouchableOpacity onPress={() => router.push('/create-workout')} className="p-2">
+        <TouchableOpacity onPress={() => router.push('/workouts/create')} className="p-2">
            <ThemedText type="link">Create</ThemedText>
         </TouchableOpacity>
       </ThemedView>

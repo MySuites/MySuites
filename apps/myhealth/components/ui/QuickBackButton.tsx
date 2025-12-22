@@ -23,7 +23,7 @@ export function QuickBackButton() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     
     // Special handling for End Workout screen
-    if (pathname === '/end-workout') {
+    if (pathname === '/workouts/end') {
         startWorkout(); // Resumes and maximizes
         router.back();
         return;

@@ -55,7 +55,7 @@ export function QuickUtilityButton() {
 
          return [
             { id: 'routines', icon: 'list.bullet.clipboard', label: 'Routines', route: '/routines' },
-            { id: 'saved_workouts', icon: 'folder', label: 'Workouts', route: '/saved-workouts' },
+            { id: 'saved_workouts', icon: 'folder', label: 'Workouts', route: '/workouts/saved' },
             { id: 'exercises', icon: 'dumbbell.fill', label: 'Exercises', route: '/exercises' },
          ];
      }
@@ -77,7 +77,7 @@ export function QuickUtilityButton() {
       if (item.action === 'end_workout') {
           pauseWorkout();
           setExpanded(false);
-          router.push('/end-workout' as any);
+          router.push('/workouts/end' as any);
           return;
       }
       

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedView } from '../components/ui/ThemedView';
-import { ScreenHeader } from '../components/ui/ScreenHeader';
-import { useActiveWorkout } from '../providers/ActiveWorkoutProvider';
-import { useWorkoutManager } from '../hooks/useWorkoutManager';
+import { ThemedView } from '../../components/ui/ThemedView';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
+import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
+import { useWorkoutManager } from '../../hooks/useWorkoutManager';
 
 export default function EndWorkoutScreen() {
     const router = useRouter();

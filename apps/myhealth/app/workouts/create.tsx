@@ -3,13 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, A
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useUITheme as useTheme } from '@mycsuite/ui';
 import { useAuth } from '@mycsuite/auth';
-import { useWorkoutManager, fetchExercises } from '../hooks/useWorkoutManager';
-import { useFloatingButton } from '../providers/FloatingButtonContext';
-import { ThemedView } from '../components/ui/ThemedView';
-import { ThemedText } from '../components/ui/ThemedText';
-import { useWorkoutDraft } from '../hooks/useWorkoutDraft';
-import { WorkoutDraftExerciseItem } from '../components/workouts/WorkoutDraftExerciseItem';
-import { ExerciseSelectorModal } from '../components/workouts/ExerciseSelectorModal';
+import { useWorkoutManager, fetchExercises } from '../../hooks/useWorkoutManager';
+import { useFloatingButton } from '../../providers/FloatingButtonContext';
+import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { useWorkoutDraft } from '../../hooks/useWorkoutDraft';
+import { WorkoutDraftExerciseItem } from '../../components/workouts/WorkoutDraftExerciseItem';
+import { ExerciseSelectorModal } from '../../components/workouts/ExerciseSelectorModal';
 
 export default function CreateWorkoutScreen() {
     const theme = useTheme();

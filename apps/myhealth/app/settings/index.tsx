@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, Alert, ScrollView, TextInput, Switch } fr
 import { useRouter } from 'expo-router';
 import { useAuth, supabase } from '@mycsuite/auth';
 import { useUITheme } from '@mycsuite/ui';
-import { ThemedView } from '../components/ui/ThemedView';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { ThemeToggle } from '../components/ui/ThemeToggle';
-import { useNavigationSettings } from '../providers/NavigationSettingsProvider';
+import { ThemedView } from '../../components/ui/ThemedView';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
+import { useNavigationSettings } from '../../providers/NavigationSettingsProvider';
 
 export default function SettingsScreen() {
   const { user } = useAuth();

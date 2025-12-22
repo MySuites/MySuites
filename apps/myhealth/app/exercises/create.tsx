@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedView } from '../components/ui/ThemedView';
-import { ThemedText } from '../components/ui/ThemedText';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { SelectionModal } from '../components/ui/SelectionModal';
+import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { SelectionModal } from '../../components/ui/SelectionModal';
 import { useUITheme } from '@mycsuite/ui';
-import { useWorkoutManager, fetchMuscleGroups } from '../hooks/useWorkoutManager';
+import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/useWorkoutManager';
 
 const EXERCISE_PROPERTIES = [
     { label: 'Weighted', value: 'Weighted' },

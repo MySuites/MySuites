@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View, ActivityIndicator, TextInput, Alert } from 'react-native'; 
 import { useRouter } from 'expo-router';
 
-import { ThemedText } from '../components/ui/ThemedText';
-import { ThemedView } from '../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { ThemedView } from '../../components/ui/ThemedView';
 import { useUITheme } from '@mycsuite/ui';
 import { useAuth } from '@mycsuite/auth';
-import { fetchExercises } from '../hooks/useWorkoutManager';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { useActiveWorkout } from '../providers/ActiveWorkoutProvider';
+import { fetchExercises } from '../../hooks/useWorkoutManager';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 
 export default function ExercisesScreen() {
   const router = useRouter();
@@ -50,7 +50,7 @@ export default function ExercisesScreen() {
            <ThemedText type="link">Close</ThemedText>
         </TouchableOpacity>
         <ThemedText type="subtitle">Exercises</ThemedText>
-        <TouchableOpacity onPress={() => router.push('/create-exercise')} className="p-2">
+        <TouchableOpacity onPress={() => router.push('/exercises/create')} className="p-2">
             <ThemedText type="link">Create</ThemedText>
         </TouchableOpacity> 
       </ThemedView>
@@ -87,7 +87,7 @@ export default function ExercisesScreen() {
             className="flex-row items-center justify-between p-4 border-b border-surface dark:border-white/10"
             onPress={() => {
                 router.push({
-                    pathname: '/exercise-details',
+                    pathname: '/exercises/details',
                     params: { exercise: JSON.stringify(item) }
                 });
             }}

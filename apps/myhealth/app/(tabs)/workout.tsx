@@ -91,12 +91,12 @@ export default function Workout() {
 
 
     function handleCreateRoutine() {
-        router.push('/create-routine');
+        router.push('/routines/create');
     }
 
     function handleEditRoutine(routine: Routine) {
         router.push({
-            pathname: '/create-routine',
+            pathname: '/routines/create',
             params: { 
                 id: routine.id,
                 editing: 'true' 
@@ -105,11 +105,11 @@ export default function Workout() {
     }
 
     function handleCreateSavedWorkout() {
-        router.push('/create-workout');
+        router.push('/workouts/create');
     }
 
     function handleEditSavedWorkout(workout: SavedWorkout) {
-        router.push({ pathname: '/create-workout', params: { id: workout.id } });
+        router.push({ pathname: '/workouts/create', params: { id: workout.id } });
     }
 
     function handleStartSavedWorkout(workout: SavedWorkout) {
@@ -159,7 +159,7 @@ export default function Workout() {
 					<TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-surface dark:border-surface_dark bg-background dark:bg-background_dark" onPress={handleStartEmpty} accessibilityLabel="Start empty workout">
 						<Text className="text-apptext dark:text-apptext_dark text-center">Start Empty</Text>
 					</TouchableOpacity>
-					<TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-surface dark:border-surface_dark bg-background dark:bg-background_dark" onPress={() => router.push('/workout-history' as any)} accessibilityLabel="History">
+					<TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-surface dark:border-surface_dark bg-background dark:bg-background_dark" onPress={() => router.push('/workouts/history' as any)} accessibilityLabel="History">
 						<Text className="text-apptext dark:text-apptext_dark text-center">History</Text>
 					</TouchableOpacity>
 				</View>
@@ -172,7 +172,7 @@ export default function Workout() {
                             <TouchableOpacity onPress={handleCreateSavedWorkout}>
                                 <Text className="text-primary dark:text-primary_dark">+ New</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => router.push('/saved-workouts')}>
+                            <TouchableOpacity onPress={() => router.push('/workouts/saved')}>
                                 <Text className="text-primary dark:text-primary_dark">See All</Text>
                             </TouchableOpacity>
                          </View>

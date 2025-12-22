@@ -1,12 +1,12 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../components/ui/ThemedText';
-import { ThemedView } from '../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { ThemedView } from '../../components/ui/ThemedView';
 import { useUITheme } from '@mycsuite/ui';
-import { useWorkoutManager } from '../hooks/useWorkoutManager';
-import { useActiveWorkout } from '../providers/ActiveWorkoutProvider';
-import { useFloatingButton } from '../providers/FloatingButtonContext';
+import { useWorkoutManager } from '../../hooks/useWorkoutManager';
+import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
+import { useFloatingButton } from '../../providers/FloatingButtonContext';
 
 export default function RoutinesScreen() {
   const router = useRouter();

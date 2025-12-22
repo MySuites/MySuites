@@ -45,14 +45,14 @@ function RootLayoutNav() {
       <Stack.Screen name="auth" options={{ headerShown: false }} />
       <Stack.Screen name="settings" options={{ headerShown: false }} />
       <Stack.Screen name="exercises" options={{ presentation: 'modal', title: 'Exercises', headerShown: false }} />
-      <Stack.Screen name="saved-workouts" options={{ presentation: 'modal', title: 'Saved Workouts', headerShown: false }} />
+      <Stack.Screen name="workouts/saved" options={{ presentation: 'modal', title: 'Saved Workouts', headerShown: false }} />
       <Stack.Screen name="routines" options={{ presentation: 'modal', title: 'My Routines', headerShown: false }} />
-      <Stack.Screen name="create-workout" options={{ presentation: 'modal', title: 'Create Workout', headerShown: false }} />
-      <Stack.Screen name="create-routine" options={{ presentation: 'modal', title: 'Create Routine', headerShown: false }} />
-      <Stack.Screen name="create-exercise" options={{ presentation: 'modal', title: 'Create Exercise', headerShown: false }} />
-      <Stack.Screen name="exercise-details" options={{ presentation: 'modal', headerShown: false }} />
+      <Stack.Screen name="workouts/create" options={{ presentation: 'modal', title: 'Create Workout', headerShown: false }} />
+      <Stack.Screen name="routines/create" options={{ presentation: 'modal', title: 'Create Routine', headerShown: false }} />
+      <Stack.Screen name="exercises/create" options={{ presentation: 'modal', title: 'Create Exercise', headerShown: false }} />
+      <Stack.Screen name="exercises/details" options={{ presentation: 'modal', headerShown: false }} />
       <Stack.Screen 
-        name="end-workout" 
+        name="workouts/end" 
         options={{ 
           presentation: 'fullScreenModal', 
           headerShown: false,
