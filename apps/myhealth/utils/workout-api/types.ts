@@ -1,0 +1,33 @@
+export type SetLog = {
+    id?: string;
+    weight?: number; // lbs
+    reps?: number;
+    duration?: number; // seconds
+    distance?: number; // meters or user unit
+};
+
+export type Exercise = {
+    id: string;
+    name: string;
+    sets: number; // Target sets
+    reps: number; // Target reps/duration/distance
+    completedSets: number;
+    logs?: SetLog[];
+    properties?: string[]; // E.g. ["Weighted", "Reps", "Bodyweight"]
+    setTargets?: {
+        reps: number;
+        weight: number;
+        duration?: number;
+        distance?: number;
+    }[];
+};
+
+export type WorkoutLog = {
+    id: string; // workout_log_id
+    workoutId?: string;
+    userId: string;
+    workoutTime: string;
+    notes?: string;
+    workoutName?: string; // joined from workouts table
+    createdAt: string;
+};
