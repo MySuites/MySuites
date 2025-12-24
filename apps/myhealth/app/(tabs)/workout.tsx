@@ -8,7 +8,7 @@ import {
     ScrollView,
 } from "react-native";
 
-import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedView } from '@mycsuite/ui';
 import { useRouter } from 'expo-router';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 

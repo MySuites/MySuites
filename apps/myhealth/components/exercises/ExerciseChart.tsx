@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
-import { ThemedText } from '../ui/ThemedText';
+import { ThemedText } from '@mycsuite/ui';
 
 interface ExerciseChartProps {
     data: any[];

@@ -1,5 +1,5 @@
 import { Text, type TextProps } from 'react-native';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from './theme';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;

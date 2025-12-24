@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import { ThemedView } from '../ui/ThemedView';
-import { ThemedText } from '../ui/ThemedText';
+import { ThemedView } from '@mycsuite/ui';
+import { ThemedText } from '@mycsuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 import { useUITheme } from '@mycsuite/ui';
 

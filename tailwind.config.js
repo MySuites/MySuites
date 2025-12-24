@@ -10,19 +10,20 @@ module.exports = {
     extend: {
       colors: {
         // Light mode tokens
-        primary: '#FF6F61',
-        accent: '#84A98C',
-        background: '#FFF5F5',
-        apptext: '#2D1F1F',
-        surface: '#EAD4D4',
-        border: '#EAD4D4',
+        primary: 'hsl(8, 100%, 67%)', // 600
+        accent: 'hsl(117, 20%, 61%)',
+        background: 'hsl(0, 0%, 100%)',
+        apptext: 'hsl(0, 0%, 5%)',
+        surface: 'hsl(359, 75%, 89%)',
+        border: 'hsl(359, 75%, 89%)',
+        error: 'hsl(0, 84%, 60%)',
         // Dark mode tokens (use with `dark:` prefix)
-        'primary-dark': '#FF8A80',
-        'accent-dark': '#A5D6A7',
-        'background-dark': '#2D1F1F',
-        'apptext-dark': '#FFF5F5',
-        'surface-dark': '#3E2C2C',
-        'border-dark': '#3E2C2C',
+        'primary-dark': 'hsl(5, 100%, 75%)',
+        'accent-dark': 'hsl(122, 37%, 74%)',
+        'background-dark': 'hsl(0, 18%, 15%)',
+        'apptext-dark': 'hsl(0, 100%, 98%)',
+        'surface-dark': 'hsl(0, 17%, 21%)',
+        'border-dark': 'hsl(0, 17%, 21%)',
       },
     },
   },

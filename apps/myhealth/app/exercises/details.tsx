@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, ScrollView, Pressable, useColorScheme } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ThemedText } from '../../components/ui/ThemedText';
+import { ThemedText } from '@mycsuite/ui';
 import { useUITheme } from '@mycsuite/ui';
 import { useAuth } from '@mycsuite/auth';
 import { IconSymbol } from '../../components/ui/icon-symbol';

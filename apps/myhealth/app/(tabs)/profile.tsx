@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useAuth, supabase } from '@mycsuite/auth';
-import { SharedButton, useUITheme } from '@mycsuite/ui';
-import { ThemedView } from '../../components/ui/ThemedView';
+import { SharedButton, useUITheme, ThemedText, ThemedView } from '@mycsuite/ui';
 import { useRouter } from 'expo-router';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 
@@ -52,11 +51,11 @@ export default function ProfileScreen() {
       <View className="mb-6">
         <View className="mb-4">
             <Text className="text-sm mb-1 text-gray-500">Username</Text>
-            <Text className="text-lg font-medium text-apptext dark:text-apptext_dark">{username || 'Not set'}</Text>
+            <ThemedText className="text-lg font-medium">{username || 'Not set'}</ThemedText>
         </View>
         <View className="mb-4">
             <Text className="text-sm mb-1 text-gray-500">Full Name</Text>
-            <Text className="text-lg font-medium text-apptext dark:text-apptext_dark">{fullName || 'Not set'}</Text>
+            <ThemedText className="text-lg font-medium">{fullName || 'Not set'}</ThemedText>
         </View>
       </View>
 

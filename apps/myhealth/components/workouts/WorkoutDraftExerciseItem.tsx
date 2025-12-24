@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { ThemedText } from '../ui/ThemedText';
+import { ThemedText } from '@mycsuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 import { useUITheme } from '@mycsuite/ui';
 

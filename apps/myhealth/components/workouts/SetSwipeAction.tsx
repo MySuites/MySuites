@@ -51,9 +51,9 @@ export const SetSwipeAction = ({
     return (
         <View className="justify-center items-end mb-2 h-11" style={{ width: 80 }}>
              <Animated.View 
+                className="bg-error"
                 style={[
                     { 
-                        backgroundColor: '#ef4444', 
                         position: 'absolute', 
                         right: 0, 
                         height: '100%', 

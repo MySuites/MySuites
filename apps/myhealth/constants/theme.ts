@@ -5,28 +5,14 @@
 
 import { Platform } from "react-native";
 
+import { darkTheme, lightTheme } from "@mycsuite/ui/theme";
+
 export const Colors = {
   light: {
-    // Light mode palette
-    text: "#2D1F1F",
-    background: "#FFF5F5",
-    primary: "#FF6F61",
-    accent: "#84A98C",
-    surface: "#EAD4D4",
-    icon: "#2D1F1F",
-    tabIconDefault: "#EAD4D4",
-    tabIconSelected: "#FF6F61",
+    ...lightTheme,
   },
   dark: {
-    // Dark mode palette
-    text: "#FFF5F5",
-    background: "#2D1F1F",
-    primary: "#FF8A80",
-    accent: "#A5D6A7",
-    surface: "#3E2C2C",
-    icon: "#EAD4D4",
-    tabIconDefault: "#EAD4D4",
-    tabIconSelected: "#FF8A80",
+    ...darkTheme,
   },
 };
 

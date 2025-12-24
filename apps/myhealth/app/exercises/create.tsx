@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedView } from '../../components/ui/ThemedView';
-import { ThemedText } from '../../components/ui/ThemedText';
+import { ThemedView } from '@mycsuite/ui';
+import { ThemedText } from '@mycsuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
 import { useUITheme } from '@mycsuite/ui';

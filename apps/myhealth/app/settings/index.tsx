@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Alert, ScrollView, TextInput, Switch } fr
 import { useRouter } from 'expo-router';
 import { useAuth, supabase } from '@mycsuite/auth';
 import { useUITheme } from '@mycsuite/ui';
-import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedView } from '@mycsuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import { useNavigationSettings } from '../../providers/NavigationSettingsProvider';
@@ -80,7 +80,7 @@ export default function SettingsScreen() {
     <ThemedView className="flex-1">
       <View className="flex-row items-center justify-between px-4 pt-14 pb-4 border-b border-surface dark:border-surface_dark">
         <TouchableOpacity onPress={() => router.back()} className="flex-row items-center w-[60px]">
-          <IconSymbol name="chevron.backward" size={24} color={theme.text} />
+          <IconSymbol name="chevron.backward" size={24} color="#000" />
           <Text className="text-base ml-1 text-apptext dark:text-apptext_dark">Back</Text>
         </TouchableOpacity>
         <Text className="text-xl font-bold text-apptext dark:text-apptext_dark">Settings</Text>

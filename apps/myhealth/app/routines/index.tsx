@@ -1,8 +1,8 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../../components/ui/ThemedText';
-import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedText } from '@mycsuite/ui';
+import { ThemedView } from '@mycsuite/ui';
 import { useUITheme } from '@mycsuite/ui';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
