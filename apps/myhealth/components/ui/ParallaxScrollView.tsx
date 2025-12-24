@@ -8,7 +8,7 @@ import Animated, {
 
 import { ThemedView } from './ThemedView';
 import { useColorScheme } from '../../hooks/ui/use-color-scheme';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 
 const HEADER_HEIGHT = 250;
 

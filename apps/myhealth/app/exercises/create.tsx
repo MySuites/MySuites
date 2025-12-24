@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedView } from '@mycsuite/ui';
-import { ThemedText } from '@mycsuite/ui';
+import { ThemedView } from '@mysuite/ui';
+import { ThemedText } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/workouts/useWorkoutManager';
 
 const EXERCISE_PROPERTIES = [

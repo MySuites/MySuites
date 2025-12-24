@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { ThemedText, useUITheme } from '@mycsuite/ui';
+import { ThemedText, useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 
 interface RoutineDraftItemProps {

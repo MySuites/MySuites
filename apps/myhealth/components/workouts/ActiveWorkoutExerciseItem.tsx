@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { ExerciseCard } from '../exercises/ExerciseCard';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 

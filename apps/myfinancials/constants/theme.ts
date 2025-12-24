@@ -5,7 +5,7 @@
 
 import { Platform } from "react-native";
 
-import { darkTheme, lightTheme } from "@mycsuite/ui/theme";
+import { darkTheme, lightTheme } from "@mysuite/ui/theme";
 
 export const Colors = {
   light: {

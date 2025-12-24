@@ -1,4 +1,4 @@
-import { supabase } from "@mycsuite/auth";
+import { supabase } from "@mysuite/auth";
 
 export async function fetchExercises(user: any) {
     if (!user) return { data: [], error: null };

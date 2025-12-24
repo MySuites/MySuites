@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useUITheme as useTheme } from '@mycsuite/ui';
+import { useUITheme as useTheme } from '@mysuite/ui';
 
 type Exercise = {
 	id: string;

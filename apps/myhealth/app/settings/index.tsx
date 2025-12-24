@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Alert, ScrollView, TextInput, Switch } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth, supabase } from '@mycsuite/auth';
-import { useUITheme } from '@mycsuite/ui';
-import { ThemedView } from '@mycsuite/ui';
+import { useAuth, supabase } from '@mysuite/auth';
+import { useUITheme } from '@mysuite/ui';
+import { ThemedView } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import { useNavigationSettings } from '../../providers/NavigationSettingsProvider';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { formatSeconds } from '../../utils/formatting';
@@ -36,7 +36,7 @@ export function WorkoutStickyHeader() {
             entering={FadeIn.duration(300)}
             exiting={FadeOut.duration(300)}
             style={{ paddingTop: insets.top + 8 }}
-            className="absolute top-0 left-0 right-0 z-[1001] pb-6 px-4 shadow-sm border-b border-black/5 bg-surface dark:bg-surface_dark"
+            className="absolute top-0 left-0 right-0 z-[1001] pb-6 px-4 border-b border-black/5 bg-surface dark:bg-surface_dark"
         >
             <TouchableOpacity 
                 className="flex-row items-center justify-between"

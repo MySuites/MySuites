@@ -1,4 +1,4 @@
-# @mycsuite/ui
+# @mysuite/ui
 
 This package contains shared UI primitives for the monorepo and a small example showing how apps can provide their own theme palette.
 
@@ -14,7 +14,7 @@ Usage
 
 ```tsx
 // apps/myhealth/app/providers/AppThemeProvider.tsx
-import { UIThemeProvider } from '@mycsuite/ui';
+import { UIThemeProvider } from '@mysuite/ui';
 import { Colors } from '@/constants/theme';
 
 // pass `Colors.light` or `Colors.dark` depending on color scheme
@@ -24,7 +24,7 @@ import { Colors } from '@/constants/theme';
 2. Consume the theme in shared components (StyleSheet example):
 
 ```tsx
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 const theme = useUITheme();
 // theme.primary, theme.background, theme.text, theme.surface, ...
 ```
@@ -32,7 +32,7 @@ const theme = useUITheme();
 3. Use Tailwind tokens in components that render `className` (NativeWind):
 
 ```tsx
-import { SharedButton } from '@mycsuite/ui';
+import { SharedButton } from '@mysuite/ui';
 <SharedButton title="OK" />
 ```
 

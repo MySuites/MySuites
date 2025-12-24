@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useUITheme as useTheme, ThemedView, ThemedText } from '@mycsuite/ui';
-import { useAuth } from '@mycsuite/auth';
+import { useUITheme as useTheme, ThemedView, ThemedText } from '@mysuite/ui';
+import { useAuth } from '@mysuite/auth';
 import { useWorkoutManager, fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useWorkoutDraft } from '../../hooks/workouts/useWorkoutDraft';

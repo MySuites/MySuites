@@ -8,7 +8,7 @@ import {
     ScrollView,
 } from "react-native";
 
-import { ThemedView } from '@mycsuite/ui';
+import { ThemedView } from '@mysuite/ui';
 import { useRouter } from 'expo-router';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 
@@ -251,7 +251,7 @@ export default function Workout() {
                                 <View className="flex-row justify-between items-center mb-3">
                                     <Text className="text-lg font-semibold mb-2 text-apptext dark:text-apptext_dark">Active Routine</Text>
                                 </View>
-                                <View className="bg-surface dark:bg-surface_dark rounded-xl p-4 border border-black/5 dark:border-white/10 shadow-sm">
+                                <View className="bg-surface dark:bg-surface_dark rounded-xl p-4 border border-black/5 dark:border-white/10">
                                     <View className="p-5 items-center">
                                         <Text className="text-base font-semibold text-apptext dark:text-apptext_dark mb-2">
                                             No active routine

@@ -5,7 +5,7 @@
 
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },

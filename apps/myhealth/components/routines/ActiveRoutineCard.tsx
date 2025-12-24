@@ -57,7 +57,7 @@ export function ActiveRoutineCard({
         onClearRoutine={onClearRoutine}
       />
 
-      <View className="bg-surface dark:bg-surface_dark rounded-xl p-4 border border-black/5 dark:border-white/10 shadow-sm">
+      <View className="bg-surface dark:bg-surface_dark rounded-xl p-4 border border-black/5 dark:border-white/10">
         {timelineDays.length === 0 ? (
           <ActiveRoutineCompletion onClearRoutine={onClearRoutine} />
         ) : (

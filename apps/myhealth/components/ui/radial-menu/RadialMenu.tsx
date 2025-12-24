@@ -8,7 +8,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../icon-symbol';
 import * as Haptics from 'expo-haptics';
 import { RadialMenuBackdrop } from './RadialMenuBackdrop';

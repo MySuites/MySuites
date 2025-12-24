@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { View, ScrollView, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ThemedText, useUITheme } from '@mycsuite/ui';
-import { useAuth } from '@mycsuite/auth';
+import { ThemedText, useUITheme } from '@mysuite/ui';
+import { useAuth } from '@mysuite/auth';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useExerciseStats } from '../../hooks/workouts/useExerciseStats';
 import { ExerciseChart } from '../../components/exercises/ExerciseChart';
@@ -44,9 +44,6 @@ export default function ExerciseDetailsScreen() {
         );
     }
 
-    // Colors from tailwind.config.js
-    // Colors from theme context
-    // Colors from theme context
     const currentColors = {
         primary: theme.primary || '#FF6F61',
         background: theme.bgLight || '#FFF5F5',

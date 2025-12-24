@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedView } from '@mycsuite/ui';
+import { ThemedView } from '@mysuite/ui';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';

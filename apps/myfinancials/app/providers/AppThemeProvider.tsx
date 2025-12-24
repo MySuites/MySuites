@@ -12,7 +12,7 @@ const safeSecureStoreLocal = () => {
   }
 };
 import { Colors } from '@/constants/theme';
-import { UIThemeProvider } from '@mycsuite/ui';
+import { UIThemeProvider } from '@mysuite/ui';
 
 const THEME_PREF_KEY = 'theme-preference';
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Animated, { useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { useRouter, usePathname } from 'expo-router';
 import { RadialMenu, RadialMenuItem } from './radial-menu/RadialMenu';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';

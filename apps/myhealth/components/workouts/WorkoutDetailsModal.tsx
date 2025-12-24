@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Modal, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useUITheme as useTheme } from '@mycsuite/ui';
+import { useUITheme as useTheme } from '@mysuite/ui';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 
 interface WorkoutDetailsModalProps {
@@ -51,7 +51,7 @@ export function WorkoutDetailsModal({ visible, onClose, workoutLogId }: WorkoutD
     return (
         <Modal visible={visible} animationType="slide" transparent={true}>
             <View className="flex-1 justify-center items-center bg-black/50">
-                <View className="w-[90%] bg-background dark:bg-background_dark rounded-2xl p-5 shadow-lg max-h-[80%]">
+                <View className="w-[90%] bg-background dark:bg-background_dark rounded-2xl p-5 max-h-[80%]">
                     <Text className="text-xl font-bold text-center mb-4 text-apptext dark:text-apptext_dark">Workout Details</Text>
                     
                     {loading ? (

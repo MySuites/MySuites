@@ -10,7 +10,7 @@ jest.mock('expo-router', () => ({
   }),
 }));
 
-jest.mock('@mycsuite/auth', () => ({
+jest.mock('@mysuite/auth', () => ({
   useAuth: () => ({
     user: { email: 'test@example.com' },
   }),
@@ -30,7 +30,7 @@ jest.mock('@mycsuite/auth', () => ({
   },
 }));
 
-jest.mock('@mycsuite/ui', () => ({
+jest.mock('@mysuite/ui', () => ({
   useUITheme: () => ({
     text: '#000',
     background: '#fff',

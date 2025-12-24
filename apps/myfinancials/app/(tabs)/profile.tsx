@@ -1,11 +1,11 @@
 // apps/mycfo/app/(tabs)/profile.tsx
 import { useState, useEffect } from 'react';
 import { TextInput, Alert, StyleSheet } from 'react-native';
-import { useAuth, supabase } from '@mycsuite/auth';
-import { SharedButton } from '@mycsuite/ui';
+import { useAuth, supabase } from '@mysuite/auth';
+import { SharedButton } from '@mysuite/ui';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { ThemedView } from '@/components/themed-view';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 
 export default function ProfileScreen() {
   const { user } = useAuth();

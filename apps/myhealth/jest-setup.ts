@@ -8,7 +8,7 @@ jest.mock("expo-secure-store", () => ({
     deleteItemAsync: jest.fn(),
 }));
 
-jest.mock("@mycsuite/auth", () => ({
+jest.mock("@mysuite/auth", () => ({
     supabase: {
         auth: {
             getSession: jest.fn(),

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Modal, ActivityIndicator, ScrollView } from 'react-native';
-import { ThemedView } from '@mycsuite/ui';
-import { ThemedText } from '@mycsuite/ui';
+import { ThemedView } from '@mysuite/ui';
+import { ThemedText } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 
 interface ExerciseSelectorModalProps {
     visible: boolean;

@@ -1,4 +1,4 @@
-import { ThemedView } from '@mycsuite/ui';
+import { ThemedView } from '@mysuite/ui';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 
 export default function HomeScreen() {

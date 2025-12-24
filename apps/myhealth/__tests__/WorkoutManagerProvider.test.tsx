@@ -13,7 +13,7 @@ const mockIs = jest.fn(() => ({
 }));
 
 // Mock dependencies
-jest.mock('@mycsuite/auth', () => ({
+jest.mock('@mysuite/auth', () => ({
     supabase: {
         from: jest.fn(() => ({
             select: jest.fn(() => ({

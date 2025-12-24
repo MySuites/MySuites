@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase, useAuth } from "@mycsuite/auth";
+import { supabase, useAuth } from "@mysuite/auth";
 
 export function useLatestBodyWeight() {
     const { user } = useAuth();

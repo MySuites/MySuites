@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View, ActivityIndicator, TextInput, Alert } from 'react-native'; 
 import { useRouter } from 'expo-router';
 
-import { ThemedText, ThemedView, useUITheme } from '@mycsuite/ui';
-import { useAuth } from '@mycsuite/auth';
+import { ThemedText, ThemedView, useUITheme } from '@mysuite/ui';
+import { useAuth } from '@mysuite/auth';
 import { fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';

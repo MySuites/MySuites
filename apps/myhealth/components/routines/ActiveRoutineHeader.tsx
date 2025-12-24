@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useUITheme } from '@mycsuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 
 interface ActiveRoutineHeaderProps {

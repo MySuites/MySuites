@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { Alert } from "react-native";
-import { useAuth } from "@mycsuite/auth";
+import { useAuth } from "@mysuite/auth";
 import {
     Exercise,
     SetLog,

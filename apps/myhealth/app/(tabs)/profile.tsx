@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { useAuth, supabase } from '@mycsuite/auth';
-import { SharedButton, useUITheme, ThemedView } from '@mycsuite/ui';
+import { useAuth, supabase } from '@mysuite/auth';
+import { SharedButton, useUITheme, ThemedView } from '@mysuite/ui';
 import { useRouter } from 'expo-router';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { BodyWeightCard } from '../../components/profile/BodyWeightCard';

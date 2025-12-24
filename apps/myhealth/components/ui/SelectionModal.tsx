@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Modal, TouchableOpacity, FlatList } from 'react-native';
-import { ThemedText, ThemedView, useUITheme } from '@mycsuite/ui';
+import { ThemedText, ThemedView, useUITheme } from '@mysuite/ui';
 import { IconSymbol } from './icon-symbol';
 interface SelectionModalProps {
     visible: boolean;

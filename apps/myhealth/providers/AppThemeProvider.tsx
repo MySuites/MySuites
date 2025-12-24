@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useColorScheme as rnUseColorScheme } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { Colors } from '../constants/theme';
-import { UIThemeProvider } from '@mycsuite/ui';
+import { UIThemeProvider } from '@mysuite/ui';
 import { useColorScheme as useNativeWindColorScheme } from 'nativewind';
 
 const THEME_PREF_KEY = 'theme-preference';

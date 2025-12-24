@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { ThemedText } from '@mycsuite/ui';
+import { ThemedText } from '@mysuite/ui';
 
 interface ExercisePropertiesProps {
     properties: string[] | null;

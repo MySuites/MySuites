@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TextInput, TouchableOpacity } from 'react-native';
-import { useUITheme as useTheme } from '@mycsuite/ui';
+import { useUITheme as useTheme } from '@mysuite/ui';
 
 interface AddExerciseModalProps {
     visible: boolean;

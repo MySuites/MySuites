@@ -1,8 +1,8 @@
 // apps/mycfo/app/auth.tsx
 import { useState } from 'react';
 import { View, TextInput, Text } from 'react-native';
-import { supabase } from '@mycsuite/auth';
-import { SharedButton } from '@mycsuite/ui';
+import { supabase } from '@mysuite/auth';
+import { SharedButton } from '@mysuite/ui';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('');
