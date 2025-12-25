@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Modal, TouchableOpacity, FlatList } from 'react-native';
-import { ThemedText, useUITheme } from '@mysuite/ui';
+import { View, Modal, TouchableOpacity, FlatList, Text } from 'react-native';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from './icon-symbol';
 interface SelectionModalProps {
     visible: boolean;
@@ -33,9 +33,9 @@ export const SelectionModal = ({
             <View className="flex-1 bg-light dark:bg-dark">
                 <View className="flex-row items-center justify-between p-4 border-b border-light dark:border-white/10 pt-4 android:pt-10">
                     <TouchableOpacity onPress={onClose} className="p-2">
-                        <ThemedText type="link">Done</ThemedText>
+                        <Text className="text-base leading-[30px] text-[#0a7ea4]">Done</Text>
                     </TouchableOpacity>
-                    <ThemedText type="subtitle">{title}</ThemedText>
+                    <Text className="text-xl font-bold">{title}</Text>
                     <View style={{ width: 50 }} />
                 </View>
                 <FlatList
@@ -51,7 +51,7 @@ export const SelectionModal = ({
                                     if (!multiSelect) onClose();
                                 }}
                             >
-                                <ThemedText type="defaultSemiBold">{item.label || item.name}</ThemedText>
+                                <Text className="text-base leading-6 font-semibold">{item.label || item.name}</Text>
                                 {selected && <IconSymbol name="checkmark" size={20} color={theme.primary} />}
                             </TouchableOpacity>
                         );

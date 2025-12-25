@@ -1,11 +1,10 @@
-import { View, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
+import { View, StyleSheet, Text } from 'react-native';
 import { SharedButton } from '@mysuite/ui';
 
 export default function HomeScreen() {
   return (
     <View className="bg-light dark:bg-dark" style={styles.container}>
-      <ThemedText type="title">Tab One</ThemedText>
+      <Text className="text-3xl font-bold leading-8 text-light dark:text-dark">Tab One</Text>
       <SharedButton title="This is a v4 NativeWind button!" />
     </View>
   );

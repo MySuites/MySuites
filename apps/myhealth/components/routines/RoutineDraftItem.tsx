@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { ThemedText, useUITheme } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 
 interface RoutineDraftItemProps {
@@ -29,7 +29,7 @@ export const RoutineDraftItem = ({
             >
                 <View className="flex-row items-center flex-1 mr-2">
                         <View>
-                        <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
+                        <Text className="text-base leading-6 font-semibold">{item.name}</Text>
                         <Text className="text-light-muted dark:text-dark-muted text-sm">
                             {item.type === 'rest' ? 'Rest Day' : 'Workout'}
                         </Text>

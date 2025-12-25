@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Modal, ActivityIndicator, ScrollView } from 'react-native';
-import { ThemedText, useUITheme } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 
 
@@ -35,9 +35,9 @@ export const ExerciseSelectorModal = ({
             <View className="flex-1 bg-light dark:bg-dark">
                 <View className="flex-row items-center justify-between p-4 border-b border-light dark:border-white/10 pt-4 android:pt-10">
                     <TouchableOpacity onPress={onClose} className="p-2">
-                            <ThemedText type="link">Cancel</ThemedText>
+                            <Text className="text-base leading-[30px] text-[#0a7ea4]">Cancel</Text>
                     </TouchableOpacity>
-                    <ThemedText type="subtitle">Add Exercise</ThemedText>
+                    <Text className="text-xl font-bold">Add Exercise</Text>
                     <View style={{ width: 50 }} />
                 </View>
                 
@@ -96,7 +96,7 @@ export const ExerciseSelectorModal = ({
                                     }}
                                 >
                                     <View>
-                                        <ThemedText type="defaultSemiBold" style={{ fontSize: 18 }}>{item.name}</ThemedText>
+                                        <Text className="text-base leading-6 font-semibold" style={{ fontSize: 18 }}>{item.name}</Text>
                                         <Text className="text-gray-500 dark:text-gray-400 text-sm">
                                             {item.category} • {item.properties?.join(', ') || item.type || item.rawType}
                                         </Text> 

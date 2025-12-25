@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
-import { useUITheme, ThemedText } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 
 interface WorkoutDraftExerciseItemProps {
     item: any;
@@ -53,7 +53,7 @@ export const WorkoutDraftExerciseItem = ({
                 className="flex-row items-center justify-between p-3"
             >
                 <View className="flex-1 mr-2">
-                    <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
+                    <Text className="text-base leading-6 font-semibold">{item.name}</Text>
                     <Text className="text-gray-500 dark:text-gray-400 text-sm">
                         {item.sets} Sets
                         {showReps && ` • ${item.reps} Reps`}

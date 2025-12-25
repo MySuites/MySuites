@@ -23,4 +23,3 @@ export const SharedButton = ({ title, className, textClassName, style, ...props 
 
 export { UIThemeProvider, useUITheme } from './theme';
 export { ThemedCard } from './examples/ThemedCard';
-export { ThemedText } from './ThemedText';

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, ScrollView, Pressable } from 'react-native';
+import { View, ScrollView, Pressable, Text } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ThemedText, useUITheme } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { useAuth } from '@mysuite/auth';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useExerciseStats } from '../../hooks/workouts/useExerciseStats';
@@ -36,9 +36,9 @@ export default function ExerciseDetailsScreen() {
     if (!exercise) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.background }}>
-                <ThemedText>Exercise not found.</ThemedText>
+                <Text style={{ color: theme.text }} className="text-base leading-6">Exercise not found.</Text>
                 <Pressable onPress={() => router.back()} style={{ marginTop: 20, padding: 10 }}>
-                    <ThemedText type="link">Go Back</ThemedText>
+                    <Text className="text-base leading-[30px] text-[#0a7ea4]">Go Back</Text>
                 </Pressable>
             </View>
         );
@@ -72,18 +72,18 @@ export default function ExerciseDetailsScreen() {
              }}>
                 <Pressable onPress={() => router.back()} style={{ padding: 4, flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                     <IconSymbol name="chevron.left" size={20} color={currentColors.primary} />
-                    <ThemedText type="link" style={{ color: currentColors.primary }}>Back</ThemedText>
+                    <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ color: currentColors.primary }}>Back</Text>
                 </Pressable>
-                <ThemedText type="subtitle" style={{ color: currentColors.text }}>Details</ThemedText>
+                <Text className="text-xl font-bold" style={{ color: currentColors.text }}>Details</Text>
                 <View style={{ width: 60 }} />
             </View>
 
             <ScrollView style={{ flex: 1, padding: 16 }}>
                 <View style={{ marginBottom: 24 }}>
-                    <ThemedText type="title" style={{ marginBottom: 4, color: currentColors.text }}>{exercise.name || 'Exercise'}</ThemedText>
-                    <ThemedText style={{ fontSize: 18, color: currentColors.text, opacity: 0.7 }}>
+                    <Text className="text-3xl font-bold leading-8" style={{ marginBottom: 4, color: currentColors.text }}>{exercise.name || 'Exercise'}</Text>
+                    <Text style={{ fontSize: 18, color: currentColors.text, opacity: 0.7 }}>
                         {exercise.category || 'Category'}
-                    </ThemedText>
+                    </Text>
                 </View>
 
                 {/* Performance Chart */}
@@ -114,10 +114,10 @@ export default function ExerciseDetailsScreen() {
                     padding: 16, 
                     marginBottom: 120 
                 }}>
-                    <ThemedText type="defaultSemiBold" style={{ marginBottom: 12, color: currentColors.text }}>Instructions</ThemedText>
-                    <ThemedText style={{ color: currentColors.text, opacity: 0.6, lineHeight: 24 }}>
+                    <Text className="text-base leading-6 font-semibold" style={{ marginBottom: 12, color: currentColors.text }}>Instructions</Text>
+                    <Text style={{ color: currentColors.text, opacity: 0.6, lineHeight: 24 }}>
                         No instructions available for this exercise yet.
-                    </ThemedText>
+                    </Text>
                 </View>
 
             </ScrollView>

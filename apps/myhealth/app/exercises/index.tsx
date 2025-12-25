@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity, View, ActivityIndicator, TextInput, Alert } from 'react-native'; 
+import { FlatList, TouchableOpacity, View, ActivityIndicator, TextInput, Alert, Text } from 'react-native'; 
 import { useRouter } from 'expo-router';
 
-import { ThemedText, useUITheme } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { useAuth } from '@mysuite/auth';
 import { fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { IconSymbol } from '../../components/ui/icon-symbol';
@@ -45,11 +45,11 @@ export default function ExercisesScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <View className="flex-row items-center justify-between p-4 border-b border-bg-dark dark:border-white/10">
         <TouchableOpacity onPress={() => router.back()} className="p-2">
-           <ThemedText type="link">Close</ThemedText>
+           <Text className="text-base leading-[30px] text-[#0a7ea4]">Close</Text>
         </TouchableOpacity>
-        <ThemedText type="subtitle">Exercises</ThemedText>
+        <Text className="text-xl font-bold">Exercises</Text>
         <TouchableOpacity onPress={() => router.push('/exercises/create')} className="p-2">
-            <ThemedText type="link">Create</ThemedText>
+            <Text className="text-base leading-[30px] text-[#0a7ea4]">Create</Text>
         </TouchableOpacity> 
       </View>
       
@@ -91,10 +91,10 @@ export default function ExercisesScreen() {
             }}
           >
             <View>
-                <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-                <ThemedText style={{color: theme.icon ?? '#888', fontSize: 12}}>
+                <Text className="text-base leading-6 font-semibold">{item.name}</Text>
+                <Text style={{color: theme.icon ?? '#888', fontSize: 12}}>
                     {item.category} • {item.properties?.join(', ') || item.rawType}
-                </ThemedText> 
+                </Text> 
             </View>
             <TouchableOpacity onPress={(e) => {
                 e.stopPropagation(); // Prevent navigation
@@ -108,7 +108,7 @@ export default function ExercisesScreen() {
         contentContainerStyle={{ paddingBottom: 120 }}
         ListEmptyComponent={
             <View className="p-5 items-center">
-                <ThemedText style={{color: theme.icon}}>No exercises found.</ThemedText>
+                <Text style={{color: theme.icon}} className="text-base leading-6">No exercises found.</Text>
             </View>
         }
         showsVerticalScrollIndicator={false}

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '@mysuite/ui';
+import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
-import { useUITheme } from '@mysuite/ui';
 import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/workouts/useWorkoutManager';
 
 const EXERCISE_PROPERTIES = [
@@ -93,11 +92,11 @@ export default function CreateExerciseScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <View className="flex-row items-center justify-between p-4 border-b border-light dark:border-white/10 pt-4 android:pt-10">
         <TouchableOpacity onPress={() => router.back()} className="p-2">
-            <ThemedText type="link">Cancel</ThemedText>
+            <Text className="text-base leading-[30px] text-[#0a7ea4]">Cancel</Text>
         </TouchableOpacity>
-        <ThemedText type="subtitle">New Exercise</ThemedText>
+        <Text className="text-xl font-bold">New Exercise</Text>
         <TouchableOpacity onPress={handleCreate} disabled={isSubmitting} className="p-2">
-            <ThemedText type="link" style={{ fontWeight: 'bold', opacity: isSubmitting ? 0.5 : 1 }}>Save</ThemedText>
+            <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ fontWeight: 'bold', opacity: isSubmitting ? 0.5 : 1 }}>Save</Text>
         </TouchableOpacity>
       </View>
 
@@ -106,7 +105,7 @@ export default function CreateExerciseScreen() {
         className="flex-1 p-6"
       >
         <View className="mb-6">
-            <ThemedText type="defaultSemiBold" className="mb-2">Name</ThemedText>
+            <Text className="text-base leading-6 font-semibold mb-2">Name</Text>
             <TextInput 
                 className="bg-light-lighter dark:bg-border-dark text-light dark:text-dark p-4 rounded-xl text-base border border-transparent dark:border-white/10"
                 placeholder="e.g. Bench Press" 
@@ -117,42 +116,42 @@ export default function CreateExerciseScreen() {
         </View>
 
         <View className="mb-6">
-            <ThemedText type="defaultSemiBold" className="mb-2">Properties</ThemedText>
+            <Text className="text-base leading-6 font-semibold mb-2">Properties</Text>
             <TouchableOpacity 
                 onPress={() => setShowTypeModal(true)}
                 className="bg-light-lighter dark:bg-border-dark p-4 rounded-xl border border-transparent dark:border-white/10 flex-row justify-between items-center"
             >
-                <ThemedText numberOfLines={1}>
+                <Text numberOfLines={1} className="text-base leading-6">
                     {properties.length > 0 
                         ? properties.map(p => p.label).join(', ') 
                         : 'Select Properties'}
-                </ThemedText>
+                </Text>
                 <IconSymbol name="chevron.right" size={16} color={theme.icon || '#888'} />
             </TouchableOpacity>
         </View>
 
         <View className="mb-6">
-            <ThemedText type="defaultSemiBold" className="mb-2">Primary Muscle Group</ThemedText>
+            <Text className="text-base leading-6 font-semibold mb-2">Primary Muscle Group</Text>
             <TouchableOpacity 
                 onPress={() => setShowPrimaryModal(true)}
                 className="bg-light-lighter dark:bg-border-dark p-4 rounded-xl border border-transparent dark:border-white/10 flex-row justify-between items-center"
             >
-                <ThemedText>{primaryMuscle ? primaryMuscle.name : 'Select Primary Muscle'}</ThemedText>
+                <Text className="text-base leading-6">{primaryMuscle ? primaryMuscle.name : 'Select Primary Muscle'}</Text>
                 <IconSymbol name="chevron.right" size={16} color={theme.icon || '#888'} />
             </TouchableOpacity>
         </View>
 
         <View className="mb-6">
-            <ThemedText type="defaultSemiBold" className="mb-2">Secondary Muscle Groups</ThemedText>
+            <Text className="text-base leading-6 font-semibold mb-2">Secondary Muscle Groups</Text>
             <TouchableOpacity 
                 onPress={() => setShowSecondaryModal(true)}
                 className="bg-light-lighter dark:bg-border-dark p-4 rounded-xl border border-transparent dark:border-white/10 flex-row justify-between items-center"
             >
-                <ThemedText numberOfLines={1}>
+                <Text numberOfLines={1} className="text-base leading-6">
                     {secondaryMuscles.length > 0 
                         ? secondaryMuscles.map(m => m.name).join(', ') 
                         : 'Select Secondary Muscles (Optional)'}
-                </ThemedText>
+                </Text>
                 <IconSymbol name="chevron.right" size={16} color={theme.icon || '#888'} />
             </TouchableOpacity>
         </View>

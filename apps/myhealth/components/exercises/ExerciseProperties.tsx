@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { ThemedText } from '@mysuite/ui';
+import { View, Text } from 'react-native';
 
 interface ExercisePropertiesProps {
     properties: string[] | null;
@@ -25,7 +24,7 @@ export const ExerciseProperties = ({
             padding: 16, 
             marginBottom: 24 
         }}>
-            <ThemedText type="defaultSemiBold" style={{ marginBottom: 12, color: themeColors.text }}>Properties</ThemedText>
+            <Text className="text-base leading-6 font-semibold" style={{ marginBottom: 12, color: themeColors.text }}>Properties</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                 {Array.isArray(properties) && properties.length > 0 ? (
                     properties.map((prop: string, index: number) => (
@@ -35,11 +34,11 @@ export const ExerciseProperties = ({
                             paddingVertical: 6, 
                             borderRadius: 16 
                         }}>
-                            <ThemedText style={{ fontSize: 13, color: themeColors.text }}>{String(prop)}</ThemedText>
+                            <Text style={{ fontSize: 13, color: themeColors.text }}>{String(prop)}</Text>
                         </View>
                     ))
                 ) : (
-                    <ThemedText style={{ fontStyle: 'italic', color: themeColors.text, opacity: 0.6 }}>No specific properties</ThemedText>
+                    <Text style={{ fontStyle: 'italic', color: themeColors.text, opacity: 0.6 }}>No specific properties</Text>
                 )}
                  {!properties && rawType && (
                      <View style={{ 
@@ -48,7 +47,7 @@ export const ExerciseProperties = ({
                         paddingVertical: 6, 
                         borderRadius: 16 
                     }}>
-                        <ThemedText style={{ fontSize: 13, color: themeColors.text }}>{String(rawType)}</ThemedText>
+                        <Text style={{ fontSize: 13, color: themeColors.text }}>{String(rawType)}</Text>
                     </View>
                 )}
             </View>

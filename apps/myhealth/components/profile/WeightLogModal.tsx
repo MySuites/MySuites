@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ThemedText, SharedButton, useUITheme } from '@mysuite/ui';
+import { SharedButton, useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -60,7 +60,7 @@ export function WeightLogModal({ visible, onClose, onSave }: WeightLogModalProps
             >
             <View className="bg-light-lighter dark:bg-dark-lighter rounded-t-3xl p-6 pb-10">
                 <View className="flex-row justify-between items-center mb-6">
-                <ThemedText className="text-xl font-bold">Log Body Weight</ThemedText>
+                <Text className="text-xl font-bold">Log Body Weight</Text>
                 <TouchableOpacity onPress={onClose} className="p-2 bg-dark dark:bg-dark-darker rounded-full">
                     <IconSymbol name="xmark" size={16} color={theme.text} />
                 </TouchableOpacity>

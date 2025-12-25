@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useUITheme as useTheme, ThemedText } from '@mysuite/ui';
+import { useUITheme as useTheme } from '@mysuite/ui';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
@@ -109,11 +109,11 @@ export default function CreateRoutineScreen() {
         <View className="flex-1 bg-light dark:bg-dark">
              <View className="flex-row justify-between items-center p-4 border-b border-bg-dark dark:border-white/10 pt-4 android:pt-10">
                 <TouchableOpacity onPress={() => router.back()} className="p-2">
-                     <ThemedText type="link">Cancel</ThemedText>
+                     <Text className="text-base leading-[30px] text-[#0a7ea4]">Cancel</Text>
                 </TouchableOpacity>
-                <ThemedText type="subtitle">{editingRoutineId ? 'Edit Routine' : 'Create Routine'}</ThemedText>
+                <Text className="text-xl font-bold">{editingRoutineId ? 'Edit Routine' : 'Create Routine'}</Text>
                 <TouchableOpacity disabled={isSaving} onPress={handleSaveRoutine} className="p-2">
-                    {isSaving ? <ActivityIndicator size="small" /> : <ThemedText type="link" style={{ fontWeight: 'bold' }}>Save</ThemedText>}
+                    {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ fontWeight: 'bold' }}>Save</Text>}
                 </TouchableOpacity>
             </View>
 
@@ -128,18 +128,17 @@ export default function CreateRoutineScreen() {
                     />
                     
                     <View className="flex-row justify-between items-center mb-6">
-                        <ThemedText type="defaultSemiBold">Schedule</ThemedText>
+                        <Text className="text-base leading-6 font-semibold">Schedule</Text>
                         <TouchableOpacity onPress={() => setIsAddingDay(true)}>
-                            <ThemedText type="link" style={{ fontSize: 16 }}>+ Add Day</ThemedText>
+                            <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ fontSize: 16 }}>+ Add Day</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-
                 {routineSequence.length === 0 ? (
                     <View className="flex-1 justify-center items-center opacity-50 px-4">
-                        <ThemedText className="mb-2 text-lg" style={{ color: theme.icon }}>No days added yet</ThemedText>
+                        <Text className="leading-6 mb-2 text-lg" style={{ color: theme.icon }}>No days added yet</Text>
                         <TouchableOpacity onPress={() => setIsAddingDay(true)}>
-                            <ThemedText type="link" style={{ fontSize: 18 }}>Add Day</ThemedText>
+                            <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ fontSize: 18 }}>Add Day</Text>
                         </TouchableOpacity>
                     </View>
                 ) : (

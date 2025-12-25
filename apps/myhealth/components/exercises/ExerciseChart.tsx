@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
-import { ThemedText } from '@mysuite/ui';
 
 interface ExerciseChartProps {
     data: any[];
@@ -40,7 +39,7 @@ export const ExerciseChart = ({
             overflow: 'hidden'
         }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                <ThemedText type="defaultSemiBold" style={{ color: themeColors.text }}>Performance</ThemedText>
+                <Text className="text-base leading-6 font-semibold" style={{ color: themeColors.text }}>Performance</Text>
                 {availableMetrics.length > 0 && (
                     <View style={{ 
                         flexDirection: 'row', 
@@ -118,7 +117,7 @@ export const ExerciseChart = ({
             )}
             {!loading && data.length === 0 && (
                 <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
-                    <ThemedText style={{ color: themeColors.text, opacity: 0.5 }}>No data yet</ThemedText>
+                    <Text style={{ color: themeColors.text, opacity: 0.5 }}>No data yet</Text>
                 </View>
             )}
         </View>
