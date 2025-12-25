@@ -15,43 +15,35 @@ export type AppTheme = {
   [k: string]: any;
 };
 
-export const lightTheme: AppTheme = {
-  primary: 'hsl(8, 100%, 67%)',
-  accent: 'hsl(117, 20%, 61%)',
-  bgLight: 'hsl(0, 0%, 100%)',
-  bg: 'hsl(0, 0%, 95%)', 
-  bgDark: 'hsl(0, 0%, 90%)',
-  text: 'hsl(0, 0%, 5%)',
-  textMuted: 'hsl(0, 0%, 30%)', 
-  icon: 'hsl(0, 0%, 5%)',
-  tabIconDefault: 'hsl(0, 0%, 89%)',
-  tabIconSelected: 'hsl(8, 100%, 67%)',
-  error: 'hsl(0, 84%, 60%)',
+// @ts-ignore
+const { baseColors, appThemes } = require('./colors');
+
+// getAppTheme combines shared base colors with app-specific brand colors
+export const getAppTheme = (appId: keyof typeof appThemes, scheme: 'light' | 'dark' = 'light'): AppTheme => {
+  const base = baseColors[scheme];
+  const brand = appThemes[appId][scheme];
+  
+  return {
+    ...base,
+    primary: brand.primary,
+    accent: brand.accent,
+    tabIconSelected: brand.primary,
+  };
 };
 
-export const darkTheme: AppTheme = {
-  primary: 'hsl(5, 100%, 75%)', 
-  accent: 'hsl(122, 37%, 74%)',
-  bgLight: 'hsl(0, 0%, 10%)', 
-  bg: 'hsl(0, 0%, 5%)',
-  bgDark: 'hsl(0, 0%, 0%)',
-  text: 'hsl(0, 100%, 95%)',
-  textMuted: 'hsl(0, 0%, 70%)', 
-  icon: 'hsl(0, 100%, 98%)',
-  tabIconDefault: 'hsl(0, 17%, 21%)',
-  tabIconSelected: 'hsl(5, 100%, 75%)',
-  error: 'hsl(0, 84%, 60%)',
-};
-
-// For backward compatibility if needed, or default export
-export const defaultTheme = lightTheme;
-
-const ThemeContext = createContext<AppTheme>(defaultTheme);
+const ThemeContext = createContext<AppTheme | null>(null);
 
 export const UIThemeProvider = ({ value, children }: { value: AppTheme; children: React.ReactNode }) => {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const useUITheme = () => useContext(ThemeContext);
+export const useUITheme = () => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) {
+    // Return a default fallback if not wrapped, but usually apps provide their own
+    return getAppTheme('myhealth', 'light');
+  }
+  return ctx;
+};
 
 export default ThemeContext;

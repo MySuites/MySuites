@@ -32,7 +32,7 @@ export function RoutineCard({ routine, onPress, onLongPress, onDelete, onEdit }:
             <Text className="text-lg font-bold text-apptext dark:text-apptext_dark mb-1" numberOfLines={1}>
             {routine.name}
             </Text>
-            <Text className="text-sm text-gray-500 dark:text-gray-400">
+            <Text className="text-sm text-apptext-muted dark:text-apptext-muted-dark">
             {totalDays} Days • {workoutCount} Workouts
             </Text>
         </TouchableOpacity>

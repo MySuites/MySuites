@@ -1,0 +1,49 @@
+const baseColors = {
+  light: {
+    bgLight: 'hsl(0, 0%, 100%)',
+    bg: 'hsl(0, 0%, 95%)',
+    bgDark: 'hsl(0, 0%, 90%)',
+    text: 'hsl(0, 0%, 5%)',
+    textMuted: 'hsl(0, 0%, 30%)',
+    icon: 'hsl(0, 0%, 5%)',
+    tabIconDefault: 'hsl(0, 0%, 89%)',
+    error: 'hsl(0, 84%, 60%)',
+    border: 'hsl(0, 0%, 89%)',
+  },
+  dark: {
+    bgLight: 'hsl(0, 0%, 10%)',
+    bg: 'hsl(0, 0%, 5%)',
+    bgDark: 'hsl(0, 0%, 0%)',
+    text: 'hsl(0, 100%, 95%)',
+    textMuted: 'hsl(0, 0%, 70%)',
+    icon: 'hsl(0, 100%, 98%)',
+    tabIconDefault: 'hsl(0, 17%, 21%)',
+    error: 'hsl(0, 84%, 60%)',
+    border: 'hsl(0, 17%, 21%)',
+  }
+};
+
+const appThemes = {
+  myhealth: {
+    light: {
+      primary: 'hsl(8, 100%, 67%)',
+      accent: 'hsl(117, 20%, 61%)',
+    },
+    dark: {
+      primary: 'hsl(5, 100%, 75%)',
+      accent: 'hsl(122, 37%, 74%)',
+    }
+  },
+  myfinancials: {
+    light: {
+      primary: 'hsl(210, 100%, 50%)',
+      accent: 'hsl(150, 40%, 40%)',
+    },
+    dark: {
+      primary: 'hsl(210, 100%, 70%)',
+      accent: 'hsl(150, 40%, 60%)',
+    }
+  }
+};
+
+module.exports = { baseColors, appThemes };

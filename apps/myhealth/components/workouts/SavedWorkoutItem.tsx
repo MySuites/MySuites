@@ -24,11 +24,11 @@ export const SavedWorkoutItem = ({
         <Card 
             onPress={onPress}
             activeOpacity={0.9}
-            className="p-0 mb-0 border border-black/5 dark:border-white/10"
+            className="p-0 mb-0 border border-border dark:border-border-dark"
             onDelete={onDelete}
             onEdit={onEdit}
         >
-            <View className={`flex-row justify-between items-center ${isExpanded ? 'border-b border-black/5 dark:border-white/10' : ''}`}>
+            <View className={`flex-row justify-between items-center ${isExpanded ? 'border-b border-border dark:border-border-dark' : ''}`}>
                 <TouchableOpacity 
                     className="flex-1 mr-2"
                     onPress={onPress}
@@ -48,10 +48,10 @@ export const SavedWorkoutItem = ({
             </View>
             
             {isExpanded && (
-                <View className="bg-background/50 dark:bg-background_dark/50 px-4 py-2 rounded-b-xl">
+                <View className="bg-bg-default/50 dark:bg-bg-default-dark/50 px-4 py-2 rounded-b-xl">
                     {item.exercises && item.exercises.length > 0 ? (
                         item.exercises.map((ex: any, idx: number) => (
-                            <View key={idx} className="py-2 flex-row justify-between border-b border-black/5 dark:border-white/5 last:border-0">
+                            <View key={idx} className="py-2 flex-row justify-between border-b border-border dark:border-border-dark last:border-0">
                                 <Text className="text-apptext dark:text-apptext_dark font-medium">{ex.name}</Text>
                                 <Text className="text-gray-500 dark:text-gray-400 text-sm">{ex.sets} x {ex.reps}</Text>
                             </View>

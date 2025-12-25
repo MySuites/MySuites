@@ -5,15 +5,11 @@
 
 import { Platform } from "react-native";
 
-import { darkTheme, lightTheme } from "@mysuite/ui/theme";
+import { getAppTheme } from "@mysuite/ui/theme";
 
 export const Colors = {
-  light: {
-    ...lightTheme,
-  },
-  dark: {
-    ...darkTheme,
-  },
+  light: getAppTheme("myhealth", "light"),
+  dark: getAppTheme("myhealth", "dark"),
 };
 
 export const Fonts = Platform.select({

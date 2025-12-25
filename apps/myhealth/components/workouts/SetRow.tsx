@@ -73,65 +73,65 @@ export const SetRow = ({ index, exercise, onCompleteSet, onUncompleteSet, onUpda
             friction={2}
             containerStyle={{ overflow: 'visible' }}
         >
-             <View className={`flex-row items-center mb-2 h-11 px-1 ${isEvenSet ? 'bg-black/5 dark:bg-white/5 rounded-lg' : ''}`}>
+             <View className={`flex-row items-center mb-2 h-11 px-1 ${isEvenSet ? 'bg-bg-default dark:bg-bg-default-dark rounded-lg' : ''}`}>
                  {/* Set Number */}
                  <View className="w-[30px] items-center justify-center">
-                     <Text className="text-xs font-bold text-black dark:text-white">{index + 1}</Text>
+                     <Text className="text-xs font-bold text-apptext dark:text-apptext-dark">{index + 1}</Text>
                  </View>
 
-                 <Text className="flex-1 text-center text-xs text-black dark:text-white">-</Text>
+                 <Text className="flex-1 text-center text-xs text-apptext-muted dark:text-apptext-muted-dark">-</Text>
 
                  {isCompleted ? (
                       <>
                         {showBodyweight && (
                             <View className="w-[60px] items-center justify-center mx-1">
-                                <Text className="text-sm font-bold text-black/50 dark:text-white/50">
+                                <Text className="text-sm font-bold text-apptext-muted dark:text-apptext-muted-dark">
                                     {latestBodyWeight ? `${latestBodyWeight}` : 'BW'}
                                 </Text>
                             </View>
                         )}
                         {showWeight && (
                              <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getLogValue('weight')}
-                                onChangeText={(t) => onUpdateLog?.(index, 'weight', t)}
+                                onChangeText={(t: string) => onUpdateLog?.(index, 'weight', t)}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         {showReps && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getLogValue('reps')}
-                                onChangeText={(t) => onUpdateLog?.(index, 'reps', t)}
+                                onChangeText={(t: string) => onUpdateLog?.(index, 'reps', t)}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         {showDuration && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getLogValue('duration')}
-                                onChangeText={(t) => onUpdateLog?.(index, 'duration', t)}
+                                onChangeText={(t: string) => onUpdateLog?.(index, 'duration', t)}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                          {showDistance && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getLogValue('distance')}
-                                onChangeText={(t) => onUpdateLog?.(index, 'distance', t)}
+                                onChangeText={(t: string) => onUpdateLog?.(index, 'distance', t)}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         <TouchableOpacity 
-                            className="w-7 h-7 rounded-lg bg-primary dark:bg-primary_dark items-center justify-center ml-1"
+                            className="w-7 h-7 rounded-lg bg-primary dark:bg-primary-dark items-center justify-center ml-1"
                             onPress={() => onUncompleteSet?.(index)}
                         >
                              <IconSymbol name="checkmark" size={16} color="#fff" />
@@ -141,60 +141,60 @@ export const SetRow = ({ index, exercise, onCompleteSet, onUncompleteSet, onUpda
                       <>
                         {showBodyweight && (
                             <View className="w-[60px] items-center justify-center mx-1">
-                                <Text className="text-sm font-bold text-black/50 dark:text-white/50">
+                                <Text className="text-sm font-bold text-apptext-muted dark:text-apptext-muted-dark">
                                     {latestBodyWeight ? `${latestBodyWeight}` : 'BW'}
                                 </Text>
                             </View>
                         )}
                         {showWeight && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getValue('weight')}
-                                onChangeText={(t) => onUpdateSetTarget?.(index, 'weight', t)}
+                                onChangeText={(t: string) => onUpdateSetTarget?.(index, 'weight', t)}
                                 placeholder={getValue('weight') || "-"} 
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         {showReps && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getValue('reps')} 
-                                onChangeText={(t) => onUpdateSetTarget?.(index, 'reps', t)}
-                                placeholder={getValue('reps') || exercise.reps.toString()}
+                                onChangeText={(t: string) => onUpdateSetTarget?.(index, 'reps', t)}
+                                placeholder={getValue('reps') || (exercise.reps || 0).toString()}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         {showDuration && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getValue('duration')} 
-                                onChangeText={(t) => onUpdateSetTarget?.(index, 'duration', t)}
+                                onChangeText={(t: string) => onUpdateSetTarget?.(index, 'duration', t)}
                                 placeholder={getValue('duration') || "-"}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         {showDistance && (
                             <TextInput 
-                                className="w-[60px] bg-transparent text-center text-sm font-bold text-black dark:text-white mx-1 p-0 -mt-[6px]"
+                                className="w-[60px] bg-transparent text-center text-sm font-bold text-apptext dark:text-apptext-dark mx-1 p-0 -mt-[6px]"
                                 value={getValue('distance')} 
-                                onChangeText={(t) => onUpdateSetTarget?.(index, 'distance', t)}
+                                onChangeText={(t: string) => onUpdateSetTarget?.(index, 'distance', t)}
                                 placeholder={getValue('distance') || "-"}
                                 keyboardType="numeric" 
-                                placeholderTextColor={theme.text || '#000000'}
+                                placeholderTextColor={theme.placeholder || '#888'}
                                 textAlignVertical="center"
                             />
                         )}
                         <TouchableOpacity 
-                            className={`w-7 h-7 rounded-lg items-center justify-center ml-1 border-2 border-primary dark:border-primary_dark`}
+                            className={`w-7 h-7 rounded-lg items-center justify-center ml-1 border-2 border-primary dark:border-primary-dark`}
                             onPress={() => onCompleteSet({ 
                                 weight: showWeight ? getValue('weight') : undefined,
-                                reps: showReps ? (getValue('reps') || exercise.reps.toString()) : undefined,
+                                reps: showReps ? (getValue('reps') || (exercise.reps || 0).toString()) : undefined,
                                 duration: showDuration ? getValue('duration') : undefined,
                                 distance: showDistance ? getValue('distance') : undefined,
                             })}
