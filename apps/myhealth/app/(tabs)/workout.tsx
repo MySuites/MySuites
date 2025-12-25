@@ -22,6 +22,7 @@ import { HollowedCard } from '../../components/ui/HollowedCard';
 
 import { SavedWorkout, Routine } from '../../types';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
+import { RaisedButton } from '@mysuite/ui';
 
 export default function Workout() {
 	const router = useRouter();
@@ -154,15 +155,27 @@ export default function Workout() {
 			>
 				{/* Controls Row */}
 				<View className="flex-row gap-2 my-3 px-4">
-                    <TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-light dark:border-dark bg-light dark:bg-dark" onPress={() => router.push('/exercises' as any)} accessibilityLabel="Exercises">
-						<Text className="text-light dark:text-dark text-center">Exercises</Text>
-					</TouchableOpacity>
-					<TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-light dark:border-dark bg-light dark:bg-dark" onPress={handleStartEmpty} accessibilityLabel="Start empty workout">
-						<Text className="text-light dark:text-dark text-center">Start Empty</Text>
-					</TouchableOpacity>
-					<TouchableOpacity className="flex-1 mr-0 p-2.5 rounded-lg border border-light dark:border-dark bg-light dark:bg-dark" onPress={() => router.push('/workouts/history' as any)} accessibilityLabel="History">
-						<Text className="text-light dark:text-dark text-center">History</Text>
-					</TouchableOpacity>
+                    <RaisedButton 
+                        title="Exercises" 
+                        onPress={() => router.push('/exercises' as any)} 
+                        accessibilityLabel="Exercises"
+                        className="flex-1 mr-0 p-2.5 my-0"
+                        textClassName="text-light dark:text-dark text-center"
+                    />
+					<RaisedButton 
+                        title="Start Empty" 
+                        onPress={handleStartEmpty} 
+                        accessibilityLabel="Start empty workout"
+                        className="flex-1 mr-0 p-2.5 my-0"
+                        textClassName="text-light dark:text-dark text-center"
+                    />
+					<RaisedButton 
+                        title="History" 
+                        onPress={() => router.push('/workouts/history' as any)} 
+                        accessibilityLabel="History"
+                        className="flex-1 mr-0 p-2.5 my-0"
+                        textClassName="text-light dark:text-dark text-center"
+                    />
 				</View>
 					
                 <View>
