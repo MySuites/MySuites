@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Alert, ScrollView, TextInput, Switch } from 'react-native';
-import { useRouter } from 'expo-router';
 import { useAuth, supabase } from '@mysuite/auth';
-import { useUITheme } from '@mysuite/ui';
-import { ThemedView } from '@mysuite/ui';
+import { useUITheme, ThemedView } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { useNavigationSettings } from '../../providers/NavigationSettingsProvider';
 
 export default function SettingsScreen() {
   const { user } = useAuth();
-  const router = useRouter();
   const theme = useUITheme();
   const { isFabEnabled, toggleFab } = useNavigationSettings();
   const [username, setUsername] = React.useState('');
@@ -78,25 +76,18 @@ export default function SettingsScreen() {
 
   return (
     <ThemedView className="flex-1">
-      <View className="flex-row items-center justify-between px-4 pt-14 pb-4 border-b border-surface dark:border-surface_dark">
-        <TouchableOpacity onPress={() => router.back()} className="flex-row items-center w-[60px]">
-          <IconSymbol name="chevron.backward" size={24} color="#000" />
-          <Text className="text-base ml-1 text-apptext dark:text-apptext_dark">Back</Text>
-        </TouchableOpacity>
-        <Text className="text-xl font-bold text-apptext dark:text-apptext_dark">Settings</Text>
-        <View className="w-[60px]" />
-      </View>
+      <ScreenHeader title="Settings" />
 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <View className="mb-6">
           <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase">Appearance</Text>
           <ThemeToggle />
-          <View className="flex-row justify-between items-center py-3 border-b border-surface dark:border-surface_dark">
-             <Text className="text-base text-apptext dark:text-apptext_dark">Fast Action Button</Text>
+          <View className="flex-row justify-between items-center py-3 border-b border-border dark:border-border-dark">
+             <Text className="text-base text-apptext dark:text-apptext-dark">Fast Action Button</Text>
              <Switch
                 value={isFabEnabled}
                 onValueChange={toggleFab}
-                trackColor={{ false: theme.surface, true: theme.primary }}
+                trackColor={{ false: theme.bgDark || '#ccc', true: theme.primary }}
                 thumbColor={'#fff'}
              />
           </View>
@@ -105,14 +96,14 @@ export default function SettingsScreen() {
         <View className="mb-6">
           <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase">Account</Text>
           <View className="py-3">
-            <Text className="text-base text-apptext dark:text-apptext_dark">Email</Text>
+            <Text className="text-base text-apptext dark:text-apptext-dark">Email</Text>
             <Text className="text-base text-gray-500">{user?.email}</Text>
           </View>
           
           <View className="py-3">
-            <Text className="text-base text-apptext dark:text-apptext_dark">Username</Text>
+            <Text className="text-base text-apptext dark:text-apptext-dark">Username</Text>
             <TextInput
-              className="p-3 border border-surface dark:border-white/10 rounded-lg mt-2 text-base text-apptext dark:text-apptext_dark"
+              className="p-3 border border-border dark:border-border-dark rounded-lg mt-2 text-base text-apptext dark:text-apptext-dark"
               value={username}
               onChangeText={setUsername}
               placeholder="Username"
@@ -121,9 +112,9 @@ export default function SettingsScreen() {
           </View>
 
           <View className="py-3">
-            <Text className="text-base text-apptext dark:text-apptext_dark">Full Name</Text>
+            <Text className="text-base text-apptext dark:text-apptext-dark">Full Name</Text>
             <TextInput
-              className="p-3 border border-surface dark:border-white/10 rounded-lg mt-2 text-base text-apptext dark:text-apptext_dark"
+              className="p-3 border border-border dark:border-border-dark rounded-lg mt-2 text-base text-apptext dark:text-apptext-dark"
               value={fullName}
               onChangeText={setFullName}
               placeholder="Full Name"
@@ -132,29 +123,29 @@ export default function SettingsScreen() {
           </View>
 
           <TouchableOpacity 
-            className="mt-4 p-4 items-center bg-surface dark:bg-surface_dark rounded-lg" 
+            className="mt-4 p-4 items-center bg-bg-dark dark:bg-bg-dark-dark rounded-lg" 
             onPress={handleUpdateProfile}
             disabled={loading}
           >
-            <Text className="text-base font-semibold text-primary dark:text-primary_dark">{loading ? 'Saving...' : 'Save Changes'}</Text>
+            <Text className="text-base font-semibold text-primary dark:text-primary-dark">{loading ? 'Saving...' : 'Save Changes'}</Text>
           </TouchableOpacity>
         </View>
 
         <View className="mb-6">
           <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase">Legal</Text>
-          <TouchableOpacity className="flex-row justify-between items-center py-3 border-b border-surface dark:border-surface_dark" onPress={() => Alert.alert('Privacy Policy', 'Link to Privacy Policy')}>
-            <Text className="text-base text-apptext dark:text-apptext_dark">Privacy Policy</Text>
+          <TouchableOpacity className="flex-row justify-between items-center py-3 border-b border-border dark:border-border-dark" onPress={() => Alert.alert('Privacy Policy', 'Link to Privacy Policy')}>
+            <Text className="text-base text-apptext dark:text-apptext-dark">Privacy Policy</Text>
             <IconSymbol name="chevron.right" size={20} color={theme.icon || '#ccc'} />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-row justify-between items-center py-3 border-b border-surface dark:border-surface_dark" onPress={() => Alert.alert('Terms of Service', 'Link to Terms of Service')}>
-            <Text className="text-base text-apptext dark:text-apptext_dark">Terms of Service</Text>
+          <TouchableOpacity className="flex-row justify-between items-center py-3 border-b border-border dark:border-border-dark" onPress={() => Alert.alert('Terms of Service', 'Link to Terms of Service')}>
+            <Text className="text-base text-apptext dark:text-apptext-dark">Terms of Service</Text>
             <IconSymbol name="chevron.right" size={20} color={theme.icon || '#ccc'} />
           </TouchableOpacity>
         </View>
 
         <View className="mb-6">
-          <TouchableOpacity className="p-4 items-center border-b border-surface dark:border-surface_dark" onPress={handleSignOut}>
-            <Text className="text-base font-semibold text-primary dark:text-primary_dark">Sign Out</Text>
+          <TouchableOpacity className="p-4 items-center border-b border-border dark:border-border-dark" onPress={handleSignOut}>
+            <Text className="text-base font-semibold text-primary dark:text-primary-dark">Sign Out</Text>
           </TouchableOpacity>
           
           <TouchableOpacity className="mt-2 text-center items-center p-4" onPress={handleDeleteAccount}>
