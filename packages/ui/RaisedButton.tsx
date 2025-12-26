@@ -10,7 +10,7 @@ cssInterop(Text, { className: 'style' });
 
 export const RaisedButton = ({ title, className, textClassName, style, ...props }: { title: string; className?: string; textClassName?: string } & PressableProps) => {
   const theme = useUITheme();
-  const defaultClasses = 'p-4 my-4 rounded-xl items-center justify-center bg-light dark:bg-dark-darker border border-t-highlight border-l-highlight border-b-transparent border-r-transparent dark:border-t-highlight-dark dark:border-l-highlight-dark';
+  const defaultClasses = 'p-4 my-4 rounded-xl items-center justify-center bg-light-lighter dark:bg-dark-lighter border border-t-highlight border-l-highlight border-b-transparent border-r-transparent dark:border-t-highlight-dark dark:border-l-highlight-dark';
   const combined = `${defaultClasses}${className ? ' ' + className : ''}`;
 
   const shadowStyle = {
