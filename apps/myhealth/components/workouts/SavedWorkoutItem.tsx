@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { RaisedCard } from '../../../../packages/ui/RaisedCard';
+import { ActionCard } from '../../../../packages/ui/ActionCard';
 import { SavedWorkout } from '../../types';
 
 interface SavedWorkoutItemProps {
@@ -21,7 +21,7 @@ export const SavedWorkoutItem = ({
     onDelete 
 }: SavedWorkoutItemProps) => {
     return (
-        <RaisedCard 
+        <ActionCard 
             onPress={onPress}
             activeOpacity={0.9}
             className="p-0 mb-0 border border-light dark:border-dark"
@@ -57,6 +57,6 @@ export const SavedWorkoutItem = ({
                     )}
                 </View>
             )}
-        </RaisedCard>
+        </ActionCard>
     );
 };
