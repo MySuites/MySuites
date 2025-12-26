@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from "react-native";
 import { useAuth } from "@mysuite/auth";
 import {
@@ -134,30 +135,23 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
                         Alert.alert("History Error", "Failed to load workout history: " + (hError.message || JSON.stringify(hError)));
                     }
                 } else {
-                    if (typeof window !== "undefined" && window.localStorage) {
-                        const rawW = window.localStorage.getItem(
-                            "myhealth_saved_workouts",
-                        );
-                        if (rawW) {
-                            const parsed = JSON.parse(rawW);
-                            // Filter out "Rest" workouts from local storage too
-                            const filtered = Array.isArray(parsed)
-                                ? parsed.filter((w: any) =>
-                                    w.name &&
-                                    w.name.trim().toLowerCase() !== "rest"
-                                )
-                                : [];
-                            setSavedWorkouts(filtered);
-                        }
-                        const rawR = window.localStorage.getItem(
-                            "myhealth_workout_routines",
-                        );
-                        if (rawR) setRoutines(JSON.parse(rawR));
-                        const rawActive = window.localStorage.getItem(
-                            "myhealth_active_routine",
-                        );
-                        if (rawActive) setRoutineState(JSON.parse(rawActive));
+                    const rawW = await AsyncStorage.getItem("myhealth_saved_workouts");
+                    if (rawW) {
+                        const parsed = JSON.parse(rawW);
+                        // Filter out "Rest" workouts from local storage too
+                        const filtered = Array.isArray(parsed)
+                            ? parsed.filter((w: any) =>
+                                w.name &&
+                                w.name.trim().toLowerCase() !== "rest"
+                            )
+                            : [];
+                        setSavedWorkouts(filtered);
                     }
+                    const rawR = await AsyncStorage.getItem("myhealth_workout_routines");
+                    if (rawR) setRoutines(JSON.parse(rawR));
+                    
+                    const rawActive = await AsyncStorage.getItem("myhealth_active_routine");
+                    if (rawActive) setRoutineState(JSON.parse(rawActive));
                 }
             } catch {
                 // ignore
@@ -168,28 +162,21 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
 
     // Persist saved workouts and routines when changed
     useEffect(() => {
-        try {
-            if (typeof window !== "undefined" && window.localStorage) {
-                window.localStorage.setItem(
-                    "myhealth_saved_workouts",
-                    JSON.stringify(savedWorkouts),
-                );
-                window.localStorage.setItem(
-                    "myhealth_workout_routines",
-                    JSON.stringify(routines),
-                );
+        const persistData = async () => {
+            try {
+                await AsyncStorage.setItem("myhealth_saved_workouts", JSON.stringify(savedWorkouts));
+                await AsyncStorage.setItem("myhealth_workout_routines", JSON.stringify(routines));
+                
                 if (activeRoutine) {
-                    window.localStorage.setItem(
-                        "myhealth_active_routine",
-                        JSON.stringify(activeRoutine),
-                    );
+                    await AsyncStorage.setItem("myhealth_active_routine", JSON.stringify(activeRoutine));
                 } else {
-                    window.localStorage.removeItem("myhealth_active_routine");
+                    await AsyncStorage.removeItem("myhealth_active_routine");
                 }
+            } catch {
+                // ignore
             }
-        } catch {
-            // ignore
-        }
+        };
+        persistData();
     }, [savedWorkouts, routines, activeRoutine]);
 
     async function saveWorkout(
