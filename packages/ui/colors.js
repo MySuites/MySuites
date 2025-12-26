@@ -12,7 +12,7 @@ const baseColors = {
     highlight: 'hsla(0, 0%, 100%, 0.5)',
   },
   dark: {
-    bgLight: 'hsl(0, 0%, 15%)',
+    bgLight: 'hsl(0, 0%, 20%)',
     bg: 'hsl(0, 0%, 10%)',
     bgDark: 'hsl(0, 0%, 5%)',
     text: 'hsl(0, 0%, 95%)',
