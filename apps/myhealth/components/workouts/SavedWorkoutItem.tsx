@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { ActionCard } from '../../../../packages/ui/ActionCard';
+import { RaisedButton } from '../../../../packages/ui/RaisedButton';
 import { SavedWorkout } from '../../types';
+import { IconSymbol } from '../ui/icon-symbol';
+import { useUITheme } from '../../../../packages/ui/theme';
 
 interface SavedWorkoutItemProps {
     item: SavedWorkout;
@@ -20,6 +23,7 @@ export const SavedWorkoutItem = ({
     onStart,
     onDelete 
 }: SavedWorkoutItemProps) => {
+    const theme = useUITheme();
     return (
         <ActionCard 
             onPress={onPress}
@@ -34,12 +38,17 @@ export const SavedWorkoutItem = ({
                 </View>
                 
                 <View className="flex-row items-center">
-                    <TouchableOpacity 
+                    <RaisedButton 
                         onPress={onStart}
-                        className="bg-primary dark:bg-primary-dark px-3 py-1.5 rounded-lg"
+                        borderRadius={20}
+                        className="w-10 h-10 p-0 my-0 rounded-full items-center justify-center"
                     >
-                        <Text className="text-white font-semibold">Start</Text>
-                    </TouchableOpacity>
+                        <IconSymbol 
+                            name="play.fill" 
+                            size={15} 
+                            color={theme.primary} 
+                        />
+                    </RaisedButton>
                 </View>
             </View>
             
