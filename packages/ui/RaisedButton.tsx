@@ -6,10 +6,15 @@ import { useUITheme } from './theme';
 // Enable className support for React Native components (if not already enabled globally)
 cssInterop(Text, { className: 'style' });
 
-export const RaisedButton = ({ title, className, textClassName, style, children, borderRadius = 12, showGradient = true, ...props }: { title?: string; className?: string; textClassName?: string; children?: React.ReactNode; borderRadius?: number; showGradient?: boolean } & TouchableOpacityProps) => {
+export const RaisedButton = ({ title, className, textClassName, style, children, borderRadius = 12, showGradient = true, variant = 'default', ...props }: { title?: string; className?: string; textClassName?: string; children?: React.ReactNode; borderRadius?: number; showGradient?: boolean; variant?: 'default' | 'custom' } & TouchableOpacityProps) => {
   const theme = useUITheme();
   
-  const baseClasses = 'rounded-xl items-center justify-center bg-light dark:bg-dark border border-t-highlight border-l-highlight border-b-transparent border-r-transparent dark:border-t-highlight-dark dark:border-l-highlight-dark';
+  let baseClasses = 'rounded-xl items-center justify-center border border-t-highlight border-l-highlight border-b-transparent border-r-transparent dark:border-t-highlight-dark dark:border-l-highlight-dark';
+  
+  if (variant === 'default') {
+      baseClasses += ' bg-light dark:bg-dark';
+  }
+
   const combined = `${baseClasses}${className ? ' ' + className : ''}`;
 
   const shadowStyle = {

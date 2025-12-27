@@ -10,6 +10,10 @@ const baseColors = {
     error: 'hsl(0, 84%, 60%)',
     border: 'hsl(0, 0%, 95%)',
     highlight: 'hsla(0, 0%, 100%, 0.5)',
+    info: 'hsl(217, 91%, 60%)',
+    danger: 'hsl(0, 84%, 60%)',
+    warning: 'hsl(45, 93%, 47%)',
+    success: 'hsl(142, 76%, 36%)',
   },
   dark: {
     bgLightest: 'hsl(0, 0%, 20%)',
@@ -23,6 +27,10 @@ const baseColors = {
     error: 'hsl(0, 84%, 60%)',
     border: 'hsl(0, 0%, 10%)',
     highlight: 'hsla(0, 0%, 100%, 0.15)',
+    info: 'hsl(217, 91%, 60%)',
+    danger: 'hsl(0, 84%, 60%)',
+    warning: 'hsl(45, 93%, 47%)',
+    success: 'hsl(142, 76%, 36%)',
   }
 };
 

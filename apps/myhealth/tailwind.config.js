@@ -58,6 +58,10 @@ module.exports = {
       },
       colors: {
         error: baseColors.light.error,
+        info: baseColors.light.info,
+        danger: baseColors.light.danger,
+        warning: baseColors.light.warning,
+        success: baseColors.light.success,
       },
     },
   },

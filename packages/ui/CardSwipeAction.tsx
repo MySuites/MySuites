@@ -199,11 +199,13 @@ export const CardSwipeAction = ({
                             onPress={onEdit} 
                             style={{ 
                                 width: BUTTON_HEIGHT, 
-                                height: BUTTON_HEIGHT, 
+                                height: BUTTON_HEIGHT,
                             }}
                             borderRadius={BUTTON_HEIGHT / 2}
+                            showGradient={false}
+                            variant="custom"
                             // Re-adding p-0 my-0 because default p-4 is too big for 40px button
-                            className="bg-blue-500"
+                            className="bg-info dark:bg-info"
                         >
                             <IconSymbol name="pencil" size={20} color="white" />
                         </RaisedButton>
@@ -224,9 +226,13 @@ export const CardSwipeAction = ({
                     >
                         <RaisedButton 
                             onPress={onDelete} 
-                            style={{ flex: 1 }} 
+                            style={{ 
+                                flex: 1,
+                            }} 
                             borderRadius={BUTTON_HEIGHT / 2}
-                            className="bg-red-500"
+                            showGradient={false}
+                            variant="custom"
+                            className="bg-danger dark:bg-danger"
                         >
                             <Animated.View style={[deleteIconStyle]}>
                                 <IconSymbol name="trash.fill" size={20} color="white" />
