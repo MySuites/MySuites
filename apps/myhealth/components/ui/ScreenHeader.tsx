@@ -19,7 +19,7 @@ export function ScreenHeader({ title, rightAction, className }: ScreenHeaderProp
 
   return (
     <View 
-      className={`py-4 pt-16 bg-light dark:bg-dark rounded-b-3xl ${className || ''}`}
+      className={`py-4 pt-16 bg-light dark:bg-dark-lighter rounded-b-3xl ${className || ''}`}
       style={shadowStyle}
     >
       <View className="flex-row justify-center items-center relative">
