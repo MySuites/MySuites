@@ -22,17 +22,16 @@ export const unstable_settings = {
 
 function RootLayoutNav() {
   const { session } = useAuth();
-  // const router = useRouter();
-  const router = null;
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!router) return;
-  //   if (session) {
-  //     setTimeout(() => (router as any).replace('/(tabs)'), 0);
-  //   } else {
-  //     setTimeout(() => (router as any).replace('/auth'), 0);
-  //   }
-  // }, [session, router]);
+  useEffect(() => {
+    if (!router) return;
+    if (session) {
+      setTimeout(() => router.replace('/(tabs)'), 0);
+    } else {
+      setTimeout(() => router.replace('/auth'), 0);
+    }
+  }, [session, router]);
 
   return (
     <Stack>
