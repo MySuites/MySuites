@@ -27,7 +27,7 @@ export function ActionCard({ children, style, className, onPress, activeOpacity 
 
   // Minimal shadow for separation, but flat style
   const shadowStyle = { 
-      overflow: 'visible' as const
+      overflow: 'hidden' as const
   };
 
   // Track if we are deep enough to delete
@@ -96,7 +96,15 @@ export function ActionCard({ children, style, className, onPress, activeOpacity 
         </Animated.View>
       ) : (
         <Animated.View style={[cardContentStyle]}>
-            <View style={[style, shadowStyle]} className={baseClassName} {...props}>
+            <View 
+                style={[style, shadowStyle]} 
+                className={`rounded-xl p-3 w-full ${className || ''} ${
+                    isSwiped 
+                    ? 'bg-light-darker dark:bg-dark-lightest' 
+                    : 'bg-light dark:bg-dark-lighter'
+                }`} 
+                {...props}
+            >
                 {children}
             </View>
         </Animated.View>
@@ -129,7 +137,7 @@ export function ActionCard({ children, style, className, onPress, activeOpacity 
                     onDelete();
                 }
             }}
-            containerStyle={{ overflow: 'visible' }}
+            containerStyle={{ overflow: 'hidden' }}
         >
             {Content}
         </Swipeable>
