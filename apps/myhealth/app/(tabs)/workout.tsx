@@ -66,7 +66,7 @@ export default function Workout() {
         }
     };
 
-    const [expandedWorkoutId, setExpandedWorkoutId] = useState<string | null>(null);
+
     const [previewWorkout, setPreviewWorkout] = useState<SavedWorkout | null>(null);
     const [routineViewMode, setRoutineViewMode] = useState<'next_3' | 'next_7' | 'week'>('week');
 
@@ -224,19 +224,14 @@ export default function Workout() {
                                 keyExtractor={(i) => i.id}
                                 style={{ overflow: 'visible' }}
                                 ItemSeparatorComponent={() => <View />}
-                                renderItem={({item}) => {
-                                    const isExpanded = expandedWorkoutId === item.id;
-                                    return (
-                                        <SavedWorkoutItem
-                                            item={item}
-                                            isExpanded={isExpanded}
-                                            onPress={() => setExpandedWorkoutId(isExpanded ? null : item.id)}
-                                            onEdit={() => handleEditSavedWorkout(item)}
-                                            onStart={() => handleStartSavedWorkout(item)}
-                                            onDelete={() => deleteSavedWorkout(item.id, { skipConfirmation: true })}
-                                        />
-                                    );
-                                }}
+                                renderItem={({item}) => (
+                                    <SavedWorkoutItem
+                                        item={item}
+                                        onEdit={() => handleEditSavedWorkout(item)}
+                                        onStart={() => handleStartSavedWorkout(item)}
+                                        onDelete={() => deleteSavedWorkout(item.id, { skipConfirmation: true })}
+                                    />
+                                )}
                             />
                         )}
                     </RaisedCard>
