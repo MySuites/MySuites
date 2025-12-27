@@ -47,6 +47,8 @@ const MAPPING = {
   'timer': 'timer',
   'calendar': 'calendar-today',
   'moon.zzz.fill': 'nightlight',
+  'sun.max.fill': 'wb-sunny',
+  'moon.fill': 'nightlight',
 } as const;
 
 
