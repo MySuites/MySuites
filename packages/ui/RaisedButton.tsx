@@ -29,7 +29,7 @@ export const RaisedButton = ({ title, className, textClassName, style, children,
     <TouchableOpacity
       {...props}
       className={combined}
-      activeOpacity={0.9}
+      activeOpacity={0.7}
       style={[shadowStyle, { borderRadius }, style] as any}>
         {showGradient && (
         <LinearGradient

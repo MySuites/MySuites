@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { useAuth, supabase } from '@mysuite/auth';
 import { useUITheme, RaisedButton } from '@mysuite/ui';
 import { useRouter } from 'expo-router';
