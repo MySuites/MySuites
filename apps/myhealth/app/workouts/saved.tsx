@@ -47,29 +47,29 @@ export default function SavedWorkoutsScreen() {
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
-      <View className="flex-row items-center justify-between p-4 border-b border-light dark:border-white/10">
+      <View className="flex-row items-center justify-between p-4 border-b border-light-darker dark:border-highlight-dark">
         <TouchableOpacity onPress={() => router.back()} className="p-2">
-           <Text className="text-base leading-[30px] text-[#0a7ea4]">Close</Text>
+           <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Close</Text>
         </TouchableOpacity>
-        <Text className="text-xl font-bold">Saved Workouts</Text>
+        <Text className="text-xl font-bold text-light dark:text-dark">Saved Workouts</Text>
         <TouchableOpacity onPress={() => router.push('/workouts/create')} className="p-2">
-           <Text className="text-base leading-[30px] text-[#0a7ea4]">Create</Text>
+           <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Create</Text>
         </TouchableOpacity>
       </View>
       
       {savedWorkouts.length === 0 ? (
           <View className="flex-1 items-center justify-center p-8">
-              <Text style={{color: theme.icon}} className="text-base leading-6">No saved workouts found.</Text>
+              <Text className="text-base leading-6 text-light-muted dark:text-dark-muted">No saved workouts found.</Text>
           </View>
       ) : (
           <FlatList
             data={savedWorkouts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View className="flex-row items-center justify-between p-4 border-b border-light dark:border-white/10">
+              <View className="flex-row items-center justify-between p-4 border-b border-light-darker dark:border-highlight-dark">
                 <View className="flex-1">
-                    <Text className="text-base leading-6 font-semibold">{item.name}</Text>
-                    <Text style={{color: theme.icon ?? '#888', fontSize: 12}}>
+                    <Text className="text-base leading-6 font-semibold text-light dark:text-dark">{item.name}</Text>
+                    <Text className="text-xs text-light-muted dark:text-dark-muted">
                         {new Date(item.createdAt).toLocaleDateString()}
                     </Text> 
                 </View>
@@ -82,9 +82,9 @@ export default function SavedWorkoutsScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity 
                         onPress={() => handleDelete(item.id, item.name)} 
-                        className="py-1.5 px-3 rounded-md border border-light dark:border-white/10"
+                        className="py-1.5 px-3 rounded-md border border-light-darker dark:border-highlight-dark"
                     >
-                        <Text className="text-sm">Delete</Text>
+                        <Text className="text-sm text-light dark:text-dark">Delete</Text>
                     </TouchableOpacity>
                 </View>
               </View>
