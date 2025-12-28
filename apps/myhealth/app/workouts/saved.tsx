@@ -14,8 +14,8 @@ export default function SavedWorkoutsScreen() {
   const router = useRouter();
   const theme = useUITheme();
   
-  const { savedWorkouts, deleteSavedWorkout } = useWorkoutManager();
-  const { hasActiveSession, setExercises } = useActiveWorkout();
+  const { savedWorkouts } = useWorkoutManager();
+  const { hasActiveSession, startWorkout } = useActiveWorkout();
   
   // Hide floating buttons
   const { setIsHidden } = useFloatingButton();
@@ -24,30 +24,16 @@ export default function SavedWorkoutsScreen() {
       return () => setIsHidden(false);
   }, [setIsHidden]);
 
-  const handleLoad = (id: string, name: string, workoutExercises: any[]) => {
+  const handleStart = (id: string, name: string, workoutExercises: any[]) => {
       if (hasActiveSession) {
-          Alert.alert("Active Session", "Please finish or cancel your current workout before loading a new one.");
+          Alert.alert("Active Session", "Please finish or cancel your current workout before starting a new one.");
           return;
       }
-      setExercises(workoutExercises || []);
-      Alert.alert('Loaded', `Workout '${name}' loaded.`);
+      startWorkout(workoutExercises || [], name, undefined, id);
       router.back();
   };
 
-  const handleDelete = (id: string, name: string) => {
-      Alert.alert(
-          "Delete Workout",
-          `Are you sure you want to delete '${name}'?`,
-          [
-              { text: "Cancel", style: "cancel" },
-              { 
-                  text: "Delete", 
-                  style: "destructive", 
-                  onPress: () => deleteSavedWorkout(id) 
-              }
-          ]
-      );
-  };
+
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
@@ -95,21 +81,13 @@ export default function SavedWorkoutsScreen() {
                     <TouchableOpacity 
                         onPress={(e) => {
                             e.stopPropagation();
-                            handleLoad(item.id, item.name, item.exercises);
+                            handleStart(item.id, item.name, item.exercises);
                         }} 
                         className="py-1.5 px-3 rounded-md bg-primary dark:bg-primary-dark"
                     >
-                        <Text className="text-white text-sm font-semibold">Load</Text>
+                        <Text className="text-white text-sm font-semibold">Start</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={(e) => {
-                            e.stopPropagation();
-                            handleDelete(item.id, item.name);
-                        }} 
-                        className="py-1.5 px-3 rounded-md border border-light-darker dark:border-highlight-dark"
-                    >
-                        <Text className="text-sm text-light dark:text-dark">Delete</Text>
-                    </TouchableOpacity>
+
                 </View>
               </RaisedCard>
               </TouchableOpacity>
