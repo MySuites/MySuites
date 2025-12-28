@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useAuth, supabase } from '@mysuite/auth';
-import { useUITheme } from '@mysuite/ui';
+import { useUITheme, RaisedButton } from '@mysuite/ui';
 import { useRouter } from 'expo-router';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { BodyWeightCard } from '../../components/profile/BodyWeightCard';
@@ -266,9 +266,13 @@ export default function ProfileScreen() {
         title={username || 'Profile'} 
         leftAction={<BackButton />}
         rightAction={
-            <TouchableOpacity onPress={() => router.push('/settings')}>
-              <IconSymbol name="gearshape.fill" size={24} color={theme.text} />
-            </TouchableOpacity>
+            <RaisedButton 
+                onPress={() => router.push('/settings')}
+                borderRadius={20}
+                className="w-10 h-10 p-0 my-0 rounded-full items-center justify-center"
+            >
+              <IconSymbol name="gearshape.fill" size={20} color={theme.primary} />
+            </RaisedButton>
         } 
       />
       
