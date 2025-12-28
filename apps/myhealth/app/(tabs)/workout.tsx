@@ -287,7 +287,7 @@ export default function Workout() {
                             <View className="mb-6 px-4">
                                 <RaisedCard className="p-4">
                                     <View className="flex-row justify-between items-center mb-3">
-                                        <Text className="text-lg font-semibold mb-2 text-light dark:text-dark">Active Routine</Text>
+                                        <Text className="text-lg font-semibold mb-2 text-light dark:text-dark">No Active Routine</Text>
                                         <RaisedButton 
                                             onPress={() => router.push('/routines')}
                                             borderRadius={20}
@@ -302,9 +302,6 @@ export default function Workout() {
                                     </View>
                                     <HollowedCard className="p-4">
                                         <View className="p-5 items-center">
-                                            <Text className="text-base font-semibold text-light dark:text-dark mb-2">
-                                                No active routine
-                                            </Text>
                                             <Text className="text-light-muted dark:text-dark-muted text-center mb-4">
                                                 Select a routine below to start tracking your progress.
                                             </Text>
