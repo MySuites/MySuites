@@ -13,14 +13,13 @@ import { useRouter } from 'expo-router';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
-import { RoutineCard } from '../../components/routines/RoutineCard';
 import { ActiveRoutineCard } from '../../components/routines/ActiveRoutineCard';
 import { SavedWorkoutItem } from '../../components/workouts/SavedWorkoutItem';
 import { WorkoutPreviewModal } from '../../components/workouts/WorkoutPreviewModal';
 import { useRoutineTimeline } from '../../hooks/routines/useRoutineTimeline';
 import { HollowedCard, RaisedButton, RaisedCard, useUITheme } from '@mysuite/ui';
 
-import { SavedWorkout, Routine } from '../../types';
+import { SavedWorkout } from '../../types';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 
@@ -75,12 +74,10 @@ export default function Workout() {
         savedWorkouts, 
         routines, 
         activeRoutine,
-        startActiveRoutine,
         markRoutineDayComplete,
         setActiveRoutineIndex,
         clearActiveRoutine,
         deleteSavedWorkout,
-        deleteRoutine,
     } = useWorkoutManager();
 
     // Derived state for current routine
@@ -92,21 +89,6 @@ export default function Workout() {
     // Check if the current day has been completed today
     const isDayCompleted = !!(activeRoutine?.lastCompletedDate && 
         new Date(activeRoutine.lastCompletedDate).toDateString() === new Date().toDateString());
-
-
-    function handleCreateRoutine() {
-        router.push('/routines/create');
-    }
-
-    function handleEditRoutine(routine: Routine) {
-        router.push({
-            pathname: '/routines/create',
-            params: { 
-                id: routine.id,
-                editing: 'true' 
-            }
-        });
-    }
 
     function handleCreateSavedWorkout() {
         router.push('/workouts/create');
@@ -315,56 +297,7 @@ export default function Workout() {
                         )}
                     </View>
 
-                    {/* Routines Section */}
-                    <View className="px-4 mb-2 mt-6">
-                        <RaisedCard className="p-4">
-                            <View className="flex-row justify-between items-center mb-3">
-                                <Text className="text-lg font-semibold mb-2 text-light dark:text-dark">My Routines</Text>
-                                 <View className="flex-row items-center gap-4">
 
-                                    <RaisedButton 
-                                        onPress={() => router.push('/routines')}
-                                        borderRadius={20}
-                                        className="w-10 h-10 p-0 my-0 rounded-full items-center justify-center"
-                                    >
-                                        <IconSymbol 
-                                            name="line.3.horizontal" 
-                                            size={20} 
-                                            color={theme.primary} 
-                                        />
-                                    </RaisedButton>
-                                 </View>
-                            </View>
-                            
-                            {routines.length === 0 ? (
-                                <View className="items-center justify-center border border-dashed border-light-darker dark:border-highlight-dark rounded-xl p-4">
-                                    <Text className="text-light-muted dark:text-dark-muted mb-2">No routines yet.</Text>
-                                    <TouchableOpacity onPress={handleCreateRoutine} className="p-2.5 rounded-lg border border-light-darker dark:border-highlight-dark bg-light dark:bg-dark">
-                                        <Text className="text-light dark:text-dark">Create a Routine</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            ) : (
-                                 <FlatList
-                                    data={routines.slice(0, 5)}
-                                    scrollEnabled={false}
-                                    keyExtractor={(i) => i.id}
-                                    style={{ overflow: 'visible' }}
-                                    ItemSeparatorComponent={() => <View />}
-                                    renderItem={({item}) => (
-                                        <RoutineCard 
-                                            routine={item} 
-                                            onPress={() => startActiveRoutine(item.id)}
-                                            onEdit={() => handleEditRoutine(item)}
-                                            onDelete={() => deleteRoutine(item.id)}
-                                            swipeGroupId={item.id}
-                                            activeSwipeId={activeSwipedCardId}
-                                            onSwipeStart={setActiveSwipedCardId}
-                                        />
-                                    )}
-                                />
-                            )}
-                        </RaisedCard>
-                    </View>
                     
 			</ScrollView>
 
