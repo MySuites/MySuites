@@ -56,27 +56,27 @@ export default function RoutinesScreen() {
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
-      <View className="flex-row items-center justify-between p-4 border-b border-bg-dark dark:border-white/10">
+      <View className="flex-row items-center justify-between p-4 border-b border-light-darker dark:border-highlight-dark">
         <TouchableOpacity onPress={() => router.back()} className="p-2">
-           <Text className="text-base leading-[30px] text-[#0a7ea4]">Close</Text>
+           <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Close</Text>
         </TouchableOpacity>
-        <Text className="text-xl font-bold">My Routines</Text>
+        <Text className="text-xl font-bold text-light dark:text-dark">My Routines</Text>
         <View className="w-[50px]" /> 
       </View>
       
       {routines.length === 0 ? (
           <View className="flex-1 items-center justify-center p-8">
-              <Text style={{color: theme.icon}} className="text-base leading-6">No saved routines found.</Text>
+              <Text className="text-base leading-6 text-light-muted dark:text-dark-muted">No saved routines found.</Text>
           </View>
       ) : (
           <FlatList
             data={routines}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View className="flex-row items-center justify-between p-4 border-b border-bg-dark dark:border-white/10">
+              <View className="flex-row items-center justify-between p-4 border-b border-light-darker dark:border-highlight-dark">
                 <View className="flex-1">
-                    <Text className="text-base leading-6 font-semibold">{item.name}</Text>
-                    <Text style={{color: theme.icon ?? '#888', fontSize: 12}}>
+                    <Text className="text-base leading-6 font-semibold text-light dark:text-dark">{item.name}</Text>
+                    <Text className="text-xs text-light-muted dark:text-dark-muted">
                         {new Date(item.createdAt).toLocaleDateString()} • {item.sequence?.length || 0} Days
                     </Text> 
                 </View>
@@ -89,9 +89,9 @@ export default function RoutinesScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity 
                         onPress={() => handleDelete(item.id, item.name)} 
-                        className="py-1.5 px-3 rounded-md border border-bg-dark dark:border-white/10"
+                        className="py-1.5 px-3 rounded-md border border-light-darker dark:border-highlight-dark"
                     >
-                        <Text className="text-sm">Delete</Text>
+                        <Text className="text-sm text-light dark:text-dark">Delete</Text>
                     </TouchableOpacity>
                 </View>
               </View>
