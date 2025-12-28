@@ -53,12 +53,11 @@ export function ActiveRoutineCard({
 
   return (
     <View className="mb-6">
-      <ActiveRoutineHeader
-        routineName={activeRoutineObj.name}
-        onClearRoutine={onClearRoutine}
-      />
-      
       <RaisedCard className="p-4">
+        <ActiveRoutineHeader
+          routineName={activeRoutineObj.name}
+          onClearRoutine={onClearRoutine}
+        />
         {timelineDays.length === 0 ? (
           <ActiveRoutineCompletion onClearRoutine={onClearRoutine} />
         ) : (
