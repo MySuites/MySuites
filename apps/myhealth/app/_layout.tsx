@@ -41,7 +41,7 @@ function RootLayoutNav() {
       <Stack.Screen name="exercises/index" options={{ title: 'Exercises', headerShown: false }} />
       <Stack.Screen name="workouts/saved" options={{ title: 'Saved Workouts', headerShown: false }} />
       <Stack.Screen name="routines/index" options={{ title: 'My Routines', headerShown: false }} />
-      <Stack.Screen name="workouts/create" options={{ title: 'Create Workout', headerShown: false }} />
+      <Stack.Screen name="workouts/editor" options={{ title: 'Create Workout', headerShown: false }} />
       <Stack.Screen name="workouts/details" options={{ title: 'Workout Details', headerShown: false }} />
       <Stack.Screen name="routines/create" options={{ title: 'Create Routine', headerShown: false }} />
       <Stack.Screen name="routines/details" options={{ title: 'Routine Details', headerShown: false }} />

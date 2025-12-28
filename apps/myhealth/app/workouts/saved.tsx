@@ -55,7 +55,7 @@ export default function SavedWorkoutsScreen() {
         withBackButton={true}
         rightAction={
             <RaisedButton 
-                onPress={() => router.push('/workouts/create')}
+                onPress={() => router.push('/workouts/editor')}
                 borderRadius={20}
                 className="w-10 h-10 p-0 my-0 rounded-full items-center justify-center mr-2"
             >
@@ -79,7 +79,7 @@ export default function SavedWorkoutsScreen() {
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => {
                   router.push({
-                      pathname: '/workouts/create',
+                      pathname: '/workouts/editor',
                       params: { id: item.id }
                   });
               }} activeOpacity={0.7}>
