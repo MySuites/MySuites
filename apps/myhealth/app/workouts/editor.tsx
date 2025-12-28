@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useUITheme as useTheme } from '@mysuite/ui';
+import { useUITheme as useTheme, RaisedButton } from '@mysuite/ui';
 import { useAuth } from '@mysuite/auth';
 import { useWorkoutManager, fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
@@ -11,6 +11,7 @@ import { ExerciseSelectorModal } from '../../components/workouts/ExerciseSelecto
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
+import { IconSymbol } from '../../components/ui/icon-symbol';
 
 export default function CreateWorkoutScreen() {
     const theme = useTheme();
@@ -125,9 +126,19 @@ export default function CreateWorkoutScreen() {
                 title={editingWorkoutId ? 'Edit Workout' : 'Create Workout'}
                 leftAction={<BackButton />}
                 rightAction={
-                    <TouchableOpacity disabled={isSaving} onPress={handleSaveWorkoutDraft} className="p-2">
-                        {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
-                    </TouchableOpacity>
+                    <RaisedButton 
+                        onPress={handleSaveWorkoutDraft} 
+                        disabled={isSaving} 
+                        className="w-10 h-10 p-0 rounded-full bg-light-lighter dark:bg-dark-lighter" 
+                        variant="default"
+                        borderRadius={20}
+                    >
+                        {isSaving ? (
+                            <ActivityIndicator size="small" color={theme.primary} />
+                        ) : (
+                            <IconSymbol name="checkmark" size={24} color={theme.primary} />
+                        )}
+                    </RaisedButton>
                 }
             />
 

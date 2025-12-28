@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View, Text } from 'react-native';
+import { TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, View, Text, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useUITheme } from '@mysuite/ui';
+import { useUITheme, RaisedButton } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
 import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/workouts/useWorkoutManager';
@@ -96,9 +96,19 @@ export default function CreateExerciseScreen() {
         title="New Exercise"
         leftAction={<BackButton />}
         rightAction={
-            <TouchableOpacity onPress={handleCreate} disabled={isSubmitting} className="p-2">
-                <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold', opacity: isSubmitting ? 0.5 : 1 }}>Save</Text>
-            </TouchableOpacity>
+            <RaisedButton 
+                onPress={handleCreate} 
+                disabled={isSubmitting} 
+                className="w-10 h-10 p-0 rounded-full bg-light-lighter dark:bg-dark-lighter" 
+                variant="default"
+                borderRadius={20}
+            >
+                {isSubmitting ? (
+                    <ActivityIndicator size="small" color={theme.primary} />
+                ) : (
+                    <IconSymbol name="checkmark" size={24} color={theme.primary} />
+                )}
+            </RaisedButton>
         }
       />
 

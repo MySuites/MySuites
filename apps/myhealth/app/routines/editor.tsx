@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useUITheme as useTheme } from '@mysuite/ui';
+import { useUITheme as useTheme, RaisedButton } from '@mysuite/ui';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
@@ -10,6 +10,7 @@ import { RoutineDraftItem } from '../../components/routines/RoutineDraftItem';
 import { AddDayModal } from '../../components/routines/AddDayModal';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
+import { IconSymbol } from '../../components/ui/icon-symbol';
 
 export default function CreateRoutineScreen() {
     const theme = useTheme();
@@ -113,9 +114,19 @@ export default function CreateRoutineScreen() {
                 title={editingRoutineId ? 'Edit Routine' : 'Create Routine'}
                 leftAction={<BackButton />}
                 rightAction={
-                    <TouchableOpacity disabled={isSaving} onPress={handleSaveRoutine} className="p-2">
-                        {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
-                    </TouchableOpacity>
+                    <RaisedButton 
+                        onPress={handleSaveRoutine} 
+                        disabled={isSaving} 
+                        className="w-10 h-10 p-0 rounded-full bg-light-lighter dark:bg-dark-lighter" 
+                        variant="default"
+                        borderRadius={20}
+                    >
+                        {isSaving ? (
+                            <ActivityIndicator size="small" color={theme.primary} />
+                        ) : (
+                            <IconSymbol name="checkmark" size={24} color={theme.primary} />
+                        )}
+                    </RaisedButton>
                 }
             />
 

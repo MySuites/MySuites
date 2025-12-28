@@ -49,6 +49,7 @@ const MAPPING = {
   'moon.zzz.fill': 'nightlight',
   'sun.max.fill': 'wb-sunny',
   'moon.fill': 'nightlight',
+  'save': 'save',
 } as const;
 
 
