@@ -5,6 +5,7 @@ import { useUITheme } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { SelectionModal } from '../../components/ui/SelectionModal';
 import { useWorkoutManager, fetchMuscleGroups } from '../../hooks/workouts/useWorkoutManager';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
 
 const EXERCISE_PROPERTIES = [
     { label: 'Weighted', value: 'Weighted' },
@@ -90,15 +91,15 @@ export default function CreateExerciseScreen() {
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
-      <View className="flex-row items-center justify-between p-4 border-b border-light-darker dark:border-highlight-dark pt-4 android:pt-10">
-        <TouchableOpacity onPress={() => router.back()} className="p-2">
-            <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Cancel</Text>
-        </TouchableOpacity>
-        <Text className="text-xl font-bold text-light dark:text-dark">New Exercise</Text>
-        <TouchableOpacity onPress={handleCreate} disabled={isSubmitting} className="p-2">
-            <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold', opacity: isSubmitting ? 0.5 : 1 }}>Save</Text>
-        </TouchableOpacity>
-      </View>
+      <ScreenHeader
+        title="New Exercise"
+        withBackButton={true}
+        rightAction={
+            <TouchableOpacity onPress={handleCreate} disabled={isSubmitting} className="p-2">
+                <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold', opacity: isSubmitting ? 0.5 : 1 }}>Save</Text>
+            </TouchableOpacity>
+        }
+      />
 
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

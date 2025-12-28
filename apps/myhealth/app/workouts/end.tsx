@@ -105,7 +105,7 @@ export default function EndWorkoutScreen() {
 
     return (
         <View className="flex-1 p-4 bg-light dark:bg-dark">
-            <ScreenHeader title="Workout Summary" />
+            <ScreenHeader title="Workout Summary" withBackButton={true} />
             
             <ScrollView className="flex-1 mt-4">
                 <View className="bg-light-lighter dark:bg-border-dark rounded-xl p-6 mb-6 items-center">

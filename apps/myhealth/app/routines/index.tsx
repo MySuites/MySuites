@@ -61,11 +61,7 @@ export default function RoutinesScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <ScreenHeader
         title="My Routines"
-        leftAction={
-            <TouchableOpacity onPress={() => router.back()} className="p-2">
-                <Text className="text-base font-semibold text-primary dark:text-primary-dark">Close</Text>
-            </TouchableOpacity>
-        }
+        withBackButton={true}
         rightAction={
             <RaisedButton 
                 onPress={() => router.push('/routines/create')}

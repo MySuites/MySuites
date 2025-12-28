@@ -50,11 +50,7 @@ export default function SavedWorkoutsScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <ScreenHeader
         title="Saved Workouts"
-        leftAction={
-            <TouchableOpacity onPress={() => router.back()} className="p-2">
-                <Text className="text-base font-semibold text-primary dark:text-primary-dark">Close</Text>
-            </TouchableOpacity>
-        }
+        withBackButton={true}
         rightAction={
             <TouchableOpacity onPress={() => router.push('/workouts/create')} className="p-2">
                 <Text className="text-base font-semibold text-primary dark:text-primary-dark">Create</Text>

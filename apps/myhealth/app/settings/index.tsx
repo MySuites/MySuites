@@ -82,7 +82,7 @@ export default function SettingsScreen() {
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
-      <ScreenHeader title="Settings" />
+      <ScreenHeader title="Settings" withBackButton={true} />
 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <View className="mb-6">

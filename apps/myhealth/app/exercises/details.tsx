@@ -7,6 +7,7 @@ import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useExerciseStats } from '../../hooks/workouts/useExerciseStats';
 import { ExerciseChart } from '../../components/exercises/ExerciseChart';
 import { ExerciseProperties } from '../../components/exercises/ExerciseProperties';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
 
 export default function ExerciseDetailsScreen() {
     const router = useRouter();
@@ -61,22 +62,7 @@ export default function ExerciseDetailsScreen() {
     return (
         <View style={{ flex: 1, backgroundColor: currentColors.background }}>
              {/* Header */}
-             <View style={{ 
-                 flexDirection: 'row', 
-                 alignItems: 'center', 
-                 justifyContent: 'space-between', 
-                 paddingHorizontal: 16,
-                 paddingVertical: 12,
-                 borderBottomWidth: 1, 
-                 borderBottomColor: currentColors.border
-             }}>
-                <Pressable onPress={() => router.back()} style={{ padding: 4, flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                    <IconSymbol name="chevron.left" size={20} color={currentColors.primary} />
-                    <Text className="text-base leading-[30px] text-[#0a7ea4]" style={{ color: currentColors.primary }}>Back</Text>
-                </Pressable>
-                <Text className="text-xl font-bold" style={{ color: currentColors.text }}>Details</Text>
-                <View style={{ width: 60 }} />
-            </View>
+             <ScreenHeader title="Details" withBackButton={true} />
 
             <ScrollView style={{ flex: 1, padding: 16 }}>
                 <View style={{ marginBottom: 24 }}>

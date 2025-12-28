@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Text, View, FlatList } from 'react-native';
+import { Stack } from 'expo-router';
 
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { WorkoutDetailsModal } from '../../components/workouts/WorkoutDetailsModal';
@@ -32,7 +32,7 @@ const WorkoutHistoryItem = ({ item, onDelete, onPress }: { item: any, onDelete: 
 };
 
 export default function WorkoutHistoryScreen() {
-  const router = useRouter();
+
   const { workoutHistory, deleteWorkoutLog } = useWorkoutManager();
   const [selectedLogId, setSelectedLogId] = useState<string | null>(null);
 
@@ -42,11 +42,7 @@ export default function WorkoutHistoryScreen() {
       
       <ScreenHeader 
         title="Workout History" 
-        rightAction={
-            <TouchableOpacity onPress={() => router.back()} className="p-2">
-              <Text className="text-primary dark:text-primary-dark text-base font-semibold">Close</Text>
-            </TouchableOpacity>
-        }
+        withBackButton={true}
       />
 
       <FlatList

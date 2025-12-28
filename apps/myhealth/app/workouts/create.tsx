@@ -9,6 +9,7 @@ import { useWorkoutDraft } from '../../hooks/workouts/useWorkoutDraft';
 import { WorkoutDraftExerciseItem } from '../../components/workouts/WorkoutDraftExerciseItem';
 import { ExerciseSelectorModal } from '../../components/workouts/ExerciseSelectorModal';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
 
 export default function CreateWorkoutScreen() {
     const theme = useTheme();
@@ -119,15 +120,15 @@ export default function CreateWorkoutScreen() {
 
     return (
         <View className="flex-1 bg-light dark:bg-dark">
-             <View className="flex-row justify-between items-center p-4 border-b border-light-darker dark:border-highlight-dark pt-4 android:pt-10">
-                <TouchableOpacity onPress={() => router.back()} className="p-2">
-                     <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Cancel</Text>
-                </TouchableOpacity>
-                <Text className="text-xl font-bold text-light dark:text-dark">{editingWorkoutId ? 'Edit Workout' : 'Create Workout'}</Text>
-                <TouchableOpacity disabled={isSaving} onPress={handleSaveWorkoutDraft} className="p-2">
-                    {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
-                </TouchableOpacity>
-            </View>
+            <ScreenHeader
+                title={editingWorkoutId ? 'Edit Workout' : 'Create Workout'}
+                withBackButton={true}
+                rightAction={
+                    <TouchableOpacity disabled={isSaving} onPress={handleSaveWorkoutDraft} className="p-2">
+                        {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
+                    </TouchableOpacity>
+                }
+            />
 
             <View className="flex-1 p-4">
                 <TextInput 

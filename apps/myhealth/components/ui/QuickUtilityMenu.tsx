@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'expo-router';
 import { RadialMenu, RadialMenuItem } from './radial-menu/RadialMenu';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
+import { useBackButtonAction } from './BackButton';
 
 
 const BUTTON_SIZE = 60; 
@@ -72,25 +73,11 @@ export function QuickUtilityButton() {
      ];
   }, [pathname, isRunning, isExpanded]);
 
+  const { handleBack } = useBackButtonAction();
+
   const handleAction = React.useCallback((item: ActionItemType) => {
       if (item.action === 'go_back') {
-          // Special handling for End Workout screen
-          if (pathname === '/workouts/end') {
-              startWorkout(); // Resumes and maximizes
-              router.back();
-              return;
-          }
-          
-          if (isExpanded) {
-              setExpanded(false);
-              return;
-          }
-
-          if (router.canGoBack()) {
-              router.back();
-          } else {
-              router.replace('/');
-          }
+          handleBack();
           return;
       }
 
@@ -121,7 +108,7 @@ export function QuickUtilityButton() {
       } else {
           console.log('Trigger action:', item.action);
       }
-  }, [router, isRunning, startWorkout, pauseWorkout, resetWorkout, setExpanded, pathname, isExpanded]);
+  }, [router, isRunning, startWorkout, pauseWorkout, resetWorkout, setExpanded, handleBack]);
 
   const menuItems: RadialMenuItem[] = useMemo(() => {
     return currentActions.map(action => ({

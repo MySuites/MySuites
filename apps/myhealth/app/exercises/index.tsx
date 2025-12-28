@@ -47,11 +47,7 @@ export default function ExercisesScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <ScreenHeader
         title="Exercises"
-        leftAction={
-            <TouchableOpacity onPress={() => router.back()} className="p-2">
-                <Text className="text-base font-semibold text-primary dark:text-primary-dark">Close</Text>
-            </TouchableOpacity>
-        }
+        withBackButton={true}
         rightAction={
             <TouchableOpacity onPress={() => router.push('/exercises/create')} className="p-2">
                 <Text className="text-base font-semibold text-primary dark:text-primary-dark">Create</Text>

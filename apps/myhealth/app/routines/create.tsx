@@ -8,6 +8,7 @@ import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
 import { RoutineDraftItem } from '../../components/routines/RoutineDraftItem';
 import { AddDayModal } from '../../components/routines/AddDayModal';
+import { ScreenHeader } from '../../components/ui/ScreenHeader';
 
 export default function CreateRoutineScreen() {
     const theme = useTheme();
@@ -107,15 +108,15 @@ export default function CreateRoutineScreen() {
 
     return (
         <View className="flex-1 bg-light dark:bg-dark">
-             <View className="flex-row justify-between items-center p-4 border-b border-light-darker dark:border-highlight-dark pt-4 android:pt-10">
-                <TouchableOpacity onPress={() => router.back()} className="p-2">
-                     <Text className="text-base leading-[30px] text-primary dark:text-primary-dark">Cancel</Text>
-                </TouchableOpacity>
-                <Text className="text-xl font-bold text-light dark:text-dark">{editingRoutineId ? 'Edit Routine' : 'Create Routine'}</Text>
-                <TouchableOpacity disabled={isSaving} onPress={handleSaveRoutine} className="p-2">
-                    {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
-                </TouchableOpacity>
-            </View>
+             <ScreenHeader
+                title={editingRoutineId ? 'Edit Routine' : 'Create Routine'}
+                withBackButton={true}
+                rightAction={
+                    <TouchableOpacity disabled={isSaving} onPress={handleSaveRoutine} className="p-2">
+                        {isSaving ? <ActivityIndicator size="small" /> : <Text className="text-base leading-[30px] text-primary dark:text-primary-dark" style={{ fontWeight: 'bold' }}>Save</Text>}
+                    </TouchableOpacity>
+                }
+            />
 
             <View className="flex-1">
                 <View className="px-4 pt-4">
