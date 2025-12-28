@@ -77,6 +77,12 @@ export default function SavedWorkoutsScreen() {
             data={savedWorkouts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => {
+                  router.push({
+                      pathname: '/workouts/details',
+                      params: { workout: JSON.stringify(item) }
+                  });
+              }} activeOpacity={0.7}>
               <RaisedCard className="flex-row items-center justify-between p-4 mb-3">
                 <View className="flex-1">
                     <Text className="text-base leading-6 font-semibold text-light dark:text-dark">{item.name}</Text>
@@ -86,19 +92,26 @@ export default function SavedWorkoutsScreen() {
                 </View>
                 <View className="flex-row gap-2">
                     <TouchableOpacity 
-                        onPress={() => handleLoad(item.id, item.name, item.exercises)} 
+                        onPress={(e) => {
+                            e.stopPropagation();
+                            handleLoad(item.id, item.name, item.exercises);
+                        }} 
                         className="py-1.5 px-3 rounded-md bg-primary dark:bg-primary-dark"
                     >
                         <Text className="text-white text-sm font-semibold">Load</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
-                        onPress={() => handleDelete(item.id, item.name)} 
+                        onPress={(e) => {
+                            e.stopPropagation();
+                            handleDelete(item.id, item.name);
+                        }} 
                         className="py-1.5 px-3 rounded-md border border-light-darker dark:border-highlight-dark"
                     >
                         <Text className="text-sm text-light dark:text-dark">Delete</Text>
                     </TouchableOpacity>
                 </View>
               </RaisedCard>
+              </TouchableOpacity>
             )}
             className="flex-1"
             contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 16, paddingTop: 16 }}
@@ -107,3 +120,5 @@ export default function SavedWorkoutsScreen() {
     </View>
   );
 }
+
+
