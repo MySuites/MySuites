@@ -13,7 +13,7 @@ import { BackButton } from '../../components/ui/BackButton';
 export default function RoutinesScreen() {
   const router = useRouter();
   
-  const { routines, deleteRoutine, startActiveRoutine } = useWorkoutManager();
+  const { routines, startActiveRoutine } = useWorkoutManager();
   const { hasActiveSession, setExercises } = useActiveWorkout();
   const theme = useUITheme();
 
@@ -43,20 +43,7 @@ export default function RoutinesScreen() {
       router.back();
   };
 
-  const handleDelete = (id: string, name: string) => {
-      Alert.alert(
-          "Delete Routine",
-          `Are you sure you want to delete '${name}'?`,
-          [
-              { text: "Cancel", style: "cancel" },
-              { 
-                  text: "Delete", 
-                  style: "destructive", 
-                  onPress: () => deleteRoutine(id) 
-              }
-          ]
-      );
-  };
+
 
   return (
     <View className="flex-1 bg-light dark:bg-dark">
@@ -111,15 +98,7 @@ export default function RoutinesScreen() {
                     >
                         <Text className="text-white text-sm font-semibold">Set Active</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity 
-                        onPress={(e) => {
-                            e.stopPropagation();
-                            handleDelete(item.id, item.name);
-                        }} 
-                        className="py-1.5 px-3 rounded-md border border-light-darker dark:border-highlight-dark"
-                    >
-                        <Text className="text-sm text-light dark:text-dark">Delete</Text>
-                    </TouchableOpacity>
+
                 </View>
               </RaisedCard>
               </TouchableOpacity>
