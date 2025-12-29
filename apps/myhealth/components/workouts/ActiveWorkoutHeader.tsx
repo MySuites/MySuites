@@ -83,12 +83,12 @@ export function ActiveWorkoutHeader() {
                  <View className="flex-row items-center justify-end w-1/4 gap-3">
                      <RaisedButton 
                         onPress={handleEnd}
-                        className="h-8 px-3 py-0 bg-danger dark:bg-danger"
+                        className="h-8 px-3 py-0 bg-light dark:bg-dark-lighter"
                         variant="custom"
                         borderRadius={16}
                         showGradient={false}
                      >
-                         <Text className="text-white text-xs font-bold">End</Text>
+                         <Text className="text-danger text-xs font-bold">End</Text>
                      </RaisedButton>
                      <IconSymbol name={rightIcon} size={16} color={theme.icon ?? '#000'} />
                  </View>
