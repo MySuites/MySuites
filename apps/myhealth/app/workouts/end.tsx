@@ -24,7 +24,8 @@ export default function EndWorkoutScreen() {
     const { savedWorkouts, updateSavedWorkout } = useWorkoutManager();
 
     const completedSetsCount = exercises.reduce((acc, ex) => acc + (ex.completedSets || 0), 0);
-    const totalExercises = exercises.length;
+    const filteredExercises = exercises.filter(ex => (ex.completedSets || 0) > 0);
+    const totalExercises = filteredExercises.length;
 
     const [notes, setNotes] = React.useState("");
 
@@ -162,7 +163,7 @@ export default function EndWorkoutScreen() {
 
                 <View className="bg-light-lighter dark:bg-border-dark rounded-xl p-4 mb-6">
                     <Text className="font-semibold text-light dark:text-dark mb-4 text-lg">Detailed Summary</Text>
-                    {exercises.map((ex, idx) => (
+                    {filteredExercises.map((ex, idx) => (
                         <View key={idx} className="flex-row justify-between mb-2">
                              <Text className="text-light dark:text-dark flex-1">{ex.name}</Text>
                              <Text className="text-gray-500 dark:text-gray-400">
