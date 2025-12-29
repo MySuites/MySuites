@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useColorScheme } from '../../hooks/ui/use-color-scheme';
 
 interface ScreenHeaderProps {
   title: string;
@@ -9,19 +10,14 @@ interface ScreenHeaderProps {
 }
 
 export function ScreenHeader({ title, rightAction, leftAction, className }: ScreenHeaderProps) {
-  const shadowStyle = {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.15,
-      shadowRadius: 4,
-      elevation: 6,
-      zIndex: 50,
-  };
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const backgroundColor = isDark ? 'hsla(0, 0%, 15%, 0.85)' : 'hsla(0, 0%, 95%, 0.60)';
 
   return (
     <View 
-      className={`py-4 pt-16 bg-light dark:bg-dark-lighter rounded-b-3xl ${className || ''}`}
-      style={shadowStyle}
+      className={`absolute top-0 left-0 right-0 py-4 pt-16 rounded-b-3xl ${className || ''}`}
+      style={{ backgroundColor, zIndex: 50 }}
     >
       <View className="flex-row justify-center items-center relative min-h-[44px]">
         {leftAction && (

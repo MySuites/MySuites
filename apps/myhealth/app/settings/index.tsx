@@ -85,7 +85,7 @@ export default function SettingsScreen() {
     <View className="flex-1 bg-light dark:bg-dark">
       <ScreenHeader title="Settings" leftAction={<BackButton />} />
 
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 140 }}>
         <View className="mb-6">
           <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase">Appearance</Text>
           <ThemeToggle />

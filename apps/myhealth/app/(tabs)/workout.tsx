@@ -135,7 +135,7 @@ export default function Workout() {
 			{/* Dashboard: Routines & Saved Workouts */}
 			<ScrollView 
 				className="flex-1"
-				contentContainerStyle={{paddingBottom: 120, flexGrow: 1}}
+				contentContainerStyle={{paddingBottom: 20, flexGrow: 1, paddingTop: 100}}
 				showsVerticalScrollIndicator={false}
 			>
 				{/* Controls Row */}

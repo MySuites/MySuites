@@ -276,7 +276,7 @@ export default function ProfileScreen() {
         } 
       />
       
-      <View className="mt-10 px-4">
+      <View className="mt-36 px-4">
         <BodyWeightCard 
           weight={latestWeight} 
           history={weightHistory}
