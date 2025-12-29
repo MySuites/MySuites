@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Exercise, useWorkoutManager } from '../hooks/workouts/useWorkoutManager'; 
 import { createExercise } from '../utils/workout-logic';
 import { useActiveWorkoutTimers } from '../hooks/workouts/useActiveWorkoutTimers';
@@ -59,6 +59,11 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
         setWorkoutSeconds,
         resetTimers,
     } = useActiveWorkoutTimers();
+
+    // Auto-pause when minimized, auto-resume when expanded
+    useEffect(() => {
+        setRunning(isExpanded);
+    }, [isExpanded, setRunning]);
 
     const { weight: latestBodyWeight } = useLatestBodyWeight();
 

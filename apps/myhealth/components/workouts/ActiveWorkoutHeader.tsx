@@ -51,19 +51,31 @@ export function ActiveWorkoutHeader() {
             }}
             className="absolute left-0 right-0 pt-16 pb-3 px-4 bg-light dark:bg-dark-lighter rounded-b-3xl"
         >
+            {/* Background Tappable Area for Toggle */}
             <TouchableOpacity 
-                className="flex-row items-center justify-between"
-                onPress={handlePress}
-                activeOpacity={0.8}
+                className="absolute inset-0 z-0"
+                onPress={handlePress} 
+                activeOpacity={1} // Feedback handled by header movement usually, or separate
+            />
+
+            {/* Content with pointerEvents check */}
+            <View 
+                className="flex-row items-center justify-between z-10"
+                pointerEvents="box-none"
             >
                  {/* Left: Timer + Status */}
-                 <View className="flex-row items-center gap-2 w-1/4">
+                 {/* Pass through pointer events so they hit the background Touchable? 
+                     View defaults to box-none? No, defaults to auto.
+                     We want touches on text to go through to the background Touchable.
+                     PointerEvents="none" on these containers?
+                  */}
+                 <View className="flex-row items-center gap-2 w-1/4" pointerEvents="none">
                      <View className={`w-2 h-2 rounded-full ${isRunning ? 'bg-primary dark:bg-primary-dark' : 'bg-gray-400'}`} />
                      <Text className="text-sm font-semibold tabular-nums text-light dark:text-dark">{formatSeconds(workoutSeconds)}</Text>
                  </View>
                  
                  {/* Center: Title */}
-                 <View className="flex-1 items-center justify-center">
+                 <View className="flex-1 items-center justify-center" pointerEvents="none">
                      <Text className="text-sm font-semibold text-light dark:text-dark text-center" numberOfLines={1}>{title}</Text>
                  </View>
                  
@@ -80,7 +92,7 @@ export function ActiveWorkoutHeader() {
                      </RaisedButton>
                      <IconSymbol name={rightIcon} size={16} color={theme.icon ?? '#000'} />
                  </View>
-            </TouchableOpacity>
+            </View>
         </Animated.View>
     );
 }
