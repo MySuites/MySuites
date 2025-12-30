@@ -62,11 +62,10 @@ export default function ExerciseDetailsScreen() {
     return (
         <View style={{ flex: 1, backgroundColor: currentColors.background }}>
              {/* Header */}
-             <ScreenHeader title="Details" leftAction={<BackButton />} />
+             <ScreenHeader title={exercise.name || 'Details'} leftAction={<BackButton />} />
 
             <ScrollView style={{ flex: 1, padding: 16, paddingTop: 124 }}>
                 <View style={{ marginBottom: 24 }}>
-                    <Text className="text-3xl font-bold leading-8" style={{ marginBottom: 4, color: currentColors.text }}>{exercise.name || 'Exercise'}</Text>
                     <Text style={{ fontSize: 18, color: currentColors.text, opacity: 0.7 }}>
                         {exercise.category || 'Category'}
                     </Text>
