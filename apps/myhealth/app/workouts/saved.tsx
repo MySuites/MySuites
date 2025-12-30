@@ -47,7 +47,7 @@ export default function SavedWorkoutsScreen() {
                 className="w-10 h-10 p-0 my-0 rounded-full items-center justify-center mr-2"
             >
                 <IconSymbol 
-                    name="plus" 
+                    name="square.and.pencil" 
                     size={20} 
                     color={theme.primary} 
                 />

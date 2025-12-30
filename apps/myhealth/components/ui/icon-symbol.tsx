@@ -50,6 +50,7 @@ const MAPPING = {
   'sun.max.fill': 'wb-sunny',
   'moon.fill': 'nightlight',
   'save': 'save',
+  'square.and.pencil': 'create',
 } as const;
 
 
