@@ -7,7 +7,7 @@ import { BackButton } from '../ui/BackButton';
 import { WorkoutPreviewModal } from '../workouts/WorkoutPreviewModal';
 
 
-interface AddDayModalProps {
+interface AddDayProps {
     visible: boolean;
     onClose: () => void;
     onAddRestDay: () => void;
@@ -15,13 +15,13 @@ interface AddDayModalProps {
     savedWorkouts: any[];
 }
 
-export const AddDayModal = ({
+export const AddDay = ({
     visible,
     onClose,
     onAddRestDay,
     onAddWorkout,
     savedWorkouts
-}: AddDayModalProps) => {
+}: AddDayProps) => {
     const theme = useUITheme();
     
     const [previewWorkout, setPreviewWorkout] = useState<any | null>(null);

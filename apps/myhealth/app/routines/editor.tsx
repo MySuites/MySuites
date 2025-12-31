@@ -7,7 +7,7 @@ import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
 import { RoutineDraftItem } from '../../components/routines/RoutineDraftItem';
-import { AddDayModal } from '../../components/routines/AddDayModal';
+import { AddDay } from '../../components/routines/AddDay';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
 import { IconSymbol } from '../../components/ui/icon-symbol';
@@ -201,7 +201,7 @@ export default function CreateRoutineScreen() {
             </View>
 
             {/* Add Day Modal */}
-            <AddDayModal
+            <AddDay
                 visible={isAddingDay}
                 onClose={() => setIsAddingDay(false)}
                 onAddRestDay={() => handleAddDay('rest')}
