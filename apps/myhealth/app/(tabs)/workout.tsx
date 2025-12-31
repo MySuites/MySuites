@@ -195,12 +195,13 @@ export default function Workout() {
                         </View>
 
                         {savedWorkouts.length === 0 ? (
-                            <View className="items-center justify-center border border-dashed border-light-darker dark:border-highlight-dark rounded-xl p-4">
-                                <Text className="text-light-muted dark:text-dark-muted mb-2">No saved workouts.</Text>
-                                <TouchableOpacity onPress={handleCreateSavedWorkout} className="p-2.5 rounded-lg border border-light-darker dark:border-highlight-dark bg-light dark:bg-dark">
-                                    <Text className="text-light dark:text-dark">Create a Workout</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <HollowedCard className="p-2">
+                                <View>
+                                    <Text className="text-light-muted dark:text-dark-muted text-center">
+                                        Create a workout to save your favorite exercises and sets.
+                                    </Text>
+                                </View>
+                            </HollowedCard>
                         ) : (
                             <FlatList
                                 data={savedWorkouts}
