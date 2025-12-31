@@ -103,19 +103,27 @@ export function BodyWeightCard({
                         onChange={onRangeChange}
                     />
                 </View>
-                <BodyWeightChart 
-                    data={history} 
-                    color={primaryColor}
-                    textColor={textColor}
-                    maxPoints={
-                        selectedRange === 'Week' ? 7 : 
-                        selectedRange === 'Month' ? 31 : 
-                        selectedRange === '6Month' ? 26 : 
-                        12
-                    }
-                    selectedRange={selectedRange}
-                    onPointSelect={(point) => setSelectedPoint(point)}
-                />
+                {history.length > 0 ? (
+                    <BodyWeightChart 
+                        data={history} 
+                        color={primaryColor}
+                        textColor={textColor}
+                        maxPoints={
+                            selectedRange === 'Week' ? 7 : 
+                            selectedRange === 'Month' ? 31 : 
+                            selectedRange === '6Month' ? 26 : 
+                            12
+                        }
+                        selectedRange={selectedRange}
+                        onPointSelect={(point) => setSelectedPoint(point)}
+                    />
+                ) : (
+                    <View className="py-8 bg-gray-50/50 dark:bg-white/5 rounded-xl border border-dashed border-gray-200 dark:border-white/10">
+                        <Text className="text-light-muted dark:text-dark-muted text-center italic text-sm">
+                            No data for this {selectedRange === '6Month' ? 'period' : selectedRange.toLowerCase()}.
+                        </Text>
+                    </View>
+                )}
             </View>
         ) : (
             <HollowedCard className="p-8">

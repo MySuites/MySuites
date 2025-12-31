@@ -16,7 +16,11 @@ interface BodyWeightChartProps {
 export function BodyWeightChart({ data, color = '#3b82f6', textColor = '#9ca3af', maxPoints, selectedRange, onPointSelect }: BodyWeightChartProps) {
   
   if (!data || data.length === 0) {
-    return null;
+    return (
+      <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+         <Text style={{ color: textColor, fontSize: 12, fontStyle: 'italic' }}>No data for this range</Text>
+      </View>
+    );
   }
 
   // Ensure chronological order
@@ -166,7 +170,7 @@ export function BodyWeightChart({ data, color = '#3b82f6', textColor = '#9ca3af'
         spacing={spacing}
         initialSpacing={initialSpacing}
         endSpacing={0}
-        curved
+        curved={sortedData.length > 1}
         scrollToEnd={!maxPoints}
         disableScroll={!!maxPoints}
         yAxisLabelWidth={yAxisLabelWidth}
