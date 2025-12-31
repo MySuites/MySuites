@@ -17,8 +17,11 @@ export function useBackButtonAction() {
             return;
         }
 
-        // If Active Workout Overlay is expanded, collapse it instead of navigating back
-        if (isExpanded) {
+        // If Active Workout Overlay is expanded, AND we are on the main workout screen
+        // collapse it instead of navigating back.
+        // We check for workout path to ensure back buttons on other screens (like /exercises)
+        // still function as expected (actually navigating back).
+        if (isExpanded && pathname.includes('workout')) {
             setExpanded(false);
             return;
         }
