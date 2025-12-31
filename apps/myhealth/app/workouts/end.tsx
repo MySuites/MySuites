@@ -8,6 +8,7 @@ import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
+import { WorkoutNamePrompt } from '../../components/workouts/WorkoutNamePrompt';
 
 export default function EndWorkoutScreen() {
     const router = useRouter();
@@ -23,6 +24,8 @@ export default function EndWorkoutScreen() {
     
     const { savedWorkouts, updateSavedWorkout, saveWorkout } = useWorkoutManager();
     const [isSaving, setIsSaving] = React.useState(false);
+    const [showNamePrompt, setShowNamePrompt] = React.useState(false);
+    const [pendingName, setPendingName] = React.useState("");
 
     const completedSetsCount = exercises.reduce((acc, ex) => acc + (ex.completedSets || 0), 0);
     const filteredExercises = exercises.filter(ex => (ex.completedSets || 0) > 0);
@@ -121,46 +124,30 @@ export default function EndWorkoutScreen() {
             }
         } else if (totalExercises > 0) {
             // Started from "Empty" or no source template, prompt to save as new template
-            Alert.alert(
-                "Save as Template?",
-                "Would you like to save this workout as a template for future use?",
-                [
-                    {
-                        text: "History Only",
-                        onPress: finalize
-                    },
-                    {
-                        text: "Save as Template",
-                        onPress: async () => {
-                            setIsSaving(true);
-                            try {
-                                // Strip logs and set counts to 0 for template
-                                const templateExercises = exercises.map(({ logs, previousLog, completedSets, ...rest }) => ({
-                                    ...rest,
-                                    completedSets: 0,
-                                    logs: []
-                                }));
-                                
-                                await saveWorkout(
-                                    workoutName || "New Workout",
-                                    templateExercises,
-                                    () => {}
-                                );
-                                finalize();
-                            } catch (e) {
-                                console.error("Failed to save new template", e);
-                                finalize();
-                            } finally {
-                                setIsSaving(false);
+            const showTemplateAlert = () => {
+                Alert.alert(
+                    "Save as Template?",
+                    "Would you like to save this workout as a template for future use?",
+                    [
+                        {
+                            text: "History Only",
+                            onPress: finalize
+                        },
+                        {
+                            text: "Save as Template",
+                            onPress: () => {
+                                setPendingName(workoutName || "New Workout");
+                                setShowNamePrompt(true);
                             }
+                        },
+                        {
+                            text: "Cancel",
+                            style: "cancel"
                         }
-                    },
-                    {
-                        text: "Cancel",
-                        style: "cancel"
-                    }
-                ]
-            );
+                    ]
+                );
+            };
+            showTemplateAlert();
             return;
         }
 
@@ -170,6 +157,42 @@ export default function EndWorkoutScreen() {
     const handleDiscard = () => {
         cancelWorkout();
         router.dismiss();
+    };
+
+    const handlePromptSave = async (name: string) => {
+        setShowNamePrompt(false);
+        setIsSaving(true);
+        try {
+            // Strip logs and set counts to 0 for template
+            const templateExercises = exercises.map(({ logs, previousLog, completedSets, ...rest }) => ({
+                ...rest,
+                completedSets: 0,
+                logs: []
+            }));
+            
+            await saveWorkout(
+                name,
+                templateExercises,
+                () => {}
+            );
+            finishWorkout(notes);
+            router.dismiss();
+        } catch (e) {
+            console.error("Failed to save new template", e);
+            finishWorkout(notes);
+            router.dismiss();
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handlePromptCancel = () => {
+        setShowNamePrompt(false);
+        // Re-trigger the alert logic - we can just call handleSave again
+        // wrapping it in setTimeout to ensure the modal is fully closed on some platforms
+        setTimeout(() => {
+            handleSave();
+        }, 300);
     };
 
     // Helper to format time if utils generic doesn't exist
@@ -254,6 +277,13 @@ export default function EndWorkoutScreen() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            <WorkoutNamePrompt 
+                visible={showNamePrompt}
+                onClose={handlePromptCancel}
+                onSave={handlePromptSave}
+                initialName={pendingName}
+            />
         </View>
     );
 }
