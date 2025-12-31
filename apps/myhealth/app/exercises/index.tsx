@@ -108,12 +108,16 @@ export default function ExercisesScreen() {
                 </Text> 
             </View>
             {hasActiveSession && (
-              <TouchableOpacity onPress={(e) => {
+              <RaisedButton 
+                onPress={(e) => {
                   e.stopPropagation(); // Prevent navigation
                   handleAddExercise(item);
-              }}>
-                  <IconSymbol name="plus.circle" size={24} color={theme.primary} />
-              </TouchableOpacity>
+                }}
+                className="w-10 h-10 p-0 rounded-full bg-light-lighter dark:bg-dark-lighter"
+                borderRadius={20}
+              >
+                  <IconSymbol name="plus" size={24} color={theme.primary} />
+              </RaisedButton>
             )}
           </TouchableOpacity>
         )}

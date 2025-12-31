@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Modal, ActivityIndicator, ScrollView } from 'react-native';
-import { useUITheme } from '@mysuite/ui';
+import { useUITheme, RaisedButton } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 
 
@@ -101,7 +101,17 @@ export const ExerciseSelectorModal = ({
                                             {item.category} • {item.properties?.join(', ') || item.type || item.rawType}
                                         </Text> 
                                     </View>
-                                    <IconSymbol name="plus.circle" size={28} color={theme.primary} />
+                                    <RaisedButton
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            onSelect(item);
+                                            setExerciseSearchQuery(""); // Clear search on select
+                                        }}
+                                        className="w-10 h-10 p-0 rounded-full bg-light-lighter dark:bg-dark-lighter"
+                                        borderRadius={20}
+                                    >
+                                        <IconSymbol name="plus" size={24} color={theme.primary} />
+                                    </RaisedButton>
                                 </TouchableOpacity>
                             )}
                             ListEmptyComponent={
