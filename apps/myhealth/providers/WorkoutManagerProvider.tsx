@@ -40,6 +40,7 @@ interface WorkoutManagerContextType {
     markRoutineDayComplete: () => void;
     clearActiveRoutine: () => void;
     isSaving: boolean;
+    isLoading: boolean;
     saveWorkout: (name: string, exercises: Exercise[], onSuccess: () => void) => Promise<void>;
     deleteSavedWorkout: (id: string, options?: { onSuccess?: () => void; skipConfirmation?: boolean }) => void;
     updateSavedWorkout: (id: string, name: string, exercises: Exercise[], onSuccess: () => void) => Promise<void>;
@@ -61,6 +62,7 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
     const [routines, setRoutines] = useState<any[]>([]);
     const [workoutHistory, setWorkoutHistory] = useState<WorkoutLog[]>([]);
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const {
         activeRoutine,
@@ -153,8 +155,8 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
                     const rawActive = await AsyncStorage.getItem("myhealth_active_routine");
                     if (rawActive) setRoutineState(JSON.parse(rawActive));
                 }
-            } catch {
-                // ignore
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchSaved();
@@ -567,6 +569,7 @@ export function WorkoutManagerProvider({ children }: { children: React.ReactNode
         markRoutineDayComplete,
         clearActiveRoutine,
         isSaving,
+        isLoading,
         saveWorkout,
         deleteSavedWorkout,
         updateSavedWorkout,

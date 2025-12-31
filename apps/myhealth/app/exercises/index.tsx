@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity, View, ActivityIndicator, TextInput, Alert, Text } from 'react-native'; 
+import { FlatList, TouchableOpacity, View, TextInput, Alert, Text } from 'react-native'; 
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-import { useUITheme, RaisedButton, HollowedCard } from '@mysuite/ui';
+import { useUITheme, RaisedButton, HollowedCard, Skeleton } from '@mysuite/ui';
 import { useAuth } from '@mysuite/auth';
 import { fetchExercises } from '../../hooks/workouts/useWorkoutManager';
 import { IconSymbol } from '../../components/ui/icon-symbol';
@@ -85,8 +85,15 @@ export default function ExercisesScreen() {
       </View>
       
       {loading ? (
-        <View className="flex-1 justify-center items-center">
-            <ActivityIndicator size="large" color={theme.primary} />
+        <View className="flex-1 px-4 mt-4">
+             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <View key={i} className="flex-row items-center justify-between py-4 border-b border-light-darker/10 dark:border-highlight-dark/10">
+                    <View className="flex-1">
+                        <Skeleton height={20} width="60%" className="mb-2" />
+                        <Skeleton height={14} width="40%" />
+                    </View>
+                </View>
+             ))}
         </View>
       ) : (
       <FlatList
