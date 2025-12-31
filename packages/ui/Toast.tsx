@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
-  withSpring, 
   withTiming, 
   runOnJS 
 } from 'react-native-reanimated';
@@ -49,9 +48,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     translateY.value = -100;
 
     opacity.value = withTiming(1, { duration: 300 });
-    translateY.value = withSpring(Platform.OS === 'ios' ? 60 : 40, {
-      damping: 15,
-      stiffness: 120,
+    translateY.value = withTiming(Platform.OS === 'ios' ? 60 : 40, {
+      duration: 300,
     });
 
     timerRef.current = setTimeout(() => {
@@ -106,8 +104,8 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
-    left: 20,
-    right: 20,
+    left: 70,
+    right: 70,
     padding: 16,
     borderRadius: 12,
     flexDirection: 'row',
