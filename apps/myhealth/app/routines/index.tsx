@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Alert, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useUITheme, RaisedButton, RaisedCard, HollowedCard } from '@mysuite/ui';
+import { useUITheme, RaisedButton, RaisedCard, HollowedCard, Skeleton } from '@mysuite/ui';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useActiveWorkout } from '../../providers/ActiveWorkoutProvider';
@@ -13,7 +13,7 @@ import { BackButton } from '../../components/ui/BackButton';
 export default function RoutinesScreen() {
   const router = useRouter();
   
-  const { routines, startActiveRoutine } = useWorkoutManager();
+  const { routines, startActiveRoutine, isLoading } = useWorkoutManager();
   const { hasActiveSession, setExercises } = useActiveWorkout();
   const theme = useUITheme();
 
@@ -65,7 +65,19 @@ export default function RoutinesScreen() {
         }
       />
       
-      {routines.length === 0 ? (
+      {isLoading ? (
+          <View className="flex-1 px-4 mt-28">
+              {[1, 2, 3, 4, 5].map((i) => (
+                  <RaisedCard key={i} className="flex-row items-center justify-between p-4 mb-3">
+                      <View className="flex-1">
+                          <Skeleton height={20} width="60%" className="mb-2" />
+                          <Skeleton height={14} width="35%" />
+                      </View>
+                      <View className="w-20 h-8 rounded-md bg-light-darker/10 dark:bg-highlight-dark/10" />
+                  </RaisedCard>
+              ))}
+          </View>
+      ) : routines.length === 0 ? (
           <View className="flex-1 p-4 mt-28">
               <HollowedCard className="p-8 w-full">
                   <Text className="text-base text-center leading-6 text-light-muted dark:text-dark-muted">
