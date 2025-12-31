@@ -21,6 +21,7 @@ interface BodyWeightCardProps {
   onLogWeight: () => void;
   selectedRange: DateRange;
   onRangeChange: (range: DateRange) => void;
+  rangeAverage: number | null;
   primaryColor?: string;
   textColor?: string;
 }
@@ -31,6 +32,7 @@ export function BodyWeightCard({
   onLogWeight,
   selectedRange,
   onRangeChange,
+  rangeAverage,
   primaryColor,
   textColor,
 }: BodyWeightCardProps) {
@@ -41,10 +43,10 @@ export function BodyWeightCard({
     setSelectedPoint(null);
   }, [selectedRange]);
 
-  const displayWeight = selectedPoint ? selectedPoint.value : weight;
+  const displayWeight = selectedPoint ? selectedPoint.value : (rangeAverage || weight);
 
   const getSelectionLabel = () => {
-    if (!selectedPoint) return 'Latest Weight';
+    if (!selectedPoint) return `${selectedRange} Average`;
     
     const d = new Date(selectedPoint.date);
     const date = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
@@ -56,11 +58,14 @@ export function BodyWeightCard({
     if (selectedRange === '6Month') {
       const end = new Date(date);
       end.setDate(date.getDate() + 6);
-      return `${date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+      const startStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      const endStr = end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      return `Weekly Average: ${startStr} - ${endStr}`;
     }
     
     if (selectedRange === 'Year') {
-      return date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      const monthStr = date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      return `Monthly Average: ${monthStr}`;
     }
     
     return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
@@ -87,22 +92,22 @@ export function BodyWeightCard({
       <View className="mt-2">
         {displayWeight ? (
             <View>
-                <View className="flex-row justify-between items-end mb-4">
-                    <View>
+                <View className="mb-4">
+                    <View className="flex-row justify-between items-center mb-1">
                         <View className="flex-row items-baseline">
                             <Text className="text-3xl font-bold mr-1 text-light dark:text-dark">{displayWeight}</Text>
                             <Text className="text-light-muted dark:text-dark-muted text-sm">lbs</Text>
                         </View>
-                        <Text className="text-[11px] font-medium text-light-muted dark:text-dark-muted mt-0.5">
-                            {getSelectionLabel()}
-                        </Text>
+                        
+                        <SegmentedControl
+                            options={RANGE_OPTIONS}
+                            value={selectedRange}
+                            onChange={onRangeChange}
+                        />
                     </View>
-                    
-                    <SegmentedControl
-                        options={RANGE_OPTIONS}
-                        value={selectedRange}
-                        onChange={onRangeChange}
-                    />
+                    <Text className="text-[11px] font-medium text-light-muted dark:text-dark-muted">
+                        {getSelectionLabel()}
+                    </Text>
                 </View>
                 {history.length > 0 ? (
                     <BodyWeightChart 
@@ -116,7 +121,14 @@ export function BodyWeightCard({
                             12
                         }
                         selectedRange={selectedRange}
-                        onPointSelect={(point) => setSelectedPoint(point)}
+                        onPointSelect={(point) => {
+                            // If the same point is clicked again, reset to average
+                            if (point && selectedPoint && point.date === selectedPoint.date) {
+                                setSelectedPoint(null);
+                            } else {
+                                setSelectedPoint(point);
+                            }
+                        }}
                     />
                 ) : (
                     <View className="py-8 bg-gray-50/50 dark:bg-white/5 rounded-xl border border-dashed border-gray-200 dark:border-white/10">

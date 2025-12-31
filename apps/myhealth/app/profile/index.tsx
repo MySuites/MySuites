@@ -17,6 +17,7 @@ export default function ProfileScreen() {
   const [username, setUsername] = useState('');
   const [latestWeight, setLatestWeight] = useState<number | null>(null);
   const [weightHistory, setWeightHistory] = useState<{ value: number; label: string; date: string }[]>([]);
+  const [rangeAverage, setRangeAverage] = useState<number | null>(null);
   const [isWeightModalVisible, setIsWeightModalVisible] = useState(false);
   const [selectedRange, setSelectedRange] = useState<DateRange>('Week');
   const theme = useUITheme();
@@ -139,8 +140,13 @@ export default function ProfileScreen() {
 
     if (!rawData || rawData.length === 0) {
         setWeightHistory([]);
+        setRangeAverage(null);
         return;
     }
+
+    // Calculate true overall average from all individual logs in the range
+    const totalSum = rawData.reduce((sum, item) => sum + parseFloat(item.weight.toString()), 0);
+    setRangeAverage(Math.round((totalSum / rawData.length) * 10) / 10);
 
     // 3. Process Data (Aggregation)
     const groups: Record<string, { total: number, count: number }> = {};
@@ -164,7 +170,8 @@ export default function ProfileScreen() {
 
         if (key && spine.includes(key)) {
             if (!groups[key]) groups[key] = { total: 0, count: 0 };
-            groups[key].total += item.weight;
+            // Calculate arithmetic mean for the bucket
+            groups[key].total += parseFloat(item.weight.toString());
             groups[key].count += 1;
         }
     });
@@ -280,6 +287,7 @@ export default function ProfileScreen() {
         <BodyWeightCard 
           weight={latestWeight} 
           history={weightHistory}
+          rangeAverage={rangeAverage}
           onLogWeight={() => setIsWeightModalVisible(true)} 
           selectedRange={selectedRange}
           onRangeChange={setSelectedRange}
