@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, ScrollView } from 'react-native';
 import { useUITheme, RaisedCard, RaisedButton } from '@mysuite/ui';
 import { IconSymbol } from '../ui/icon-symbol';
 import { ScreenHeader } from '../ui/ScreenHeader';
 import { BackButton } from '../ui/BackButton';
+import { WorkoutPreviewModal } from '../workouts/WorkoutPreviewModal';
 
 
 interface AddDayModalProps {
@@ -22,6 +23,14 @@ export const AddDayModal = ({
     savedWorkouts
 }: AddDayModalProps) => {
     const theme = useUITheme();
+    
+    const [previewWorkout, setPreviewWorkout] = useState<any | null>(null);
+    const [previewVisible, setPreviewVisible] = useState(false);
+
+    const handleOpenPreview = (workout: any) => {
+        setPreviewWorkout(workout);
+        setPreviewVisible(true);
+    };
 
     return (
         <Modal
@@ -54,7 +63,7 @@ export const AddDayModal = ({
                         savedWorkouts.map((workout) => (
                             <RaisedCard
                                 key={workout.id}
-                                onPress={() => onAddWorkout(workout)}
+                                onPress={() => handleOpenPreview(workout)}
                                 className="p-4 mb-3"
                             >
                                 <View className="flex-row items-center justify-between">
@@ -63,7 +72,10 @@ export const AddDayModal = ({
                                         <Text className="text-light-muted dark:text-dark-muted text-sm">{workout.exercises?.length || 0} Exercises</Text>
                                     </View>
                                     <RaisedButton
-                                        onPress={() => onAddWorkout(workout)}
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            onAddWorkout(workout);
+                                        }}
                                         className="w-10 h-10 p-0 rounded-full"
                                         borderRadius={20}
                                     >
@@ -76,6 +88,12 @@ export const AddDayModal = ({
                     <View className="h-20" /> 
                 </ScrollView>
             </View>
+
+            <WorkoutPreviewModal 
+                visible={previewVisible}
+                onClose={() => setPreviewVisible(false)}
+                workout={previewWorkout}
+            />
         </Modal>
     );
 };

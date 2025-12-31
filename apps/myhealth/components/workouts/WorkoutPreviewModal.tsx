@@ -1,60 +1,47 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, ScrollView } from 'react-native';
-import { SavedWorkout } from '../../types';
+import { View, Text, Modal, FlatList } from 'react-native';
+import { useUITheme as useTheme, RaisedButton } from '@mysuite/ui';
+import { IconSymbol } from '../ui/icon-symbol';
 
 interface WorkoutPreviewModalProps {
     visible: boolean;
-    workout: SavedWorkout | null;
     onClose: () => void;
+    workout: any | null;
 }
 
-export const WorkoutPreviewModal = ({ visible, workout, onClose }: WorkoutPreviewModalProps) => {
+export function WorkoutPreviewModal({ visible, onClose, workout }: WorkoutPreviewModalProps) {
+    const theme = useTheme();
+    if (!workout) return null;
+
     return (
-        <Modal
-            transparent={true}
-            visible={visible}
-            animationType="slide"
-            onRequestClose={onClose}
-        >
-             <View className="flex-1 justify-end bg-black/50">
-                 <View className="bg-light dark:bg-dark h-[60%] rounded-t-3xl overflow-hidden">
-                     <View className="p-4 border-b border-light dark:border-dark flex-row justify-between items-center">
-                         <Text className="text-xl font-bold text-light dark:text-dark">
-                             {workout?.name || "Workout Details"}
-                         </Text>
-                         <TouchableOpacity 
-                             onPress={onClose}
-                             className="bg-light-lighter dark:bg-border-dark p-2 rounded-full"
-                         >
-                             <Text className="text-light dark:text-dark font-bold">Close</Text>
-                         </TouchableOpacity>
-                     </View>
-                     <ScrollView className="p-4">
-                         {workout?.exercises?.map((ex, idx) => (
-                             <View key={idx} className="mb-4 bg-light-lighter dark:bg-border-dark p-3 rounded-xl">
-                                 <Text className="text-lg font-semibold text-light dark:text-dark">
-                                     {ex.name}
-                                 </Text>
-                                 <Text className="text-gray-500">
-                                     {ex.sets} Sets
-                                 </Text>
-                                 {ex.setTargets && ex.setTargets.length > 0 ? (
-                                     <View className="mt-2 pl-2 border-l-2 border-primary dark:border-primary-dark">
-                                         {ex.setTargets.map((set, sIdx) => (
-                                             <Text key={sIdx} className="text-light dark:text-dark">
-                                                 Set {sIdx + 1}: {set.weight ? `${set.weight}lbs x ` : ""}{set.reps || 0} reps
-                                             </Text>
-                                         ))}
-                                     </View>
-                                 ) : (
-                                      <Text className="text-gray-500 mt-1">Target: {ex.reps} reps</Text>
-                                 )}
-                             </View>
-                         ))}
-                         <View className="h-10" />
-                     </ScrollView>
-                 </View>
-             </View>
-         </Modal>
+        <Modal visible={visible} animationType="fade" transparent onRequestClose={onClose}>
+            <View className="flex-1 justify-center bg-black/60 px-6">
+                <View className="bg-light dark:bg-dark rounded-3xl overflow-hidden p-6">
+                    <View className="flex-row justify-between items-center mb-4">
+                        <Text className="text-xl font-bold text-light dark:text-dark flex-1 mr-4" numberOfLines={1}>
+                            {workout.name}
+                        </Text>
+                        <RaisedButton onPress={onClose} className="w-10 h-10 p-0 rounded-full" borderRadius={20}>
+                            <IconSymbol name="xmark" size={20} color={theme.primary} />
+                        </RaisedButton>
+                    </View>
+
+                    <FlatList
+                        data={workout.exercises || []}
+                        keyExtractor={(_, i) => i.toString()}
+                        className="max-h-[60vh]"
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => (
+                            <View className="mb-2 bg-light-lighter dark:bg-white/5 p-4 rounded-2xl">
+                                <Text className="font-semibold text-light dark:text-dark">{item.name}</Text>
+                                <Text className="text-sm text-light-muted dark:text-dark-muted">
+                                    {item.sets} × {item.reps} {item.properties?.length > 0 && `• ${item.properties.join(', ')}`}
+                                </Text>
+                            </View>
+                        )}
+                    />
+                </View>
+            </View>
+        </Modal>
     );
-};
+}
