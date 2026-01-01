@@ -14,7 +14,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { IconSymbol } from "@mysuite/ui";
-// import { SetSwipeAction } from './SetSwipeAction'; // Inline
 
 export const getExerciseFields = (properties?: string[]) => {
     const props = properties || [];
