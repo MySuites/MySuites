@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useUITheme as useTheme, RaisedButton } from '@mysuite/ui';
 import { useWorkoutManager } from '../../hooks/workouts/useWorkoutManager';
 import { useFloatingButton } from '../../providers/FloatingButtonContext';
 import { useRoutineDraft } from '../../hooks/routines/useRoutineDraft';
-import { RoutineDraftItem } from '../../components/routines/RoutineDraftItem';
 import { AddDay } from '../../components/routines/AddDay';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
@@ -103,12 +102,32 @@ export default function CreateRoutineScreen() {
     
     const renderItem = ({ item, drag, isActive }: RenderItemParams<any>) => {
         return (
-            <RoutineDraftItem
-                item={item}
-                drag={drag}
-                isActive={isActive}
-                onRemove={() => removeDay(item.id)}
-            />
+            <ScaleDecorator activeScale={1.05}>
+                <TouchableOpacity
+                    onLongPress={drag}
+                    disabled={isActive}
+                    activeOpacity={1}
+                    className={`bg-light-lighter dark:bg-dark-lighter rounded-xl mb-3 overflow-hidden border p-3 flex-row items-center justify-between ${isActive ? 'border-primary dark:border-primary-dark' : 'border-bg-dark dark:border-bg-dark-dark'}`}
+                >
+                    <View className="flex-row items-center flex-1 mr-2">
+                            <View>
+                            <Text className="text-base leading-6 font-semibold text-light dark:text-dark">{item.name}</Text>
+                            <Text className="text-light-muted dark:text-dark-muted text-sm">
+                                {item.type === 'rest' ? 'Rest Day' : 'Workout'}
+                            </Text>
+                        </View>
+                    </View>
+                    
+                    <View className="flex-row items-center">
+                        <TouchableOpacity onPressIn={drag} className="p-2 mr-2"> 
+                                <IconSymbol name="line.3.horizontal" size={20} color={theme.icon as string} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={(e) => { e.stopPropagation(); removeDay(item.id); }} className="p-2"> 
+                            <IconSymbol name="trash.fill" size={18} color={theme.error as string} />
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+            </ScaleDecorator>
         );
     };
 
