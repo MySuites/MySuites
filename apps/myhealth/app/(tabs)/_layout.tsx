@@ -1,9 +1,10 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import { BottomTabBar, BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { PlatformPressable } from '@react-navigation/elements';
+import * as Haptics from 'expo-haptics';
 
-import { HapticTab } from '../../components/ui/HapticTab';
 import { useNavigationSettings } from '../../providers/NavigationSettingsProvider';
 import { IconSymbol } from "@mysuite/ui";
 import { Colors } from '../../constants/theme';
@@ -14,6 +15,21 @@ import { ActiveWorkoutOverlay } from '../../components/workouts/ActiveWorkoutOve
 // import { GlobalOverlay } from '../../components/ui/GlobalOverlay';
 // import { QuickNavigationButton } from '../../components/ui/QuickNavigationMenu';
 // import { QuickUtilityButton } from '../../components/ui/QuickUtilityMenu';
+
+function HapticTab(props: BottomTabBarButtonProps) {
+  return (
+    <PlatformPressable
+      {...props}
+      onPressIn={(ev) => {
+        if (process.env.EXPO_OS === 'ios') {
+          // Add a soft haptic feedback when pressing down on the tabs.
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        }
+        props.onPressIn?.(ev);
+      }}
+    />
+  );
+}
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
