@@ -35,3 +35,24 @@ jest.mock("expo-haptics", () => ({
     impactAsync: jest.fn(),
     notificationAsync: jest.fn(),
 }));
+
+jest.mock(
+    "@react-native-async-storage/async-storage",
+    () =>
+        require(
+            "@react-native-async-storage/async-storage/jest/async-storage-mock",
+        ),
+);
+
+jest.mock("expo-router", () => ({
+    useRouter: jest.fn(() => ({
+        push: jest.fn(),
+        replace: jest.fn(),
+        back: jest.fn(),
+    })),
+    useLocalSearchParams: jest.fn(() => ({})),
+    usePathname: jest.fn(() => "/profile"),
+    Stack: {
+        Screen: jest.fn(() => null),
+    },
+}));
