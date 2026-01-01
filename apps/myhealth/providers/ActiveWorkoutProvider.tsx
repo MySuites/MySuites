@@ -4,7 +4,7 @@ import { useAuth } from '@mysuite/auth';
 import { createExercise } from '../utils/workout-logic';
 import { useActiveWorkoutTimers } from '../hooks/workouts/useActiveWorkoutTimers';
 import { useActiveWorkoutPersistence } from '../hooks/workouts/useActiveWorkoutPersistence';
-import { useLatestBodyWeight } from '../hooks/useLatestBodyWeight';
+import { useLatestBodyWeight } from '../hooks/workouts/useLatestBodyWeight';
 import uuid from 'react-native-uuid';
 
 // Define the shape of our context
