@@ -86,7 +86,7 @@ export function BodyWeightCard({
             className="w-8 h-8 p-0 rounded-full items-center justify-center"
             borderRadius={16}
         >
-          <IconSymbol name="plus" size={24} color={primaryColor || theme.primary} />
+          <IconSymbol name="plus" size={20} color={primaryColor || theme.primary} />
         </RaisedButton>
       </View>
       

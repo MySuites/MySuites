@@ -46,7 +46,7 @@ export const SavedWorkoutItem = ({
                     >
                         <IconSymbol 
                             name="play.fill" 
-                            size={24} 
+                            size={18} 
                             color={theme.primary} 
                         />
                     </RaisedButton>

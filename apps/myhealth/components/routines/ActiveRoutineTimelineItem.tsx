@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import { useUITheme } from '@mysuite/ui';
+import { useUITheme, RaisedButton } from '@mysuite/ui';
 
 interface ActiveRoutineTimelineItemProps {
   item: any;
@@ -144,8 +144,9 @@ export function ActiveRoutineTimelineItem({
 
         {isToday && !isCompletedToday && (
           <View className="flex-row gap-3 mt-2">
-            <TouchableOpacity
-              className="p-2.5 rounded-lg bg-primary dark:bg-primary-dark flex-1 items-center justify-center"
+            <RaisedButton
+              className="flex-1 mr-0 my-0"
+              title={item?.type === 'rest' ? 'Mark Complete' : 'Start Workout'}
               onPress={() => {
                 if (item?.type === 'workout' && item.workout) {
                   console.log("ActiveRoutineCard: item.workout ID:", item.workout.id);
@@ -156,18 +157,13 @@ export function ActiveRoutineTimelineItem({
                   ]);
                 }
               }}
-            >
-              <Text className="text-white font-semibold">
-                {item?.type === 'rest' ? 'Mark Complete' : 'Start Workout'}
-              </Text>
-            </TouchableOpacity>
+            />
 
-            <TouchableOpacity
-              className="p-2.5 rounded-lg border border-bg-dark dark:border-white/10 bg-light-lighter dark:bg-dark-lighter px-4 items-center justify-center"
+            <RaisedButton
+              className="px-2 mr-0 my-0"
+              title="Skip"
               onPress={() => onMarkComplete()}
-            >
-              <Text className="text-light dark:text-dark">Skip</Text>
-            </TouchableOpacity>
+            />
           </View>
         )}
       </View>
