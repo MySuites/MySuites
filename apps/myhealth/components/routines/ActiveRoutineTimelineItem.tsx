@@ -11,7 +11,6 @@ interface ActiveRoutineTimelineItemProps {
   isLastInView: boolean;
   onJumpToDay: (index: number) => void;
   onStartWorkout: (exercises: any[], name?: string, workoutId?: string) => void;
-  onMarkComplete: () => void;
   routineName: string;
 }
 
@@ -24,7 +23,6 @@ export function ActiveRoutineTimelineItem({
   isLastInView,
   onJumpToDay,
   onStartWorkout,
-  onMarkComplete,
   routineName,
 }: ActiveRoutineTimelineItemProps) {
   const theme = useUITheme();
@@ -145,24 +143,16 @@ export function ActiveRoutineTimelineItem({
         {isToday && !isCompletedToday && (
           <View className="flex-row gap-3 mt-2">
             <RaisedButton
-              className="flex-1 mr-0 my-0"
+              className="flex-1 mr-0 my-0 h-10"
               title={item?.type === 'rest' ? 'Mark Complete' : 'Start Workout'}
               onPress={() => {
                 if (item?.type === 'workout' && item.workout) {
                   console.log("ActiveRoutineCard: item.workout ID:", item.workout.id);
                   onStartWorkout(item.workout.exercises || [], item.name || routineName, item.workout.id);
                 } else {
-                  Alert.alert('Rest Day', 'Enjoy your rest!', [
-                    { text: 'Mark Complete', onPress: () => onMarkComplete() },
-                  ]);
+                  Alert.alert('Rest Day', 'Enjoy your rest!');
                 }
               }}
-            />
-
-            <RaisedButton
-              className="px-2 mr-0 my-0"
-              title="Skip"
-              onPress={() => onMarkComplete()}
             />
           </View>
         )}

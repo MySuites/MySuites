@@ -8,7 +8,6 @@ const mockRN = RN;
 // Mocks
 const mockOnClearRoutine = jest.fn();
 const mockOnStartWorkout = jest.fn();
-const mockOnMarkComplete = jest.fn();
 const mockOnJumpToDay = jest.fn();
 const mockOnMenuPress = jest.fn();
 
@@ -52,7 +51,6 @@ describe('ActiveRoutineCard', () => {
                 isDayCompleted={false}
                 onClearRoutine={mockOnClearRoutine}
                 onStartWorkout={mockOnStartWorkout}
-                onMarkComplete={mockOnMarkComplete}
                 onJumpToDay={mockOnJumpToDay}
                 onMenuPress={mockOnMenuPress}
             />
@@ -72,7 +70,6 @@ describe('ActiveRoutineCard', () => {
                 isDayCompleted={false}
                 onClearRoutine={mockOnClearRoutine}
                 onStartWorkout={mockOnStartWorkout}
-                onMarkComplete={mockOnMarkComplete}
                 onJumpToDay={mockOnJumpToDay}
                 onMenuPress={mockOnMenuPress}
             />

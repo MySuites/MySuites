@@ -14,7 +14,6 @@ interface ActiveRoutineCardProps {
   isDayCompleted: boolean;
   onClearRoutine: () => void;
   onStartWorkout: (exercises: any[], name?: string, workoutId?: string) => void;
-  onMarkComplete: () => void;
   onJumpToDay: (index: number) => void;
   onMenuPress: () => void;
 }
@@ -26,7 +25,6 @@ export function ActiveRoutineCard({
   isDayCompleted,
   onClearRoutine,
   onStartWorkout,
-  onMarkComplete,
   onJumpToDay,
   onMenuPress,
 }: ActiveRoutineCardProps) {
@@ -72,7 +70,6 @@ export function ActiveRoutineCard({
               isLastInView={index === daysToShow.length - 1}
               onJumpToDay={onJumpToDay}
               onStartWorkout={onStartWorkout}
-              onMarkComplete={onMarkComplete}
               routineName={activeRoutineObj.name}
             />
           ))}

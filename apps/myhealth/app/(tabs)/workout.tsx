@@ -69,7 +69,6 @@ export default function Workout() {
         savedWorkouts, 
         routines, 
         activeRoutine,
-        markRoutineDayComplete,
         setActiveRoutineIndex,
         clearActiveRoutine,
         deleteSavedWorkout,
@@ -253,7 +252,6 @@ export default function Workout() {
 
                                         startWorkout(exercisesToStart, name, activeRoutineObj.id);
                                     }}
-                                    onMarkComplete={markRoutineDayComplete}
                                     onJumpToDay={setActiveRoutineIndex}
                                     onMenuPress={() => router.push('/routines')}
                                 />
