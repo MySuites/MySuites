@@ -1,0 +1,37 @@
+[
+  {
+    "id": "pushups",
+    "name": "Pushups",
+    "muscle_group": "Chest",
+    "equipment": "Bodyweight",
+    "type": "reps"
+  },
+  {
+    "id": "pullups",
+    "name": "Pullups",
+    "muscle_group": "Back",
+    "equipment": "Bodyweight",
+    "type": "reps"
+  },
+  {
+    "id": "squats",
+    "name": "Bodyweight Squats",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "type": "reps"
+  },
+  {
+    "id": "bench_press",
+    "name": "Bench Press",
+    "muscle_group": "Chest",
+    "equipment": "Barbell",
+    "type": "weight_reps"
+  },
+  {
+    "id": "deadlift",
+    "name": "Deadlift",
+    "muscle_group": "Back",
+    "equipment": "Barbell",
+    "type": "weight_reps"
+  }
+]

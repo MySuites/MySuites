@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { View, TextInput, Text } from 'react-native';
 import { supabase } from '@mysuite/auth';
 import { RaisedButton } from '@mysuite/ui';
+import { useRouter } from 'expo-router';
+import { storage } from '../../utils/storage';
 
 export default function AuthScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState<{
@@ -45,7 +48,7 @@ export default function AuthScreen() {
   return (
     <View className="flex-1 justify-center p-4">
       <TextInput
-        className="p-3 mb-4 border border-light rounded-lg bg-light text-light dark:bg-dark dark:text-dark dark:border-dark"
+        className="p-3 mb-4 border border-light rounded-lg bg-light-darker text-light dark:bg-dark-lighter dark:text-dark dark:border-dark"
         placeholder="Email"
         placeholderTextColor="#9CA3AF"
         value={email}
@@ -53,7 +56,7 @@ export default function AuthScreen() {
         autoCapitalize="none"
       />
       <TextInput
-        className="p-3 mb-4 border border-light rounded-lg bg-light text-light dark:bg-dark dark:text-dark dark:border-dark"
+        className="p-3 mb-4 border border-light rounded-lg bg-light-darker text-light dark:bg-dark-lighter dark:text-dark dark:border-dark"
         placeholder="Password"
         placeholderTextColor="#9CA3AF"
         value={password}
@@ -84,6 +87,15 @@ export default function AuthScreen() {
       )}
       <RaisedButton title="Sign In" onPress={handleSignIn} className="h-12 my-2 w-full" />
       <RaisedButton title="Sign Up" onPress={handleSignUp} className="h-12 my-2 w-full" />
+      <RaisedButton 
+        title="Continue as Guest" 
+        onPress={async () => {
+          setStatus({ type: 'signing-in', message: 'Entering as guest...' });
+          await storage.setItem('myhealth_guest_mode', 'true');
+          router.replace('/(tabs)');
+        }} 
+        className="h-12 my-2 w-full bg-light dark:bg-dark" 
+      />
     </View>
   );
 }

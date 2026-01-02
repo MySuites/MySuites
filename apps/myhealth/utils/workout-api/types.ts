@@ -33,3 +33,19 @@ export type WorkoutLog = {
     workoutName?: string; // joined from workouts table
     createdAt: string;
 };
+
+export interface Syncable {
+    id: string; // UUID (generated locally if new)
+    syncStatus: "synced" | "pending" | "dirty"; // 'dirty' means modified since sync
+    updatedAt: number;
+    deletedAt?: number; // For Soft Deletes
+}
+
+// Rich History Document (Stored Locally)
+export interface LocalWorkoutLog extends Syncable {
+    name: string;
+    duration: number;
+    date: string;
+    exercises: Exercise[]; // Contains 'logs' (sets/reps/weight)
+    note?: string;
+}

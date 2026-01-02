@@ -9,7 +9,8 @@ import { AppThemeProvider } from '../providers/AppThemeProvider';
 import { NavigationSettingsProvider } from '../providers/NavigationSettingsProvider';
 import { useColorScheme } from '../hooks/ui/use-color-scheme';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react'; // Added useState
+import { storage } from '../utils/storage'; // Added storage import
 import { ActiveWorkoutProvider } from '../providers/ActiveWorkoutProvider'; // Fixed import path
 import { WorkoutManagerProvider } from '../providers/WorkoutManagerProvider';
 import { FloatingButtonProvider } from '../providers/FloatingButtonContext';
@@ -24,15 +25,27 @@ export const unstable_settings = {
 function RootLayoutNav() {
   const { session } = useAuth();
   const router = useRouter();
+  const [isGuest, setIsGuest] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!router) return;
-    if (session) {
+    async function checkGuest() {
+      const guest = await storage.getItem('myhealth_guest_mode');
+      setIsGuest(!!guest);
+      setIsLoading(false);
+    }
+    checkGuest();
+  }, []);
+
+  useEffect(() => {
+    if (isLoading || !router) return;
+    
+    if (session || isGuest) {
       setTimeout(() => router.replace('/(tabs)'), 0);
     } else {
       setTimeout(() => router.replace('/auth'), 0);
     }
-  }, [session, router]);
+  }, [session, isGuest, isLoading, router]);
 
   return (
     <Stack>
