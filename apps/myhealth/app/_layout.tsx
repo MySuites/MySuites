@@ -1,16 +1,16 @@
 import '../global.css';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AuthProvider, useAuth } from '@mysuite/auth';
+import { AuthProvider } from '@mysuite/auth';
 import { AppThemeProvider } from '../providers/AppThemeProvider';
 import { NavigationSettingsProvider } from '../providers/NavigationSettingsProvider';
 import { useColorScheme } from '../hooks/ui/use-color-scheme';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react'; // Added useState
-import { storage } from '../utils/storage'; // Added storage import
+import { useEffect } from 'react'; // Added useState removed
+// import { storage } from '../utils/storage'; // Added storage import removed
 import { ActiveWorkoutProvider } from '../providers/ActiveWorkoutProvider'; // Fixed import path
 import { WorkoutManagerProvider } from '../providers/WorkoutManagerProvider';
 import { FloatingButtonProvider } from '../providers/FloatingButtonContext';
@@ -23,34 +23,10 @@ export const unstable_settings = {
 };
 
 function RootLayoutNav() {
-  const { session } = useAuth();
-  const router = useRouter();
-  const [isGuest, setIsGuest] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function checkGuest() {
-      const guest = await storage.getItem('myhealth_guest_mode');
-      setIsGuest(!!guest);
-      setIsLoading(false);
-    }
-    checkGuest();
-  }, []);
-
-  useEffect(() => {
-    if (isLoading || !router) return;
-    
-    if (session || isGuest) {
-      setTimeout(() => router.replace('/(tabs)'), 0);
-    } else {
-      setTimeout(() => router.replace('/auth'), 0);
-    }
-  }, [session, isGuest, isLoading, router]);
-
   return (
     <Stack>
+
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="auth/index" options={{ headerShown: false }} />
       <Stack.Screen name="settings/index" options={{ headerShown: false }} />
       <Stack.Screen name="profile/index" options={{ headerShown: false }} />
       <Stack.Screen name="exercises/index" options={{ title: 'Exercises', headerShown: false }} />

@@ -21,7 +21,7 @@ export function AuthForm({ showGuestOption = true, onSuccess }: AuthFormProps) {
 
   const handleSignUp = async () => {
     setStatus({ type: 'signing-in', message: 'Creating account...' });
-    const redirectTo = `${process.env.EXPO_PUBLIC_SITE_URL ?? 'http://localhost:8081'}/auth`;
+    const redirectTo = `${process.env.EXPO_PUBLIC_SITE_URL ?? 'http://localhost:8081'}/profile`;
 
     const { data, error } = await supabase.auth.signUp({
       email,
