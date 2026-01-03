@@ -76,4 +76,16 @@ describe('Guest Stats & Performance', () => {
     expect(logs).toHaveLength(1);
     expect(logs[0].reps).toBe(15); // Should be from log-2 (Jan 2)
   });
+
+  it('Example: should fetch stats from local history even if user is logged in (Local-First)', async () => {
+     // This verifies the "flip logic" request: auth users use local data.
+     const user = { id: 'user-123' };
+     (DataRepository.getHistory as jest.Mock).mockResolvedValue(mockHistory);
+
+     const result = await fetchExerciseStats(user, 'ex-1', 'reps');
+     
+     expect(result.error).toBeNull();
+     expect(result.data).toHaveLength(2); // Same as guest test
+     expect(DataRepository.getHistory).toHaveBeenCalled();
+  });
 });
