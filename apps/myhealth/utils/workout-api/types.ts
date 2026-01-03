@@ -54,3 +54,10 @@ export interface LocalWorkoutLog extends Syncable {
     workoutTime?: string;
     workoutId?: string;
 }
+
+export interface BodyWeightLog extends Syncable {
+    userId: string;
+    weight: number;
+    date: string; // YYYY-MM-DD
+    createdAt: string; // ISO
+}

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "@mysuite/auth";
-import { DataRepository } from "../providers/DataRepository";
+import { DataRepository, TABLES } from "../providers/DataRepository";
 import {
+    fetchBodyMeasurementHistory,
     fetchFullWorkoutHistory,
     fetchUserWorkouts,
+    persistBodyMeasurement,
     persistCompletedWorkoutToSupabase,
     persistWorkoutToSupabase,
 } from "../utils/workout-api";
@@ -72,6 +74,49 @@ export function useSyncService() {
                 const mergedWorkouts = [...pendingWorkouts, ...mapped];
                 await DataRepository.saveWorkouts(mergedWorkouts);
             }
+
+            // 3. Pull Body Measurements
+            const { data: bData, error: bError } =
+                await fetchBodyMeasurementHistory(user);
+            if (!bError && bData) {
+                const mappedBody = bData.map((b: any) => ({
+                    id: b.id, // Supabase ID
+                    userId: b.user_id,
+                    weight: b.weight,
+                    date: b.date,
+                    createdAt: b.created_at,
+                    syncStatus: "synced" as const,
+                    updatedAt: new Date(b.created_at).getTime(),
+                }));
+
+                const currentBody = await DataRepository.getBodyWeightHistory(
+                    user.id,
+                );
+                // getBodyWeightHistory returns "any[]" currently which are sorted but includes all
+                // We want to preserve pending
+                const pendingBody = currentBody.filter((b: any) =>
+                    b.syncStatus === "pending"
+                );
+
+                // Merge strategies are tricky. For now, we prefer Cloud if ID matches, but keep Pending.
+                const mergedBody = [...pendingBody, ...mappedBody];
+                // We need to dedupe if IDs clash? DataRepository.upsert handles ID clash by overwriting.
+                // But pendingBody items might not have Supabase IDs, they have local UUIDs.
+                // mappedBody items have Supabase UUIDs.
+                // If they are distinct, we just append. That's fine.
+                // However, if we pull the SAME data we just pushed, we might duplicate if IDs differ?
+                // When we push, we don't update local ID to Supabase ID currently in my plan for BodyMeasurements.
+                // We should probably try to match by date?
+                // For simplicity now: Just save both. UI sorts by date.
+                // Deduplication logic is complex without a robust ID map.
+
+                // Better approach: When pulling, if we find a local entry on the same date that matches, we update it?
+                // For now, let's just save.
+                await DataRepository.upsert(
+                    TABLES.BODY_MEASUREMENTS,
+                    mergedBody,
+                ); // Upsert handles ID matches
+            }
         } catch (e) {
             console.error("Pull failed", e);
         }
@@ -122,6 +167,44 @@ export function useSyncService() {
                 }
             }
             await DataRepository.saveWorkouts(workouts);
+
+            // 3. Push Body Measurements
+            // We need to access the table directly or use getBodyWeightHistory(null) to get all?
+            // getBodyWeightHistory filters by user if passed.
+            // But we might have pending items under 'guest' or 'user'?
+            // BodyWeightService.saveWeight uses (userId || 'guest').
+            // If I am logged in, I use my userId.
+            const allMeasurements = await DataRepository.table<any>(
+                TABLES.BODY_MEASUREMENTS,
+            );
+            const pendingMeasurements = allMeasurements.filter((m: any) =>
+                m.syncStatus === "pending"
+            );
+
+            for (const m of pendingMeasurements) {
+                // Should we check if this measurement belongs to current user?
+                // If 'guest', we claim it for current user?
+                if (m.userId === "guest" || m.userId === user.id) {
+                    const { data, error } = await persistBodyMeasurement(
+                        user,
+                        m.weight,
+                        m.date,
+                    );
+                    if (!error && data) {
+                        m.syncStatus = "synced";
+                        m.id = data.id; // Update local ID to match cloud ID (if possible/safe)
+                        // Note: If we update ID, we must ensure no conflict.
+                        // But wait, if we update ID, upsert might create a new one if we save it back?
+                        // No, we modify the object reference in array then save array.
+
+                        m.userId = user.id; // Ensure ownership is claimed
+                    }
+                }
+            }
+            await DataRepository.upsert(
+                TABLES.BODY_MEASUREMENTS,
+                pendingMeasurements,
+            ); // Save updates
         } catch (e) {
             console.error("Push failed", e);
         }

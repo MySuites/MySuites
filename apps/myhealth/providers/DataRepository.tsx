@@ -345,5 +345,66 @@ export const DataRepository = {
     // --- Base Data ---
     getDefaultExercises: async () => {
         return ExerciseDefaultData;
+    },
+
+    // --- Body Measurements ---
+    getLatestBodyWeight: async (userId: string | null): Promise<number | null> => {
+        // userId is mainly for validation if we ever scope strictly, but for local first
+        // we generally just store everything. However, if we support multi-user on one device (rare),
+        // we might filter. For now, we assume one active user or guest.
+        // If userId is null, it's a guest.
+        
+        const logs = await table<any>(TABLES.BODY_MEASUREMENTS);
+        if (!logs || logs.length === 0) return null;
+
+        // Filter by userId if provided, or allow all if we assume single-tenant local storage
+        // Ideally we filter to be safe.
+        const filtered = userId 
+            ? logs.filter(l => l.user_id === userId || l.userId === userId) // handle potential casing legacy
+            : logs;
+
+        if (filtered.length === 0) return null;
+
+        // Sort by date desc, then created_at desc
+        filtered.sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            if (dateA !== dateB) return dateB - dateA;
+            return (new Date(b.createdAt).getTime()) - (new Date(a.createdAt).getTime());
+        });
+
+        return filtered[0].weight;
+    },
+
+    getBodyWeightHistory: async (userId: string | null, startDate?: string): Promise<any[]> => {
+        const logs = await table<any>(TABLES.BODY_MEASUREMENTS);
+        
+        // Filter
+        let filtered = userId 
+             ? logs.filter(l => l.user_id === userId || l.userId === userId)
+             : logs;
+
+        if (startDate) {
+            filtered = filtered.filter(l => l.date >= startDate);
+        }
+
+        // Sort by date asc for charts
+        return filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    },
+
+    saveBodyWeight: async (log: { userId: string, weight: number, date: string, id?: string }): Promise<void> => {
+        const id = log.id || (uuid.v4() as string);
+        const now = Date.now();
+        const timestamp = new Date().toISOString();
+
+        await upsert(TABLES.BODY_MEASUREMENTS, {
+            id,
+            userId: log.userId,
+            weight: log.weight,
+            date: log.date,
+            createdAt: timestamp,
+            updatedAt: now,
+            syncStatus: 'pending'
+        });
     }
 };
