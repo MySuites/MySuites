@@ -5,18 +5,62 @@ import { useUITheme, RaisedButton, IconSymbol } from '@mysuite/ui';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { BackButton } from '../../components/ui/BackButton';
 
-import { AuthForm } from '../../components/auth/AuthForm';
+// Removed AuthForm import
 
 export default function ProfileScreen() {
   const { user } = useAuth();
   const theme = useUITheme();
+  // const router = useRouter(); // If needed for redirects, but auth state change handles it? 
+  // No, useAuth handles session changes.
   
+  // Profile State
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [tempUsername, setTempUsername] = useState('');
   const [tempFullName, setTempFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  // Auth State (Inlined)
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authStatus, setAuthStatus] = useState<{
+    type: 'idle' | 'typing' | 'signing-in' | 'success' | 'error' | 'info';
+    message?: string;
+  }>({ type: 'idle' });
+
+  // Auth Handlers
+  const handleSignUp = async () => {
+    setAuthStatus({ type: 'signing-in', message: 'Creating account...' });
+    const redirectTo = `${process.env.EXPO_PUBLIC_SITE_URL ?? 'http://localhost:8081'}/profile`;
+
+    const { data, error } = await supabase.auth.signUp({
+      email: authEmail,
+      password: authPassword,
+      options: { emailRedirectTo: redirectTo },
+    });
+    if (error) {
+      setAuthStatus({ type: 'error', message: error.message });
+      return;
+    }
+
+    if (data?.session) {
+      setAuthStatus({ type: 'success', message: 'Signed up and signed in.' });
+    } else {
+      setAuthStatus({ type: 'info', message: 'Check your email for a confirmation link.' });
+    }
+  };
+
+  const handleSignIn = async () => {
+    setAuthStatus({ type: 'signing-in', message: 'Signing in...' });
+    const { error } = await supabase.auth.signInWithPassword({ email: authEmail, password: authPassword });
+    if (error) {
+      setAuthStatus({ type: 'error', message: error.message });
+      return;
+    }
+    setAuthStatus({ type: 'success', message: 'Signed in.' });
+  };
+
 
   useEffect(() => {
     if (user) {
@@ -92,11 +136,55 @@ export default function ProfileScreen() {
     return (
       <View className="flex-1 bg-light dark:bg-dark">
         <ScreenHeader title="Profile" />
-        <View className="flex-1 justify-center px-4 mt-36">
-            <Text className="text-center text-lg font-bold text-light dark:text-dark">
+        <View className="flex-1 justify-center px-4">
+            <Text className="text-center text-lg font-bold mb-8 text-light dark:text-dark">
                 Sign in to view your profile
             </Text>
-            <AuthForm showGuestOption={false} />
+            
+            {/* Inlined Auth Form */}
+             <View className="justify-center">
+              <TextInput
+                className="p-3 mb-4 border border-light rounded-lg bg-light-darker text-light dark:bg-dark-lighter dark:text-dark dark:border-dark"
+                placeholder="Email"
+                placeholderTextColor="#9CA3AF"
+                value={authEmail}
+                onChangeText={setAuthEmail}
+                autoCapitalize="none"
+              />
+              <TextInput
+                className="p-3 mb-4 border border-light rounded-lg bg-light-darker text-light dark:bg-dark-lighter dark:text-dark dark:border-dark"
+                placeholder="Password"
+                placeholderTextColor="#9CA3AF"
+                value={authPassword}
+                onChangeText={(text) => {
+                  setAuthPassword(text);
+                  setAuthStatus((s) => (s.type === 'idle' ? { type: 'typing' } : s));
+                }}
+                secureTextEntry
+                autoCapitalize="none"
+              />
+              {/* Status message */}
+              {authStatus.type !== 'idle' && (
+                <Text
+                  className={
+                    `mb-3 text-sm ` +
+                    (authStatus.type === 'error'
+                      ? 'text-red-600'
+                      : authStatus.type === 'success'
+                      ? 'text-green-600'
+                      : authStatus.type === 'signing-in'
+                      ? 'text-blue-600'
+                      : 'text-light dark:text-dark')
+                  }
+                  accessibilityLiveRegion="polite"
+                >
+                  {authStatus.message ?? (authStatus.type === 'typing' ? 'Typing...' : '')}
+                </Text>
+              )}
+              <RaisedButton title="Sign In" onPress={handleSignIn} className="h-12 my-2 w-full" />
+              <RaisedButton title="Sign Up" onPress={handleSignUp} className="h-12 my-2 w-full" />
+            </View>
+
         </View>
       </View>
     );
