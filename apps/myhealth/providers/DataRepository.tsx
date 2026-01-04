@@ -178,9 +178,10 @@ export const DataRepository = {
                        if (ex.logs) {
                            for (const s of ex.logs) {
                                await tx.execute(
-                                   `INSERT OR REPLACE INTO set_logs (id, workout_log_id, exercise_id, weight, reps, bodyweight, duration, distance, created_at, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                   `INSERT OR REPLACE INTO set_logs (id, user_id, workout_log_id, exercise_id, weight, reps, bodyweight, duration, distance, created_at, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                                    [
                                        s.id || uuid.v4(),
+                                       log.userId,
                                        log.id,
                                        ex.id,
                                        s.weight,
@@ -232,9 +233,10 @@ export const DataRepository = {
                      if (ex.logs) {
                          for (const s of ex.logs) {
                              await tx.execute(
-                                `INSERT INTO set_logs (id, workout_log_id, exercise_id, weight, reps, bodyweight, duration, distance, created_at, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                `INSERT INTO set_logs (id, user_id, workout_log_id, exercise_id, weight, reps, bodyweight, duration, distance, created_at, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                                 [
                                     s.id || uuid.v4(),
+                                    log.userId,
                                     id,
                                     ex.id,
                                     s.weight,

@@ -19,6 +19,7 @@ export const AppSchema = new Schema({
         updated_at: ColumnType.TEXT,
     } as any),
     set_logs: new Table({
+        user_id: ColumnType.TEXT,
         workout_log_id: ColumnType.TEXT,
         exercise_id: ColumnType.TEXT,
         weight: ColumnType.REAL,
